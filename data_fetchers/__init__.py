@@ -81,3 +81,37 @@ class OceanDataManager:
         for sig_id in signal_list:
             results[sig_id] = self.get_signal(sig_id, family_code)
         return results
+
+    def get_overview_signals(self):
+        """顶层 5 路信号灯（整合方案）：海温 / 港口吞吐 / AIS密度 / 海洋灾害 / 企业风险指数"""
+        def _conv(res, label, default_unit=''):
+            if not res or res.get('status') == 'error':
+                return {'color': 'off', 'label': label, 'value': '-', 'unit': default_unit}
+            sig = res.get('signal')
+            color = sig.value if hasattr(sig, 'value') else str(sig)
+            val = res.get('value', res.get('current_container', '-'))
+            unit = res.get('unit', default_unit)
+            return {'color': color, 'label': label, 'value': val, 'unit': unit, 'source': res.get('source', '')}
+
+        out = {}
+        try:
+            out['sea_temp'] = _conv(self.fetchers['env'].fetch(days=7), '海表温度', '°C')
+        except Exception:
+            out['sea_temp'] = {'color': 'off', 'label': '海表温度', 'value': '-', 'unit': '°C'}
+        try:
+            out['port_throughput'] = _conv(self.fetchers['port'].fetch(), '港口吞吐')
+        except Exception:
+            out['port_throughput'] = {'color': 'off', 'label': '港口吞吐', 'value': '-'}
+        try:
+            out['ais_density'] = _conv(self.fetchers['ais'].fetch(), 'AIS船舶密度')
+        except Exception:
+            out['ais_density'] = {'color': 'off', 'label': 'AIS船舶密度', 'value': '-'}
+        try:
+            out['enterprise_risk'] = _conv(self.fetchers['enterprise'].fetch(metric='legal_case'), '企业风险指数')
+        except Exception:
+            out['enterprise_risk'] = {'color': 'off', 'label': '企业风险指数', 'value': '-'}
+        try:
+            out['marine_disaster'] = self.fetchers['env'].get_disaster_signal()
+        except Exception:
+            out['marine_disaster'] = {'color': 'off', 'label': '海洋灾害', 'value': '-'}
+        return out

@@ -129,3 +129,17 @@ class EnvDataFetcher(BaseDataFetcher):
             return SignalStatus.YELLOW
         else:
             return SignalStatus.RED
+
+    def get_disaster_signal(self):
+        """海洋灾害预警信号（演示：赤潮 / 风暴潮）"""
+        try:
+            risk = 'green'  # 演示模式：低风险
+            return {
+                'color': risk,
+                'label': '海洋灾害',
+                'value': '低风险',
+                'unit': '',
+                'source': '自然资源部海洋预警 (演示模式)',
+            }
+        except Exception:
+            return {'color': 'off', 'label': '海洋灾害', 'value': '-', 'unit': ''}

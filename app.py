@@ -137,7 +137,7 @@ with st.sidebar:
     st.subheader("📍 选择页面")
     page = st.radio(
         "",
-        ["📋 总览 - 信号灯矩阵", "🔬 详情 - 产业诊断", "📐 交叉 - 信号矩阵"],
+        ["📋 总览 - 信号灯矩阵", "🔬 详情 - 产业诊断", "📐 交叉 - 信号矩阵", "🩺 月度体检报告"],
         index=0
     )
     
@@ -250,7 +250,26 @@ st.markdown("---")
 if page == "📋 总览 - 信号灯矩阵":
     st.header("📋 全产业信号灯总览矩阵")
     st.markdown("一眼看尽36个产业科的六维信号状态")
-    
+
+    # ===== 顶层 5 路信号灯（整合方案：信号灯 3→5 路） =====
+    overview = data_manager.get_overview_signals()
+    st.subheader("🚦 顶层信号灯（5 路）")
+    st.caption("海温 / 港口吞吐 / AIS密度 / 海洋灾害 / 企业风险指数")
+    ov_cols = st.columns(5)
+    ov_meta = [
+        ('sea_temp', '🌡️ 海温'),
+        ('port_throughput', '📦 港口吞吐'),
+        ('ais_density', '🛰️ AIS密度'),
+        ('marine_disaster', '🌊 海洋灾害'),
+        ('enterprise_risk', '🏢 企业风险'),
+    ]
+    for col, (key, title) in zip(ov_cols, ov_meta):
+        sig = overview.get(key, {'color': 'off', 'label': title, 'value': '-'})
+        with col:
+            st.markdown(f"**{title}**")
+            render_signal_light(sig, size=55)
+    st.markdown("---")
+
     if industry_tree:
         # 生成模拟信号数据
         all_families = get_all_families(industry_tree)
@@ -496,6 +515,52 @@ if page == "📐 交叉 - 信号矩阵":
                 height=500
             )
             st.plotly_chart(fig, use_container_width=True)
+
+# ========== 页面4: 月度体检报告 ==========
+if page == "🩺 月度体检报告":
+    st.header("🩺 海洋经济月度体检报告")
+    st.caption("自动生成 · C 出数据 → B 出报告 → D 归档（整合方案 Phase 4）")
+
+    overview = data_manager.get_overview_signals()
+    col1, col2, col3, col4, col5 = st.columns(5)
+    labels = [
+        ('sea_temp', '🌡️ 海温'), ('port_throughput', '📦 港口吞吐'),
+        ('ais_density', '🛰️ AIS密度'), ('marine_disaster', '🌊 海洋灾害'),
+        ('enterprise_risk', '🏢 企业风险'),
+    ]
+    cols = [col1, col2, col3, col4, col5]
+    for c, (k, t) in zip(cols, labels):
+        sig = overview.get(k, {})
+        with c:
+            st.metric(t, f"{sig.get('value', '-')}{sig.get('unit', '')}")
+
+    families = get_all_families(industry_tree) if industry_tree else []
+    report = [
+        "# 广州海洋经济月度体检报告",
+        f"生成时间：{datetime.now().strftime('%Y-%m-%d %H:%M')}",
+        "",
+        "## 一、顶层信号灯（5 路）",
+    ]
+    for k, t in labels:
+        sig = overview.get(k, {})
+        report.append(f"- {t}：{sig.get('value', '-')}{sig.get('unit', '')}（{sig.get('color', '')}）")
+    report.append("")
+    report.append("## 二、产业覆盖")
+    report.append(f"- 监测产业科总数：{len(families)}")
+    report.append("")
+    report.append("## 三、结论与建议")
+    report.append("- 整体运行平稳，建议持续盯防企业风险与海洋灾害信号，异常时联动 B 站安全预警栏目。")
+    report_text = "\n".join(report)
+
+    st.markdown("---")
+    st.subheader("📄 报告预览")
+    st.code(report_text, language="markdown")
+    st.download_button(
+        "⬇️ 下载体检报告（Markdown）",
+        report_text,
+        file_name=f"ocean_health_report_{datetime.now().strftime('%Y%m')}.md",
+        mime="text/markdown",
+    )
 
 # ========== 页脚 ==========
 st.markdown("---")
