@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-pan="c">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>广州海洋经济多维信号仪表盘 · C 质量盘</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://wangdwn.github.io/design-system/tokens.css">
+<link rel="stylesheet" href="https://wangdwn.github.io/design-system/nav.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--fg);
+}
+.os-nav__inner { max-width: 80rem; }
+
+/* Page chrome: navy primary + pan-c amber (replaces sky gradient header) */
+.page-chrome {
+  background: var(--primary);
+  color: var(--primary-fg);
+  border-bottom: 3px solid var(--pan-c);
+}
+.page-chrome__inner {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.page-chrome h1 {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--primary-fg);
+  line-height: var(--leading-tight);
+}
+.page-chrome .sub {
+  font-size: var(--text-xs);
+  color: color-mix(in srgb, var(--primary-fg) 72%, var(--pan-c));
+  margin-top: 2px;
+}
+.dash-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.dash-tab {
+  font-family: inherit;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--primary-fg) 22%, transparent);
+  background: transparent;
+  color: var(--primary-fg);
+  cursor: pointer;
+}
+.dash-tab:hover { background: color-mix(in srgb, var(--primary-fg) 12%, transparent); }
+.dash-tab.is-on {
+  background: var(--pan-c);
+  border-color: var(--pan-c);
+  color: #fff;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s;
+}
+.card:hover { box-shadow: var(--shadow); }
+
+/* Align leftover Tailwind utilities to daylight-sea tokens */
+.bg-gray-50 { background-color: var(--bg-subtle) !important; }
+.hover\:bg-gray-50:hover { background-color: var(--bg-subtle) !important; }
+.text-gray-800, .text-gray-700 { color: var(--fg) !important; }
+.text-gray-600, .text-gray-500 { color: var(--muted) !important; }
+.text-gray-400 { color: var(--faint) !important; }
+.text-blue-700, .text-blue-800, .text-blue-600 { color: var(--primary) !important; }
+.hover\:text-blue-600:hover { color: var(--primary-hover) !important; }
+.bg-blue-50 { background-color: var(--info-bg) !important; }
+.hover\:bg-blue-50:hover { background-color: var(--info-bg) !important; }
+.phylum-row { background: color-mix(in srgb, var(--pan-c) 10%, var(--card)); }
+.phylum-row td { color: var(--primary); font-weight: 700; }
+.ent-chip { background: color-mix(in srgb, var(--pan-c) 10%, var(--card)); border: 1px solid var(--border); }
+
+/* Signal lights: keep visualization logic / radial glow */
+.signal-dot {
+  width: 40px; height: 40px; border-radius: 50%; display: inline-block;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.28);
+}
+.signal-green { background: radial-gradient(circle at 30% 30%, #4ade80, #16a34a); }
+.signal-yellow { background: radial-gradient(circle at 30% 30%, #facc15, #ca8a04); }
+.signal-red { background: radial-gradient(circle at 30% 30%, #f87171, #dc2626); }
+.signal-gray { background: radial-gradient(circle at 30% 30%, #9ca3af, #6b7280); }
+.sig-label-green { color: var(--success); }
+.sig-label-yellow { color: var(--warning); }
+.sig-label-red { color: var(--danger); }
+.sig-label-gray { color: var(--faint); }
+.stat-success { color: var(--success); }
+.stat-primary { color: var(--primary); }
+.stat-danger { color: var(--danger); }
+</style>
+</head>
+<body class="min-h-screen">
+<nav class="os-nav" aria-label="海洋系列">
+  <div class="os-nav__inner">
+    <a class="os-nav__brand" href="https://wangdwn.github.io/">
+      <span class="os-nav__mark" aria-hidden="true"></span>
+      <span class="os-nav__brand-text">海洋系列</span>
+    </a>
+    <div class="os-nav__pills">
+      <a class="os-nav__pill os-nav__pill--a" href="https://wangdwn.github.io/guangzhou-marine-enterprises/" data-pan="a">A 家底</a>
+      <a class="os-nav__pill os-nav__pill--b" href="https://wangdwn.github.io/marine-monitor/" data-pan="b">B 经营</a>
+      <a class="os-nav__pill os-nav__pill--c is-current" href="https://wangdwn.github.io/guangzhou-ocean-dashboard/" data-pan="c" aria-current="page">C 质量</a>
+      <a class="os-nav__pill os-nav__pill--d" href="https://wangdwn.github.io/marine-weekly/" data-pan="d">D 底座</a>
+    </div>
+    <a class="os-nav__ds" href="https://wangdwn.github.io/design-system/">设计系统</a>
+  </div>
+</nav>
+
+<header class="page-chrome">
+  <div class="page-chrome__inner">
+    <div>
+      <h1>广州海洋经济多维信号仪表盘</h1>
+      <p class="sub">C 质量盘 · 广州市海洋发展促进中心 · 钱学森系统工程控制论</p>
+    </div>
+    <div class="dash-tabs">
+      <button type="button" onclick="showPage('overview')" id="tab-overview" class="dash-tab is-on">总览</button>
+      <button type="button" onclick="showPage('diagnosis')" id="tab-diagnosis" class="dash-tab">产业诊断</button>
+      <button type="button" onclick="showPage('matrix')" id="tab-matrix" class="dash-tab">交叉矩阵</button>
+    </div>
+  </div>
+</header>
+
+<div class="max-w-7xl mx-auto px-4 py-6">
+  <!-- ===== 总览页 ===== -->
+  <div id="page-overview">
+    <h2 class="text-xl font-bold mb-2" style="color:var(--fg)">🏛️ 全产业信号灯总览</h2>
+    <p class="text-sm mb-6" style="color:var(--muted)">纲举目张 · 四大门 × 六维信号 · 多信号交叉验证</p>
+    <div id="overview-content"></div>
+  </div>
+
+  <!-- ===== 产业诊断页 ===== -->
+  <div id="page-diagnosis" class="hidden">
+    <h2 class="text-xl font-bold mb-4" style="color:var(--fg)">🔬 产业诊断</h2>
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
+      <div class="lg:col-span-1 card">
+        <h3 class="font-semibold mb-3 text-sm" style="color:var(--muted)">🌳 产业分类树</h3>
+        <div id="tree-nav" class="text-sm space-y-1"></div>
+      </div>
+      <div class="lg:col-span-3 card">
+        <div id="family-detail">
+          <p style="color:var(--muted)">← 从左侧选择一个产业科</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 交叉矩阵页 ===== -->
+  <div id="page-matrix" class="hidden">
+    <h2 class="text-xl font-bold mb-4" style="color:var(--fg)">📐 产业 × 信号交叉矩阵</h2>
+    <div id="matrix-content"></div>
+  </div>
+</div>
+
+<script>
+const TREE = {"version": "2.0", "name": "广州海洋经济产业分类体系", "description": "纲举目张四层树状结构：四大门 → 13纲 → 36目 → 细分科", "signal_dimensions": [{"id": "fund_flow", "name": "资金流", "description": "融资事件/招投标金额/信贷数据", "unit": "万元", "sources": ["企查查", "中国政府采购网", "Wind"]}, {"id": "logistics_flow", "name": "物流/交通流", "description": "AIS船舶/港口吞吐量/物流指数", "unit": "TEU/艘", "sources": ["广州港务局", "GFW AIS", "MarineTraffic"]}, {"id": "market_entity", "name": "市场主体流", "description": "企业注册/招聘/司法案件", "unit": "家/人", "sources": ["天眼查", "企查查", "智联招聘"]}, {"id": "industry_chain", "name": "产业链流", "description": "订单/许可/药监/专利", "unit": "件", "sources": ["国家知识产权局", "药监局", "海关总署"]}, {"id": "env_risk", "name": "环境与风险流", "description": "海温/台风/赤潮/灾害预警", "unit": "°C/级", "sources": ["NOAA", "NHC", "南海预报中心"]}, {"id": "policy", "name": "政策流", "description": "扶持政策/专项资金/规划文件", "unit": "项", "sources": ["国家发改委", "广东省", "广州市"]}], "phyla": [{"id": "P01", "name": "海洋资源开发门", "code": "RESOURCES", "description": "海洋渔业、矿产、能源、生物资源开发", "icon": "🌊", "classes": [{"id": "C01", "name": "海洋渔业纲", "orders": [{"id": "O01", "name": "远洋捕捞目", "families": [{"id": "F01", "code": "DEEP-FISH-01", "name": "金枪鱼远洋捕捞", "description": "公海及远洋金枪鱼捕捞作业", "enterprises": [{"name": "广州远洋渔业", "type": "国企", "scale": "大型"}, {"name": "广东顺昌渔业", "type": "民企", "scale": "中型"}], "signals": ["logistics_flow", "market_entity", "env_risk"]}, {"id": "F02", "code": "DEEP-FISH-02", "name": "远洋鱿钓", "description": "北太平洋、东南太平洋鱿钓作业", "enterprises": [{"name": "广东大洋渔业", "type": "民企", "scale": "中型"}], "signals": ["logistics_flow", "env_risk", "policy"]}]}, {"id": "O02", "name": "海水养殖目", "families": [{"id": "F03", "code": "AQUA-01", "name": "对虾工厂化养殖", "description": "南美白对虾等工厂化高密度养殖", "enterprises": [{"name": "广州冠海科技", "type": "民企", "scale": "中型"}, {"name": "南沙水产养殖", "type": "国企", "scale": "大型"}], "signals": ["fund_flow", "market_entity", "env_risk", "industry_chain"]}, {"id": "F04", "code": "AQUA-02", "name": "贝类底播养殖", "description": "牡蛎、扇贝等贝类底播增殖", "enterprises": [{"name": "广东海大集团", "type": "上市", "scale": "大型"}], "signals": ["market_entity", "env_risk"]}]}, {"id": "O03", "name": "海洋牧场目", "families": [{"id": "F05", "code": "RANCH-01", "name": "人工鱼礁生态牧场", "description": "投礁型海洋牧场建设与运营", "enterprises": [{"name": "广州南沙海洋牧场", "type": "国企", "scale": "大型"}, {"name": "广东恒兴集团", "type": "民企", "scale": "大型"}], "signals": ["fund_flow", "policy", "logistics_flow", "env_risk"]}]}, {"id": "O04", "name": "水产品加工目", "families": [{"id": "F06", "code": "PROCESS-01", "name": "冷冻调理食品加工", "description": "冷冻鱼片、调理水产食品深加工", "enterprises": [{"name": "广州水产集团", "type": "国企", "scale": "大型"}, {"name": "广东国联水产", "type": "上市", "scale": "大型"}], "signals": ["fund_flow", "industry_chain", "market_entity"]}]}]}, {"id": "C02", "name": "海洋矿产纲", "orders": [{"id": "O05", "name": "海洋油气目", "families": [{"id": "F07", "code": "OIL-01", "name": "海上油气勘探开发", "description": "南海油气田勘探、钻井与生产", "enterprises": [{"name": "中海油深圳分公司", "type": "央企", "scale": "特大型"}, {"name": "广州海洋地质调查局", "type": "事业单位", "scale": "大型"}], "signals": ["fund_flow", "policy", "logistics_flow", "env_risk"]}]}, {"id": "O06", "name": "深海采矿目", "families": [{"id": "F08", "code": "MINING-01", "name": "多金属结核/结壳勘探", "description": "深海矿产资源勘探与试采技术", "enterprises": [{"name": "中国五矿集团", "type": "央企", "scale": "特大型"}, {"name": "长沙矿冶研究院", "type": "科研院所", "scale": "大型"}], "signals": ["policy", "fund_flow", "industry_chain"]}]}, {"id": "O07", "name": "海砂开采目", "families": [{"id": "F09", "code": "SAND-01", "name": "建筑用海砂开采", "description": "合法海砂开采与淡化处理", "enterprises": [{"name": "广东广业集团", "type": "国企", "scale": "大型"}], "signals": ["policy", "logistics_flow", "env_risk"]}]}]}, {"id": "C03", "name": "海洋能源纲", "orders": [{"id": "O08", "name": "海上风电目", "families": [{"id": "F10", "code": "WIND-01", "name": "近海风电开发", "description": "固定式海上风电场建设运营", "enterprises": [{"name": "中广核新能源", "type": "上市", "scale": "特大型"}, {"name": "三峡广东", "type": "央企", "scale": "特大型"}, {"name": "大唐广东", "type": "央企", "scale": "特大型"}], "signals": ["fund_flow", "logistics_flow", "policy", "env_risk"]}, {"id": "F11", "code": "WIND-02", "name": "漂浮式海上风电", "description": "深远海漂浮式风电技术研发", "enterprises": [{"name": "明阳智能", "type": "上市", "scale": "大型"}, {"name": "中集来福士", "type": "央企", "scale": "大型"}], "signals": ["fund_flow", "industry_chain", "policy"]}]}, {"id": "O09", "name": "海洋能利用目", "families": [{"id": "F12", "code": "ENERGY-01", "name": "潮汐波浪能发电", "description": "潮汐能、波浪能发电装置研发", "enterprises": [{"name": "中科院广州能源所", "type": "科研院所", "scale": "中型"}], "signals": ["policy", "fund_flow", "industry_chain"]}, {"id": "F13", "code": "ENERGY-02", "name": "海洋氢能", "description": "海上风电制氢、海水直接电解制氢", "enterprises": [{"name": "国家电投广东", "type": "央企", "scale": "大型"}], "signals": ["fund_flow", "policy", "industry_chain"]}]}]}, {"id": "C04", "name": "海洋生物资源纲", "orders": [{"id": "O10", "name": "海洋生物制药目", "families": [{"id": "F14", "code": "BIO-01", "name": "海洋药物研发", "description": "海洋来源创新药物、保健品开发", "enterprises": [{"name": "中山大学药学院", "type": "高校", "scale": "大型"}, {"name": "广东蓝宝制药", "type": "民企", "scale": "中型"}], "signals": ["fund_flow", "industry_chain", "market_entity", "policy"]}]}]}]}, {"id": "P02", "name": "海洋装备制造门", "code": "EQUIPMENT", "description": "船舶、海工装备、探测监测仪器制造", "icon": "⚙️", "classes": [{"id": "C05", "name": "船舶制造纲", "orders": [{"id": "O11", "name": "商船制造目", "families": [{"id": "F15", "code": "SHIP-01", "name": "集装箱船建造", "description": "大型集装箱船舶设计与建造", "enterprises": [{"name": "广船国际", "type": "央企", "scale": "特大型"}, {"name": "广州文冲船厂", "type": "央企", "scale": "大型"}], "signals": ["fund_flow", "logistics_flow", "market_entity", "policy"]}, {"id": "F16", "code": "SHIP-02", "name": "LNG船/特种船舶", "description": "液化气船、豪华邮轮等高附加值船舶", "enterprises": [{"name": "广船国际南沙", "type": "央企", "scale": "特大型"}], "signals": ["fund_flow", "industry_chain", "logistics_flow"]}]}, {"id": "O12", "name": "船舶修理目", "families": [{"id": "F17", "code": "REPAIR-01", "name": "船舶改装维修", "description": "船舶修理、改装、拆解服务", "enterprises": [{"name": "广州中船龙穴", "type": "央企", "scale": "大型"}, {"name": "广州黄埔船厂", "type": "央企", "scale": "大型"}], "signals": ["logistics_flow", "market_entity"]}]}]}, {"id": "C06", "name": "海工装备纲", "orders": [{"id": "O13", "name": "钻井平台目", "families": [{"id": "F18", "code": "RIG-01", "name": "自升式钻井平台", "description": "自升式、半潜式钻井平台建造", "enterprises": [{"name": "广州中船黄埔", "type": "央企", "scale": "特大型"}], "signals": ["fund_flow", "logistics_flow", "policy"]}]}, {"id": "O14", "name": "水下机器人目", "families": [{"id": "F19", "code": "ROV-01", "name": "ROV/AUV研发制造", "description": "遥控潜水器、自主水下航行器", "enterprises": [{"name": "广州智能装备研究院", "type": "科研院所", "scale": "中型"}, {"name": "深圳海兰信", "type": "上市", "scale": "中型"}], "signals": ["fund_flow", "industry_chain", "market_entity"]}]}]}, {"id": "C07", "name": "海洋探测监测仪器纲", "orders": [{"id": "O15", "name": "海洋传感器目", "families": [{"id": "F20", "code": "SENSOR-01", "name": "CTD/ADCP传感器", "description": "温盐深、海流剖面测量设备", "enterprises": [{"name": "中科院南海所", "type": "科研院所", "scale": "大型"}, {"name": "广州中海达", "type": "上市", "scale": "大型"}], "signals": ["fund_flow", "industry_chain", "market_entity"]}]}, {"id": "O16", "name": "海洋遥感目", "families": [{"id": "F21", "code": "REMOTE-01", "name": "海洋卫星地面应用", "description": "海洋卫星数据处理与应用服务", "enterprises": [{"name": "国家卫星海洋应用中心", "type": "事业单位", "scale": "大型"}], "signals": ["policy", "fund_flow", "industry_chain"]}]}]}]}, {"id": "P03", "name": "海洋服务保障门", "code": "SERVICES", "description": "交通运输、工程服务、检验检测、旅游文化", "icon": "🛳️", "classes": [{"id": "C08", "name": "海洋交通运输纲", "orders": [{"id": "O17", "name": "港口运营目", "families": [{"id": "F22", "code": "PORT-01", "name": "集装箱码头运营", "description": "集装箱装卸、堆存、中转服务", "enterprises": [{"name": "广州港集团", "type": "上市", "scale": "特大型"}, {"name": "南沙国际物流中心", "type": "国企", "scale": "大型"}], "signals": ["logistics_flow", "fund_flow", "market_entity", "policy"]}]}, {"id": "O18", "name": "航运服务目", "families": [{"id": "F23", "code": "SHIPPING-01", "name": "国际航运", "description": "远洋集装箱运输、散货运输", "enterprises": [{"name": "中远海运", "type": "央企", "scale": "特大型"}, {"name": "广东安通控股", "type": "民企", "scale": "大型"}], "signals": ["logistics_flow", "market_entity", "fund_flow"]}]}]}, {"id": "C09", "name": "海洋工程服务纲", "orders": [{"id": "O19", "name": "海洋工程目", "families": [{"id": "F24", "code": "ENG-01", "name": "海上安装工程", "description": "海上风电基础安装、管道铺设", "enterprises": [{"name": "广州海洋工程", "type": "国企", "scale": "大型"}, {"name": "中交广州航道局", "type": "央企", "scale": "特大型"}], "signals": ["logistics_flow", "fund_flow", "env_risk"]}]}, {"id": "O20", "name": "检验检测目", "families": [{"id": "F25", "code": "INSPECT-01", "name": "船舶检验", "description": "船舶建造检验、入级检验", "enterprises": [{"name": "中国船级社广州分社", "type": "事业单位", "scale": "大型"}, {"name": "广州船舶检验局", "type": "事业单位", "scale": "中型"}], "signals": ["market_entity", "industry_chain", "policy"]}]}]}, {"id": "C10", "name": "防灾减灾纲", "orders": [{"id": "O21", "name": "海洋观测预警目", "families": [{"id": "F26", "code": "DISASTER-01", "name": "风暴潮/海啸预警", "description": "海洋灾害监测预警服务", "enterprises": [{"name": "国家海洋局南海预报中心", "type": "事业单位", "scale": "大型"}, {"name": "广东省海洋预报台", "type": "事业单位", "scale": "中型"}], "signals": ["env_risk", "policy", "market_entity"]}]}]}, {"id": "C11", "name": "海洋旅游文化纲", "orders": [{"id": "O22", "name": "滨海旅游目", "families": [{"id": "F27", "code": "TOURISM-01", "name": "邮轮旅游", "description": "邮轮母港运营、邮轮旅游服务", "enterprises": [{"name": "南沙国际邮轮母港", "type": "国企", "scale": "大型"}, {"name": "云顶香港", "type": "上市", "scale": "大型"}], "signals": ["logistics_flow", "market_entity", "fund_flow"]}, {"id": "F28", "code": "TOURISM-02", "name": "海岛旅游", "description": "海岛生态观光、海上运动", "enterprises": [{"name": "南沙湿地旅游", "type": "国企", "scale": "中型"}], "signals": ["logistics_flow", "env_risk", "policy"]}]}]}]}, {"id": "P04", "name": "海洋科创与金融门", "code": "INNOVATION", "description": "科技研发、金融投资、数字经济", "icon": "🔬", "classes": [{"id": "C12", "name": "海洋科技研发纲", "orders": [{"id": "O23", "name": "科研机构目", "families": [{"id": "F29", "code": "RD-01", "name": "国家实验室", "description": "广州南沙实验室等国家级平台", "enterprises": [{"name": "广州海洋科学与技术广东省实验室", "type": "事业单位", "scale": "大型"}, {"name": "中科院南海海洋研究所", "type": "科研院所", "scale": "大型"}, {"name": "中山大学海洋学院", "type": "高校", "scale": "大型"}], "signals": ["fund_flow", "policy", "industry_chain"]}, {"id": "F30", "code": "RD-02", "name": "地质调查", "description": "海洋地质、矿产资源调查", "enterprises": [{"name": "广州海洋地质调查局", "type": "事业单位", "scale": "大型"}], "signals": ["fund_flow", "policy", "industry_chain", "env_risk"]}]}]}, {"id": "C13", "name": "海洋金融纲", "orders": [{"id": "O24", "name": "海洋金融目", "families": [{"id": "F31", "code": "FINANCE-01", "name": "海洋产业基金", "description": "海洋产业股权投资、VC/PE", "enterprises": [{"name": "广东海洋产业基金", "type": "国企", "scale": "大型"}, {"name": "广州科技金融创新投", "type": "国企", "scale": "中型"}], "signals": ["fund_flow", "market_entity", "policy"]}, {"id": "F32", "code": "FINANCE-02", "name": "海洋保险", "description": "船舶保险、货运险、海工险", "enterprises": [{"name": "人保财险广东", "type": "国企", "scale": "大型"}, {"name": "平安产险", "type": "上市", "scale": "特大型"}], "signals": ["fund_flow", "market_entity", "logistics_flow"]}, {"id": "F33", "code": "FINANCE-03", "name": "海洋碳汇", "description": "蓝碳交易、碳汇计量与监测", "enterprises": [{"name": "广东碳排放权交易所", "type": "国企", "scale": "中型"}, {"name": "中国科学院华南植物园", "type": "科研院所", "scale": "中型"}], "signals": ["fund_flow", "policy", "env_risk"]}]}]}, {"id": "C14", "name": "海洋数字经济纲", "orders": [{"id": "O25", "name": "智慧海洋目", "families": [{"id": "F34", "code": "DIGITAL-01", "name": "海洋大数据平台", "description": "海洋数据采集、存储、分析服务", "enterprises": [{"name": "广州智慧海洋科技", "type": "民企", "scale": "中型"}, {"name": "广东海洋大学", "type": "高校", "scale": "中型"}], "signals": ["fund_flow", "industry_chain", "market_entity", "policy"]}]}, {"id": "O26", "name": "AI+海洋目", "families": [{"id": "F35", "code": "AI-01", "name": "海洋AI应用", "description": "智能养殖、智能航运、灾害预测AI", "enterprises": [{"name": "云从科技", "type": "上市", "scale": "大型"}, {"name": "广电运通", "type": "上市", "scale": "大型"}], "signals": ["fund_flow", "industry_chain", "policy"]}]}]}]}]};
+
+// 颜色生成
+function signalHtml(color, label, val) {
+  const cls = `signal-${color||'gray'}`;
+  const tc = color==='green'?'sig-label-green':color==='yellow'?'sig-label-yellow':color==='red'?'sig-label-red':'sig-label-gray';
+  return `<div class="flex flex-col items-center"><div class="signal-dot ${cls}"></div><div class="text-xs mt-1 ${tc} font-medium">${label||'无数据'}</div>${val!==undefined?`<div class="text-xs" style="color:var(--faint)">${val}</div>`:''}</div>`;
+}
+
+// 模拟信号（演示模式）
+function mockSignal() {
+  const colors = ['green','green','green','green','yellow','yellow','red'];
+  return colors[Math.floor(Math.random() * (Math.random()>0.7?7:4))];
+}
+function mockScore() { return Math.floor(50 + Math.random()*45); }
+
+// 获取所有科
+function allFamilies() {
+  const fs = [];
+  for (const p of TREE.phyla) {
+    for (const c of p.classes||[]) {
+      for (const o of c.orders||[]) {
+        for (const f of o.families||[]) {
+          fs.push({...f, phylumName: p.name, phylumIcon: p.icon||'', className: c.name, orderName: o.name});
+        }
+      }
+    }
+  }
+  return fs;
+}
+
+const DIMS = ['fund_flow','logistics_flow','market_entity','industry_chain','env_risk','policy'];
+const DIM_NAMES = ['💰 资金流','📦 物流流','🏢 主体流','🔗 产业链','🌡️ 环境流','📜 政策流'];
+
+// ------ 总览页 ------
+function renderOverview() {
+  const el = document.getElementById('overview-content');
+  const families = allFamilies();
+  let html = '';
+  for (const p of TREE.phyla) {
+    html += `<div class="card mb-4"><h3 class="font-bold text-lg mb-2">${p.icon||''} ${p.name}</h3><p class="text-xs text-gray-500 mb-4">${p.description||''}</p>`;
+    html += `<div class="overflow-x-auto"><table class="w-full text-xs"><thead><tr class="border-b bg-gray-50"><th class="p-2 text-left w-48">产业科</th>`;
+    for (const dn of DIM_NAMES) html += `<th class="p-2 text-center">${dn}</th>`;
+    html += `</tr></thead><tbody>`;
+
+    for (const c of p.classes||[]) {
+      for (const o of c.orders||[]) {
+        for (const f of o.families||[]) {
+          html += `<tr class="border-b hover:bg-gray-50"><td class="p-2 font-medium">${f.code}<br><span class="text-gray-600">${f.name}</span></td>`;
+          for (const d of DIMS) {
+            const sig = mockSignal();
+            html += `<td class="p-2 text-center"><div class="signal-dot signal-${sig}" style="width:24px;height:24px;margin:0 auto"></div></td>`;
+          }
+          html += `</tr>`;
+        }
+      }
+    }
+    html += `</tbody></table></div></div>`;
+  }
+  el.innerHTML = html;
+}
+
+// ------ 产业诊断页 ------
+function buildTreeNav() {
+  const el = document.getElementById('tree-nav');
+  let html = '';
+  let idx = 0;
+  for (const p of TREE.phyla) {
+    html += `<div class="font-semibold mt-2 first:mt-0" style="color:var(--primary)">${p.icon||''} ${p.name}</div>`;
+    for (const c of p.classes||[]) {
+      for (const o of c.orders||[]) {
+        for (const f of o.families||[]) {
+          const code = f.code;
+          html += `<div class="pl-4 py-1 cursor-pointer rounded" style="color:var(--fg-secondary)" onmouseover="this.style.color='var(--pan-c)';this.style.background='color-mix(in srgb, var(--pan-c) 10%, var(--card))'" onmouseout="this.style.color='var(--fg-secondary)';this.style.background='transparent'" onclick="showFamily('${code}')">${code} ${f.name}</div>`;
+          idx++;
+        }
+      }
+    }
+  }
+  el.innerHTML = html;
+}
+
+function showFamily(code) {
+  const families = allFamilies();
+  const f = families.find(x=>x.code===code);
+  if (!f) return;
+  const el = document.getElementById('family-detail');
+  let signals = '';
+  for (const d of DIMS) {
+    const sig = mockSignal();
+    const sval = mockScore();
+    signals += `<div class="text-center p-3 rounded-lg" style="background:var(--bg-subtle)"><div class="text-xs" style="color:var(--muted)">${DIM_NAMES[DIMS.indexOf(d)]}</div>${signalHtml(sig, sig==='green'?'优良':sig==='yellow'?'一般':'预警', `${sval}`)}</div>`;
+  }
+  el.innerHTML = `
+    <h3 class="text-lg font-bold mb-1" style="color:var(--fg)">${f.name}</h3>
+    <p class="text-xs mb-1" style="color:var(--muted)">${f.code} · ${f.phylumName} > ${f.className} > ${f.orderName}</p>
+    <p class="text-sm mb-4" style="color:var(--fg-secondary)">${f.description||''}</p>
+    <div class="grid grid-cols-6 gap-3 mb-6">${signals}</div>
+    <h4 class="font-semibold mb-2">🏢 代表性企业</h4>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-2">${(f.enterprises||[]).map(e=>'<div class="p-2 ent-chip rounded text-sm"><div class="font-medium">'+e.name+'</div><div class="text-xs" style="color:var(--muted)">'+e.type+'</div></div>').join('')||'<div class="text-sm" style="color:var(--faint)">暂无企业数据</div>'}</div>
+  `;
+}
+
+// ------ 交叉矩阵页 ------
+function renderMatrix() {
+  const el = document.getElementById('matrix-content');
+  const families = allFamilies();
+  let html = `<div class="card"><h3 class="font-semibold mb-4">🔀 综合交叉验证热力图</h3><div class="overflow-x-auto"><table class="w-full text-xs"><thead><tr class="border-b bg-gray-50"><th class="p-2 text-left min-w-[160px]">产业科</th>`;
+  for (const dn of DIM_NAMES) html += `<th class="p-2 text-center">${dn}</th>`;
+  html += `</tr></thead><tbody>`;
+
+  for (const p of TREE.phyla) {
+    let count = 0;
+    let rowHtml = '';
+    for (const c of p.classes||[]) {
+      for (const o of c.orders||[]) {
+        for (const f of o.families||[]) {
+          count++;
+          const sigs = DIMS.map(() => mockScore());
+          const avg = Math.round(sigs.reduce((a,b)=>a+b,0)/sigs.length);
+          const sigColor = avg>=70?'green':avg>=50?'yellow':'red';
+          rowHtml += `<tr class="border-b hover:bg-gray-50"><td class="p-2 font-medium"><div>${f.code}</div><div class="text-gray-500">${f.name}</div></td>`;
+          rowHtml += sigs.map(s=>{
+            const sc = s>=70?'bg-green-400':s>=50?'bg-yellow-400':'bg-red-400';
+            const tc = s>=70?'text-green-800':s>=50?'text-yellow-800':'text-red-800';
+            return `<td class="p-2 text-center"><span class="inline-block w-8 h-8 rounded-lg ${sc} ${tc} flex items-center justify-center text-xs font-bold">${s}</span></td>`;
+          }).join('');
+          rowHtml += `<td class="p-2 text-center"><div class="signal-dot signal-${sigColor}" style="width:28px;height:28px;margin:0 auto"></div></td>`;
+          rowHtml += `</tr>`;
+        }
+      }
+    }
+    if (count > 0) {
+      html += `<tr class="phylum-row"><td class="p-2 font-bold" colspan="8">${p.icon||''} ${p.name}（${count}个产业科）</td></tr>`;
+      html += rowHtml;
+    }
+  }
+  html += '</tbody></table></div></div>';
+
+  // 统计卡片
+  const allScores = DIMS.map(()=>mockScore());
+  const avg = Math.round(allScores.reduce((a,b)=>a+b,0)/allScores.length);
+  html += `<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+    <div class="card text-center"><div class="text-2xl font-bold stat-success">${avg}%</div><div class="text-xs" style="color:var(--muted)">综合活跃度</div></div>
+    <div class="card text-center"><div class="text-2xl font-bold stat-primary">${families.length}</div><div class="text-xs" style="color:var(--muted)">产业科总数</div></div>
+    <div class="card text-center"><div class="text-2xl font-bold stat-success">${Math.round(families.length*0.65)}</div><div class="text-xs" style="color:var(--muted)">绿灯产业</div></div>
+    <div class="card text-center"><div class="text-2xl font-bold stat-danger">${Math.round(families.length*0.05)}</div><div class="text-xs" style="color:var(--muted)">红灯产业</div></div>
+  </div>`;
+  el.innerHTML = html;
+}
+
+// ------ 页面切换 ------
+function showPage(name) {
+  ['overview','diagnosis','matrix'].forEach(p => {
+    document.getElementById('page-'+p).classList.add('hidden');
+    const btn = document.getElementById('tab-'+p);
+    if (btn) btn.classList.remove('is-on');
+  });
+  document.getElementById('page-'+name).classList.remove('hidden');
+  const btn = document.getElementById('tab-'+name);
+  if (btn) btn.classList.add('is-on');
+}
+
+// ------ 初始化 ------
+renderOverview();
+buildTreeNav();
+renderMatrix();
+if (allFamilies().length > 0) showFamily(allFamilies()[0].code);
+</script>
+</body>
+</html>
