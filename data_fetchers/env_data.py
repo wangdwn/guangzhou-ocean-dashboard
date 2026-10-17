@@ -16,7 +16,7 @@ class EnvDataFetcher(BaseDataFetcher):
     def __init__(self, demo_mode=True):
         super().__init__(demo_mode=demo_mode)
         self.source_name = "NOAA ERDDAP"
-        self.base_url = "https://www.ncei.noaa.gov/erddap/griddap/ncdcOisst2Agg.json"
+        self.base_url = "https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21NrtAgg.json"
     
     def fetch(self, family_code=None, lat=22.5, lon=113.5, days=30):
         """
