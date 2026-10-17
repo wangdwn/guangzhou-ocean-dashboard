@@ -18,6 +18,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./
-          exclude_assets: '.github,data_fetchers,*.py,requirements.txt,zeabur.json,README.md,industry_tree.json'
+          exclude_assets: '.github,data_fetchers,*.py,requirements.txt,zeabur.json,README.md'
           force_orphan: true
           commit_message: 'deploy: C 质量盘 (Ocean Series design system)'
