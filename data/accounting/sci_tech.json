@@ -1,0 +1,26 @@
+{
+  "schema": "accounting_sci_tech/1.0",
+  "dimension_id": "sci_tech",
+  "generated_at": "2026-10-25T09:46:10+0800",
+  "hyt0362": "I 海洋科学技术",
+  "items": [
+    {
+      "id": "gz_marine_rd_spend",
+      "geo": "广州市",
+      "label": "海洋 R&D 经费",
+      "value": null,
+      "status": "pending",
+      "pending_tag": "〔待核〕",
+      "source": "科技统计／知识产权公开数据"
+    },
+    {
+      "id": "gz_marine_patents",
+      "geo": "广州市",
+      "label": "海洋领域专利授权（可机读子集）",
+      "value": null,
+      "status": "pending",
+      "pending_tag": "〔待核〕",
+      "note": "产业链流已有专利关键词匹配；核算层待分产业正式统计"
+    }
+  ]
+}

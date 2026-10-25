@@ -1,155 +1,83 @@
-# 🚢 广州海洋经济信号灯仪表板
+# 广州海洋经济信号灯仪表板（双轨 v3）
 
-**广州海洋发展促进中心 | 胜哥项目**
+**广州海洋发展促进中心 | C 质量盘**
 
-基于钱学森系统工程控制论思想的多信号交叉验证仪表板——像看楼房空置率，有人看开灯、有人看水表、有人看电表，叠在一起就八九不离十。
+双轨融合 **HY/T 0362-2023《海洋经济运行监测指标体系》**：
+
+- **信号流层（高频）**：六流 `signal_dimensions`（资金／物流／市场主体／产业链／环境风险／政策）
+- **核算基准层（低频权威）**：`accounting_dimensions` 五维（总量／就业／航运价格／科技／生产经营）
+
+依据文档：[`docs/HYT0362-dual-track-2026-10-21.md`](docs/HYT0362-dual-track-2026-10-21.md)
 
 ## 当前数据口径（静态 Pages）
 
-- **不是随机演示灯**：`index.html` 读取 `data/signals_bundle.json`。
-- **有迹/无迹**：资金←专项资金库；政策←政策库；产业链←招投标；物流←资源点+公告；主体←企业名录 `sector`；环境← NOAA OISST 海温（全区共用格点）。
-- **KPI 条**：上市/高新/专精特新/四上/在库企业等来自结构判断 JSON（广海汇名录可追溯字段）。
-- **仍未接入（保持灰灯，不编造）**：港口吞吐量实时同比、AIS 密度、灾害预警分色、景气综合分。
-- 重建证据包（需本机有兄弟仓库克隆）：
+- `index.html` 读取 `industry_tree.json`（**v3.0**）+ `data/signals_bundle.json`
+- 六维格子 = 库内证据有／无（或海温实测），**不是**景气红绿灯
+- 核算条：有公开数亮灯（如 SCFI／CCFI／省海洋 GDP）；市数〔待核〕灰灯，**禁止编造**；**省数不作市数**
+- KPI：结构判断 JSON + 企业名录；SCFI 作为航运旁证 KPI
+
+## 采集与重建
 
 ```bash
+# 1) 航运价格指数（SCFI/CCFI，能拿到则 BDI）
+python3 scripts/collect_shipping_prices.py
+# → data/accounting/shipping_price_index.json
+
+# 2) 重建证据包（需本机有兄弟仓库克隆：marine-monitor / enterprises / bidding 等）
 python3 scripts/build_signals_bundle.py
+# → data/signals_bundle.json
 ```
 
-
----
+核算骨架（低频）：`data/accounting/{gdp_total,employment,sci_tech,production_finance}.json`
 
 ## 核心功能
 
-### 🚦 信号灯系统
-- **海洋环境** (绿/黄/红)：海温数据 → 自然条件基础
-- **港口物流** (绿/黄/红)：吞吐量 → 实体经济晴雨表
-- **航运交通** (绿/黄/红)：AIS密度 → 实时物流脉搏
-- **综合判断** (绿/黄/红)：加权融合 → 最终信号
+### 信号灯（六流）
+产业科 × 六维证据格；海温 NOAA OISST 全区共用。
 
-### 📊 多数据源
-1. **NOAA ERDDAP** - 海表温度 (22.5°N, 113.5°E)
-2. **广州港公开数据** - 集装箱/货物吞吐量
-3. **AIS船舶密度** - Global Fishing Watch / MarineTraffic
+### 核算基准层入口
+总览页核算条 + 产业诊断页已挂维芯片；无数据灰灯〔待核〕。
+
+### 多数据源
+1. NOAA ERDDAP 海表温度（22.5°N, 113.5°E）
+2. 上海航运交易所公开转载（SCFI／CCFI）+ Investing（BDI，能拿到才写）
+3. 经营盘 funding／policies／map；招投标 notices；企业名录 sector
+4. 广东海洋 GDP 年报公开报道（仅省景气背景）
 
 ---
 
 ## 快速启动
 
-### 1. 安装依赖
 ```bash
-cd /Users/macos13/WorkBuddy/海洋经济仪表板
 pip install -r requirements.txt
+streamlit run app.py   # 可选；静态 Pages 以 index.html 为准
+python3 scheduler.py   # 可选定时
 ```
 
-### 2. 启动仪表板
-```bash
-streamlit run app.py
-```
-浏览器自动打开 http://localhost:8501
-
-### 3. 启动定时采集 (后台)
-```bash
-python scheduler.py
-# 或后台运行
-nohup python scheduler.py > data_collection.log 2>&1 &
-```
-
----
+Pages：https://wangdwn.github.io/guangzhou-ocean-dashboard/
 
 ## 文件结构
 
 ```
-海洋经济仪表板/
-├── app.py              # Streamlit主程序 (仪表板)
-├── data_fetcher.py     # 数据采集模块
-├── scheduler.py        # 定时采集任务
-├── requirements.txt    # Python依赖
-├── data/              # 数据缓存目录
-│   └── latest.json    # 最新采集数据
-└── README.md          # 本文件
+guangzhou-ocean-dashboard/
+├── index.html              # 静态质量盘（双轨 UI）
+├── industry_tree.json      # v3.0 双轨产业树
+├── app.py / data_fetcher.py / scheduler.py
+├── data_fetchers/          # 含 shipping_price.py
+├── scripts/
+│   ├── collect_shipping_prices.py
+│   └── build_signals_bundle.py
+├── data/
+│   ├── signals_bundle.json
+│   └── accounting/         # 核算基准层
+├── docs/HYT0362-dual-track-2026-10-21.md
+└── README.md
 ```
 
----
+## 纪律
 
-## 信号灯逻辑
+- 不编造 KPI／海洋 GDP 终值／就业人数
+- 自动采集失败 → 〔待核〕+ log
+- 省数／全球航运指数不作广州市数
 
-### 单信号判定
-| 指标 | 绿灯 | 黄灯 | 红灯 |
-|------|------|------|------|
-| 海温 | 22-29°C | 20-22°C或29-31°C | <20°C或>31°C |
-| 港口同比 | ≥5% | 0%-5% | <0% |
-| AIS密度 | ≥180艘 | 120-180艘 | <120艘 |
-
-### 综合信号
-- **🟢 绿 (景气)**：全部绿灯或多绿少黄
-- **🟡 黄 (平稳)**：1个红灯 或 2个黄灯
-- **🔴 红 (预警)**：2个及以上红灯
-
----
-
-## 数据源配置
-
-### NOAA ERDDAP (已接入)
-- 数据集: NCEI OISST v2
-- 坐标: 22.5°N, 113.5°E (广州海域)
-- URL: https://www.ncei.noaa.gov/erddap/griddap/ncdcOisst2Agg
-
-### 广州港数据 (演示模式)
-- 来源: 广州市港务局/统计局
-- 实际部署: 需接入官方API或爬虫
-
-### AIS密度 (演示模式)
-- 需配置: Global Fishing Watch API Key
-- 或: MarineTraffic API Key
-- 参考: https://globalfishingwatch.org/api/
-
----
-
-## 部署建议
-
-### 方式1: 本地开发
-```bash
-streamlit run app.py
-```
-
-### 方式2: 服务器部署
-```bash
-# 使用screen后台运行
-screen -S ocean-dashboard
-streamlit run app.py --server.port 8501 --server.address 0.0.0.0
-```
-
-### 方式3: 生产环境
-- 配置nginx反向代理
-- 配置HTTPS
-- 使用systemd管理进程
-
----
-
-## 待扩展数据源
-
-- [ ] GFW API - 船舶AIS热力图
-- [ ] 广州海事法院 - 案件数量
-- [ ] 招投标平台 - 海洋工程项目
-- [ ] 南海环境数据 - 叶绿素/盐度
-- [ ] 海关数据 - 外贸进出口
-
----
-
-## 技术栈
-
-- **前端**: Streamlit + Plotly
-- **后端**: Python 3.9+
-- **数据源**: NOAA ERDDAP, 公开API
-- **定时任务**: schedule库
-
----
-
-## 许可证
-
-内部使用 | 广州海洋发展促进中心
-
----
-
-**最后更新**: 2026-10
+**最后更新**: 2026-10-25（Asia/Shanghai）

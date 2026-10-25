@@ -123,6 +123,15 @@ def get_data_manager():
 data_manager = get_data_manager()
 industry_tree = load_industry_tree()
 
+# 双轨提示（HY/T 0362 核算基准层入口，无市数灰灯／〔待核〕）
+if industry_tree and industry_tree.get("version", "").startswith("3"):
+    _acc = industry_tree.get("accounting_dimensions") or []
+    _acc_names = "／".join(a.get("name", a.get("id", "")) for a in _acc[:5])
+    st.caption(
+        f"产业树 v{industry_tree.get('version')} 双轨：六流信号 + 核算基准（{_acc_names or '五维'}）。"
+        "静态 Pages 以 index.html + data/accounting/ 为准；无公开市数标〔待核〕，不编造。"
+    )
+
 # ========== 侧边栏：产业分类导航 ==========
 with st.sidebar:
     st.title("🧬 产业分类导航")

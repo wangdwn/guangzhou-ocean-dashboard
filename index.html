@@ -128,7 +128,7 @@ body {
   <div class="page-chrome__inner">
     <div>
       <h1>广州海洋经济多维信号仪表盘</h1>
-      <p class="sub">C 质量盘 · 广州市海洋发展促进中心 · 钱学森系统工程控制论</p>
+      <p class="sub">C 质量盘 · 双轨（六流信号 + HY/T 0362 核算）· 广州市海洋发展促进中心</p>
       <p class="sub" id="data-badge" style="margin-top:8px;color:#065f46;background:#ecfdf5;display:inline-block;padding:6px 12px;border-radius:999px;font-size:12px;">加载库内证据中…</p>
     </div>
     <div class="dash-tabs">
@@ -143,8 +143,9 @@ body {
   <!-- ===== 总览页 ===== -->
   <div id="page-overview">
     <h2 class="text-xl font-bold mb-2" style="color:var(--fg)">🏛️ 全产业信号灯总览</h2>
-    <p class="text-sm mb-4" style="color:var(--muted)">纲举目张 · 四大门 × 六维 · 格子=库内可追溯证据（有迹/无迹），不是景气红绿灯</p>
+    <p class="text-sm mb-4" style="color:var(--muted)">纲举目张 · 四大门 × 六维信号流 · 格子=库内可追溯证据（有迹/无迹），不是景气红绿灯；下方为核算基准层（无市数灰灯〔待核〕）</p>
     <div id="kpi-strip" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 mb-4"></div>
+    <div id="accounting-strip" class="grid grid-cols-1 md:grid-cols-5 gap-3 mb-4"></div>
     <div id="sst-card" class="card mb-6" style="display:none"></div>
     <div id="overview-content"></div>
     <p class="text-xs mt-4" style="color:var(--muted)" id="still-demo-note"></p>
@@ -235,6 +236,34 @@ function renderKpis() {
   }).join('');
 }
 
+function renderAccounting() {
+  const el = document.getElementById('accounting-strip');
+  if (!el) return;
+  const rows = (BUNDLE && BUNDLE.accounting) || [];
+  const names = {gdp_total:'总量核算', employment:'涉海就业', price_index:'航运价格', sci_tech:'海洋科技', production_finance:'生产经营'};
+  if (!rows.length) {
+    const dims = (TREE && TREE.accounting_dimensions) || [];
+    el.innerHTML = dims.map(d => `<div class="card py-3 px-2"><div class="flex items-center gap-2"><div class="signal-dot signal-gray" style="width:18px;height:18px"></div><div><div class="text-sm font-semibold">${d.name||d.id}</div><div class="text-[10px]" style="color:var(--faint)">〔待核〕· HY/T 0362</div></div></div></div>`).join('');
+    return;
+  }
+  el.innerHTML = rows.map(r => {
+    const title = r.name || names[r.id] || r.id;
+    let body = '';
+    let color = 'gray';
+    if (r.id === 'price_index' && r.indices && r.indices.length) {
+      color = 'green';
+      body = r.indices.map(i => `${i.id} ${i.value}${i.unit||'点'}${i.as_of?' · '+i.as_of:''}`).join('<br>');
+    } else if (r.status === 'ok' || r.status === 'partial') {
+      color = r.status === 'ok' ? 'green' : 'yellow';
+      const v = r.value != null ? `${r.value}${r.unit||''}` : '';
+      body = `${r.geo||''} ${r.label||''} ${v}`.trim() + (r.pending_tag ? `<br><span style="color:var(--faint)">${r.pending_tag}</span>` : '');
+    } else {
+      body = (r.pending_tag || '〔待核〕') + ' · 无市数不编造';
+    }
+    return `<div class="card py-3 px-2"><div class="flex items-start gap-2"><div class="signal-dot signal-${color}" style="width:18px;height:18px;flex-shrink:0;margin-top:2px"></div><div><div class="text-sm font-semibold">${title}</div><div class="text-[10px] mt-1" style="color:var(--muted)">${body}</div></div></div></div>`;
+  }).join('');
+}
+
 function renderSst() {
   const el = document.getElementById('sst-card');
   const sst = BUNDLE && BUNDLE.env_sst;
@@ -322,6 +351,26 @@ function showFamily(fid) {
     }
     signals += `<div class="text-center p-3 rounded-lg" style="background:var(--bg-subtle)"><div class="text-xs" style="color:var(--muted)">${DIM_NAMES[DIMS.indexOf(d)]}</div>${signalHtml(view.color, view.label, view.val)}${extra}</div>`;
   }
+  const ACC = ['gdp_total','employment','price_index','sci_tech','production_finance'];
+  const ACC_NAMES = {gdp_total:'总量核算', employment:'涉海就业', price_index:'航运价格', sci_tech:'海洋科技', production_finance:'生产经营'};
+  const declaredAcc = (f.signals||[]).filter(s => ACC.includes(s));
+  let accHtml = '';
+  if (declaredAcc.length) {
+    accHtml = '<h4 class="font-semibold mb-2 text-sm">核算基准层（已挂维）</h4><div class="flex flex-wrap gap-2 mb-2">';
+    for (const id of declaredAcc) {
+      const cell = familyCell(fid, id);
+      let tag = '〔待核〕';
+      let color = 'gray';
+      if (cell && cell.state === 'live') {
+        tag = (cell.label||id) + ' ' + (cell.value!=null?cell.value:'') + (cell.unit||'');
+        color = 'green';
+      } else if (cell && cell.state === 'evidence') {
+        tag = '有迹'; color = 'green';
+      }
+      accHtml += '<span class="text-xs px-2 py-1 rounded" style="border:1px solid var(--border);background:var(--bg-subtle)"><span class="signal-dot signal-'+color+'" style="width:10px;height:10px;display:inline-block;vertical-align:middle;margin-right:4px"></span>'+(ACC_NAMES[id]||id)+' · '+tag+'</span>';
+    }
+    accHtml += '</div><p class="text-[10px] mb-4" style="color:var(--faint)">HY/T 0362 核算维：无公开市数只挂维，不编造</p>';
+  }
   const me = familyCell(fid, 'market_entity');
   const entNote = (me && me.state==='evidence')
     ? `<p class="text-xs mb-2" style="color:var(--muted)">主体流实数：名录内「${(me.sectors||[]).join('、')}」共 <strong>${me.count}</strong> 家（${me.source}）。下方名单仍为结构样例。</p>`
@@ -331,6 +380,7 @@ function showFamily(fid) {
     <p class="text-xs mb-1" style="color:var(--muted)">${f.code||fid} · ${f.phylumName} > ${f.className} > ${f.orderName}</p>
     <p class="text-sm mb-4" style="color:var(--fg-secondary)">${f.description||''}</p>
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">${signals}</div>
+    ${accHtml}
     <h4 class="font-semibold mb-2">代表性企业（结构样例）</h4>
     ${entNote}
     <div class="grid grid-cols-2 md:grid-cols-3 gap-2">${(f.enterprises||[]).map(e=>'<div class="p-2 ent-chip rounded text-sm"><div class="font-medium">'+e.name+'</div><div class="text-xs" style="color:var(--muted)">'+e.type+'</div></div>').join('')||'<div class="text-sm" style="color:var(--faint)">暂无企业数据</div>'}</div>
@@ -417,7 +467,8 @@ function updateBadge() {
   }
   const sst = BUNDLE.env_sst || {};
   const sstTxt = sst.status==='live' ? `海温 ${sst.value}°C（${sst.as_of}）` : '海温暂不可用';
-  badge.textContent = `证据包 ${BUNDLE.generated_at||''} · 有迹 ${BUNDLE.stats.evidence_cells} 格 · ${sstTxt} · 非随机着色`;
+  const ver = (TREE && TREE.version) ? `树 v${TREE.version}` : '';
+  badge.textContent = `证据包 ${BUNDLE.generated_at||''} · ${ver} · 有迹 ${BUNDLE.stats.evidence_cells} 格 · ${sstTxt} · 双轨非随机`;
   badge.style.color = '#065f46';
   badge.style.background = '#ecfdf5';
   const still = BUNDLE.still_demo_or_unavailable || [];
@@ -442,6 +493,7 @@ async function boot() {
   }
   updateBadge();
   renderKpis();
+  renderAccounting();
   renderSst();
   renderOverview();
   buildTreeNav();

@@ -1,0 +1,46 @@
+{
+  "schema": "accounting_gdp/1.0",
+  "dimension_id": "gdp_total",
+  "generated_at": "2026-10-25T09:46:10+0800",
+  "hyt0362": "B 海洋经济核算",
+  "rule": "省数不作市数；无市数标〔待核〕，禁止编造终值",
+  "items": [
+    {
+      "id": "gd_ocean_gdp_2025",
+      "geo": "广东省",
+      "year": 2025,
+      "label": "广东海洋生产总值",
+      "value": 2.04,
+      "unit": "万亿元",
+      "value_yi": 20400,
+      "growth_real_pct": 4.4,
+      "share_of_national_pct": 18.6,
+      "structure": {
+        "primary_yi": 711.6,
+        "secondary_yi": 7130.2,
+        "tertiary_yi": 12601.7,
+        "ratio": "3.5:34.9:61.6"
+      },
+      "status": "ok",
+      "source": "自然资源部初步核算 · 《2025年广东海洋经济统计公报》公开报道",
+      "source_urls": [
+        "http://www.gd.xinhuanet.com/20260608/3c754cec9c97467882dfc1b0803d0077/c.html",
+        "https://nr.gd.gov.cn/zwgknew/sjfb/"
+      ],
+      "note": "仅作省景气背景，不作广州市数"
+    },
+    {
+      "id": "gz_ocean_gdp_latest",
+      "geo": "广州市",
+      "year": null,
+      "label": "广州海洋生产总值（当季/全年）",
+      "value": null,
+      "unit": "亿元",
+      "status": "pending",
+      "pending_tag": "〔待核〕",
+      "source": "市统计调查／海洋经济统计年报（待公开机读或公报摘录）",
+      "source_urls": [],
+      "note": "禁止用省数替代"
+    }
+  ]
+}

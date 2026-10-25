@@ -1,7 +1,8 @@
 {
-  "schema": "signals_bundle/1.0",
-  "generated_at": "2026-10-18T00:06:33+0800",
-  "methodology": "产业科×六维格子表示「库内可追溯证据」的有/无，不是景气红绿灯。资金←专项资金库；政策←政策库；产业链←招投标公告；物流←资源点+公告；主体←企业名录 sector；环境←NOAA 海温（全区共用）。无匹配则灰灯；未挂该维则标记不适用。",
+  "schema": "signals_bundle/1.1",
+  "version_note": "dual-track HY/T 0362-2023 + six-flow",
+  "generated_at": "2026-10-25T09:47:23+0800",
+  "methodology": "双轨：①信号流层——产业科×六维格子表示库内可追溯证据有/无（非景气灯）；资金←专项资金库；政策←政策库；产业链←招投标；物流←资源点+公告；主体←企业名录 sector；环境←NOAA 海温。②核算基准层——HY/T 0362 五维（总量/就业/价格/科技/生产经营）；价格指数自动采集；总量仅录已公开省报；市数〔待核〕不编造；省数不作市数。",
   "kpis": [
     {
       "id": "listed",
@@ -58,15 +59,23 @@
       "unit": "家",
       "source": "enterprises.json#meta.count",
       "pan": "家底"
+    },
+    {
+      "id": "scfi",
+      "label": "SCFI（2026-10-23）",
+      "value": 3681.34,
+      "unit": "点",
+      "source": "https://wap.eastmoney.com/a/202610233906214289.html",
+      "pan": "核算·价格"
     }
   ],
   "env_sst": {
     "status": "live",
-    "value": 28.85,
+    "value": 28.37,
     "unit": "°C",
     "signal": "green",
     "label": "适宜区间",
-    "as_of": "2026-10-16",
+    "as_of": "2026-10-23",
     "point": {
       "lat": 22.625,
       "lon": 113.625
@@ -152,8 +161,192 @@
         "sst": 28.85,
         "lat": 22.625,
         "lon": 113.625
+      },
+      {
+        "time": "2026-10-17",
+        "sst": 28.9,
+        "lat": 22.625,
+        "lon": 113.625
+      },
+      {
+        "time": "2026-10-18",
+        "sst": 29.11,
+        "lat": 22.625,
+        "lon": 113.625
+      },
+      {
+        "time": "2026-10-19",
+        "sst": 29.18,
+        "lat": 22.625,
+        "lon": 113.625
+      },
+      {
+        "time": "2026-10-20",
+        "sst": 29.29,
+        "lat": 22.625,
+        "lon": 113.625
+      },
+      {
+        "time": "2026-10-21",
+        "sst": 29.33,
+        "lat": 22.625,
+        "lon": 113.625
+      },
+      {
+        "time": "2026-10-22",
+        "sst": 28.7,
+        "lat": 22.625,
+        "lon": 113.625
+      },
+      {
+        "time": "2026-10-23",
+        "sst": 28.37,
+        "lat": 22.625,
+        "lon": 113.625
       }
     ]
+  },
+  "accounting": [
+    {
+      "id": "gdp_total",
+      "name": "gdp_total",
+      "hyt0362": "B 海洋经济核算",
+      "status": "partial",
+      "value": 2.04,
+      "unit": "万亿元",
+      "label": "广东海洋生产总值",
+      "geo": "广东省",
+      "pending_tag": "〔待核〕",
+      "ok_count": 1,
+      "pending_count": 1,
+      "source": "data/accounting/"
+    },
+    {
+      "id": "employment",
+      "name": "employment",
+      "hyt0362": "C 涉海就业人员及劳动报酬",
+      "status": "pending",
+      "value": null,
+      "unit": null,
+      "label": null,
+      "geo": null,
+      "pending_tag": "〔待核〕",
+      "ok_count": 0,
+      "pending_count": 2,
+      "source": "data/accounting/"
+    },
+    {
+      "id": "sci_tech",
+      "name": "sci_tech",
+      "hyt0362": "I 海洋科学技术",
+      "status": "pending",
+      "value": null,
+      "unit": null,
+      "label": null,
+      "geo": null,
+      "pending_tag": "〔待核〕",
+      "ok_count": 0,
+      "pending_count": 2,
+      "source": "data/accounting/"
+    },
+    {
+      "id": "production_finance",
+      "name": "production_finance",
+      "hyt0362": "D 生产经营 + E 对外经济",
+      "status": "pending",
+      "value": null,
+      "unit": null,
+      "label": null,
+      "geo": null,
+      "pending_tag": "〔待核〕",
+      "ok_count": 0,
+      "pending_count": 1,
+      "source": "data/accounting/"
+    },
+    {
+      "id": "price_index",
+      "name": "航运价格指数",
+      "status": "ok",
+      "indices": [
+        {
+          "id": "SCFI",
+          "value": 3681.34,
+          "as_of": "2026-10-23",
+          "unit": "点"
+        },
+        {
+          "id": "CCFI",
+          "value": 1876.27,
+          "as_of": "2026-10-23",
+          "unit": "点"
+        },
+        {
+          "id": "BDI",
+          "value": 2660.0,
+          "as_of": null,
+          "unit": "点"
+        }
+      ],
+      "source": "data/accounting/shipping_price_index.json"
+    }
+  ],
+  "shipping_prices": {
+    "schema": "shipping_price_index/1.0",
+    "dimension_id": "price_index",
+    "generated_at": "2026-10-25T09:46:15+0800",
+    "status": "ok",
+    "indices": [
+      {
+        "id": "SCFI",
+        "name": "上海出口集装箱运价指数（综合）",
+        "value": 3681.34,
+        "unit": "点",
+        "change_points": 1.76,
+        "as_of": "2026-10-23",
+        "source_url": "https://wap.eastmoney.com/a/202610233906214289.html",
+        "hyt0362": "H（海运价）"
+      },
+      {
+        "id": "CCFI",
+        "name": "中国出口集装箱运价综合指数",
+        "value": 1876.27,
+        "unit": "点",
+        "change_pct": -2.4,
+        "as_of": "2026-10-23",
+        "source_url": "https://wap.eastmoney.com/a/202610233906214289.html",
+        "hyt0362": "H（海运价）"
+      },
+      {
+        "id": "BDI",
+        "name": "波罗的海干散货指数",
+        "value": 2660.0,
+        "unit": "点",
+        "as_of": null,
+        "source_url": "https://www.investing.com/indices/baltic-dry",
+        "hyt0362": "H（海运价）"
+      }
+    ],
+    "raw": {
+      "scfi_ccfi": {
+        "status": "ok",
+        "source_name": "eastmoney_20261023",
+        "source_url": "https://wap.eastmoney.com/a/202610233906214289.html",
+        "fetched_at": "2026-10-25T09:46:15+0800",
+        "scfi": 3681.34,
+        "ccfi": 1876.27,
+        "scfi_change_points": 1.76,
+        "ccfi_change_pct": -2.4,
+        "as_of": "2026-10-23"
+      },
+      "bdi": {
+        "status": "ok",
+        "source_name": "investing_bdi",
+        "source_url": "https://www.investing.com/indices/baltic-dry",
+        "fetched_at": "2026-10-25T09:46:15+0800",
+        "bdi": 2660.0
+      }
+    },
+    "note": "旁证全球航运景气，不替代广州港吞吐 KPI；省/全球指数不作市数。"
   },
   "sector_counts": {
     "海洋矿业": 29,
@@ -167,20 +360,22 @@
     "海洋工程建筑业": 2
   },
   "sources": {
-    "structure_judgment": "structure_judgment.json",
+    "structure_judgment": "/workspace/wangdwn.github.io/data/structure_judgment.json",
     "enterprises_meta_count": 7045,
     "funding_updated": "2026-10-12",
     "funding_count": 56,
     "policies_total": 8,
     "notices_updated": "2026-09-19",
     "notices_count": 15,
-    "map_count": 14
+    "map_count": 14,
+    "shipping_prices": "data/accounting/shipping_price_index.json",
+    "industry_tree_version": "3.0"
   },
   "stats": {
     "family_count": 35,
     "evidence_cells": 39,
     "none_cells": 75,
-    "live_cells": 13
+    "live_cells": 18
   },
   "families": {
     "F01": {
@@ -188,9 +383,11 @@
       "code": "DEEP-FISH-01",
       "name": "金枪鱼远洋捕捞",
       "declared_signals": [
+        "market_entity",
         "env_risk",
+        "gdp_total",
         "logistics_flow",
-        "market_entity"
+        "employment"
       ],
       "dims": {
         "fund_flow": {
@@ -225,9 +422,9 @@
         "env_risk": {
           "state": "live",
           "signal": "green",
-          "value": 28.85,
+          "value": 28.37,
           "unit": "°C",
-          "as_of": "2026-10-16",
+          "as_of": "2026-10-23",
           "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
           "note": "广州海域共用格点，非分产业指标"
         },
@@ -246,8 +443,9 @@
       "code": "DEEP-FISH-02",
       "name": "远洋鱿钓",
       "declared_signals": [
-        "env_risk",
         "logistics_flow",
+        "env_risk",
+        "employment",
         "policy"
       ],
       "dims": {
@@ -266,9 +464,9 @@
         "env_risk": {
           "state": "live",
           "signal": "green",
-          "value": 28.85,
+          "value": 28.37,
           "unit": "°C",
-          "as_of": "2026-10-16",
+          "as_of": "2026-10-23",
           "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
           "note": "广州海域共用格点，非分产业指标"
         },
@@ -291,10 +489,12 @@
       "code": "AQUA-01",
       "name": "对虾工厂化养殖",
       "declared_signals": [
-        "env_risk",
+        "fund_flow",
         "market_entity",
+        "env_risk",
         "industry_chain",
-        "fund_flow"
+        "production_finance",
+        "employment"
       ],
       "dims": {
         "fund_flow": {
@@ -338,9 +538,9 @@
         "env_risk": {
           "state": "live",
           "signal": "green",
-          "value": 28.85,
+          "value": 28.37,
           "unit": "°C",
-          "as_of": "2026-10-16",
+          "as_of": "2026-10-23",
           "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
           "note": "广州海域共用格点，非分产业指标"
         },
@@ -360,7 +560,8 @@
       "name": "贝类底播养殖",
       "declared_signals": [
         "env_risk",
-        "market_entity"
+        "market_entity",
+        "employment"
       ],
       "dims": {
         "market_entity": {
@@ -373,9 +574,9 @@
         "env_risk": {
           "state": "live",
           "signal": "green",
-          "value": 28.85,
+          "value": 28.37,
           "unit": "°C",
-          "as_of": "2026-10-16",
+          "as_of": "2026-10-23",
           "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
           "note": "广州海域共用格点，非分产业指标"
         },
@@ -402,10 +603,12 @@
       "code": "RANCH-01",
       "name": "人工鱼礁生态牧场",
       "declared_signals": [
+        "fund_flow",
+        "env_risk",
+        "gdp_total",
         "policy",
         "logistics_flow",
-        "env_risk",
-        "fund_flow"
+        "employment"
       ],
       "dims": {
         "fund_flow": {
@@ -457,9 +660,9 @@
         "env_risk": {
           "state": "live",
           "signal": "green",
-          "value": 28.85,
+          "value": 28.37,
           "unit": "°C",
-          "as_of": "2026-10-16",
+          "as_of": "2026-10-23",
           "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
           "note": "广州海域共用格点，非分产业指标"
         },
@@ -478,9 +681,11 @@
       "code": "PROCESS-01",
       "name": "冷冻调理食品加工",
       "declared_signals": [
+        "fund_flow",
         "market_entity",
         "industry_chain",
-        "fund_flow"
+        "production_finance",
+        "employment"
       ],
       "dims": {
         "fund_flow": {
@@ -521,10 +726,12 @@
       "code": "OIL-01",
       "name": "海上油气勘探开发",
       "declared_signals": [
-        "policy",
-        "logistics_flow",
+        "fund_flow",
         "env_risk",
-        "fund_flow"
+        "gdp_total",
+        "policy",
+        "production_finance",
+        "logistics_flow"
       ],
       "dims": {
         "fund_flow": {
@@ -567,9 +774,9 @@
         "env_risk": {
           "state": "live",
           "signal": "green",
-          "value": 28.85,
+          "value": 28.37,
           "unit": "°C",
-          "as_of": "2026-10-16",
+          "as_of": "2026-10-23",
           "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
           "note": "广州海域共用格点，非分产业指标"
         },
@@ -584,9 +791,11 @@
       "code": "MINING-01",
       "name": "多金属结核/结壳勘探",
       "declared_signals": [
-        "policy",
+        "fund_flow",
+        "sci_tech",
         "industry_chain",
-        "fund_flow"
+        "policy",
+        "production_finance"
       ],
       "dims": {
         "fund_flow": {
@@ -659,9 +868,10 @@
       "code": "SAND-01",
       "name": "建筑用海砂开采",
       "declared_signals": [
-        "policy",
+        "env_risk",
+        "production_finance",
         "logistics_flow",
-        "env_risk"
+        "policy"
       ],
       "dims": {
         "policy": {
@@ -688,9 +898,9 @@
         "env_risk": {
           "state": "live",
           "signal": "green",
-          "value": 28.85,
+          "value": 28.37,
           "unit": "°C",
-          "as_of": "2026-10-16",
+          "as_of": "2026-10-23",
           "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
           "note": "广州海域共用格点，非分产业指标"
         },
@@ -709,10 +919,12 @@
       "code": "WIND-01",
       "name": "近海风电开发",
       "declared_signals": [
-        "policy",
-        "logistics_flow",
+        "fund_flow",
         "env_risk",
-        "fund_flow"
+        "gdp_total",
+        "policy",
+        "production_finance",
+        "logistics_flow"
       ],
       "dims": {
         "fund_flow": {
@@ -800,9 +1012,9 @@
         "env_risk": {
           "state": "live",
           "signal": "green",
-          "value": 28.85,
+          "value": 28.37,
           "unit": "°C",
-          "as_of": "2026-10-16",
+          "as_of": "2026-10-23",
           "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
           "note": "广州海域共用格点，非分产业指标"
         }
@@ -813,9 +1025,11 @@
       "code": "WIND-02",
       "name": "漂浮式海上风电",
       "declared_signals": [
-        "policy",
+        "fund_flow",
+        "sci_tech",
         "industry_chain",
-        "fund_flow"
+        "policy",
+        "production_finance"
       ],
       "dims": {
         "fund_flow": {
@@ -860,9 +1074,10 @@
       "code": "ENERGY-01",
       "name": "潮汐波浪能发电",
       "declared_signals": [
+        "sci_tech",
+        "fund_flow",
         "policy",
-        "industry_chain",
-        "fund_flow"
+        "industry_chain"
       ],
       "dims": {
         "fund_flow": {
@@ -902,9 +1117,11 @@
       "code": "ENERGY-02",
       "name": "海洋氢能",
       "declared_signals": [
-        "policy",
+        "fund_flow",
+        "sci_tech",
         "industry_chain",
-        "fund_flow"
+        "policy",
+        "production_finance"
       ],
       "dims": {
         "fund_flow": {
@@ -944,10 +1161,12 @@
       "code": "BIO-01",
       "name": "海洋药物研发",
       "declared_signals": [
-        "policy",
+        "fund_flow",
         "market_entity",
+        "sci_tech",
         "industry_chain",
-        "fund_flow"
+        "policy",
+        "production_finance"
       ],
       "dims": {
         "fund_flow": {
@@ -1011,10 +1230,12 @@
       "code": "SHIP-01",
       "name": "集装箱船建造",
       "declared_signals": [
-        "policy",
-        "logistics_flow",
+        "fund_flow",
         "market_entity",
-        "fund_flow"
+        "price_index",
+        "policy",
+        "production_finance",
+        "logistics_flow"
       ],
       "dims": {
         "fund_flow": {
@@ -1034,6 +1255,36 @@
           "count": 0,
           "samples": [],
           "source": "marine-monitor/map.json + notices.json"
+        },
+        "price_index": {
+          "state": "live",
+          "signal": "green",
+          "value": 3681.34,
+          "unit": "点",
+          "label": "SCFI",
+          "as_of": "2026-10-23",
+          "indices": [
+            {
+              "id": "SCFI",
+              "value": 3681.34,
+              "as_of": "2026-10-23",
+              "unit": "点"
+            },
+            {
+              "id": "CCFI",
+              "value": 1876.27,
+              "as_of": "2026-10-23",
+              "unit": "点"
+            },
+            {
+              "id": "BDI",
+              "value": 2660.0,
+              "as_of": null,
+              "unit": "点"
+            }
+          ],
+          "source": "data/accounting/shipping_price_index.json",
+          "note": "全球航运旁证，不替代广州港吞吐"
         },
         "market_entity": {
           "state": "evidence",
@@ -1059,9 +1310,11 @@
       "code": "SHIP-02",
       "name": "LNG船/特种船舶",
       "declared_signals": [
-        "logistics_flow",
+        "fund_flow",
+        "price_index",
         "industry_chain",
-        "fund_flow"
+        "production_finance",
+        "logistics_flow"
       ],
       "dims": {
         "fund_flow": {
@@ -1081,6 +1334,36 @@
           "count": 0,
           "samples": [],
           "source": "marine-monitor/map.json + notices.json"
+        },
+        "price_index": {
+          "state": "live",
+          "signal": "green",
+          "value": 3681.34,
+          "unit": "点",
+          "label": "SCFI",
+          "as_of": "2026-10-23",
+          "indices": [
+            {
+              "id": "SCFI",
+              "value": 3681.34,
+              "as_of": "2026-10-23",
+              "unit": "点"
+            },
+            {
+              "id": "CCFI",
+              "value": 1876.27,
+              "as_of": "2026-10-23",
+              "unit": "点"
+            },
+            {
+              "id": "BDI",
+              "value": 2660.0,
+              "as_of": null,
+              "unit": "点"
+            }
+          ],
+          "source": "data/accounting/shipping_price_index.json",
+          "note": "全球航运旁证，不替代广州港吞吐"
         },
         "market_entity": {
           "state": "evidence",
@@ -1106,7 +1389,9 @@
       "code": "REPAIR-01",
       "name": "船舶改装维修",
       "declared_signals": [
+        "production_finance",
         "logistics_flow",
+        "price_index",
         "market_entity"
       ],
       "dims": {
@@ -1115,6 +1400,36 @@
           "count": 0,
           "samples": [],
           "source": "marine-monitor/map.json + notices.json"
+        },
+        "price_index": {
+          "state": "live",
+          "signal": "green",
+          "value": 3681.34,
+          "unit": "点",
+          "label": "SCFI",
+          "as_of": "2026-10-23",
+          "indices": [
+            {
+              "id": "SCFI",
+              "value": 3681.34,
+              "as_of": "2026-10-23",
+              "unit": "点"
+            },
+            {
+              "id": "CCFI",
+              "value": 1876.27,
+              "as_of": "2026-10-23",
+              "unit": "点"
+            },
+            {
+              "id": "BDI",
+              "value": 2660.0,
+              "as_of": null,
+              "unit": "点"
+            }
+          ],
+          "source": "data/accounting/shipping_price_index.json",
+          "note": "全球航运旁证，不替代广州港吞吐"
         },
         "market_entity": {
           "state": "evidence",
@@ -1148,9 +1463,11 @@
       "code": "RIG-01",
       "name": "自升式钻井平台",
       "declared_signals": [
+        "fund_flow",
+        "sci_tech",
         "policy",
-        "logistics_flow",
-        "fund_flow"
+        "production_finance",
+        "logistics_flow"
       ],
       "dims": {
         "fund_flow": {
@@ -1195,9 +1512,11 @@
       "code": "ROV-01",
       "name": "ROV/AUV研发制造",
       "declared_signals": [
+        "fund_flow",
         "market_entity",
+        "sci_tech",
         "industry_chain",
-        "fund_flow"
+        "production_finance"
       ],
       "dims": {
         "fund_flow": {
@@ -1240,9 +1559,10 @@
       "code": "SENSOR-01",
       "name": "CTD/ADCP传感器",
       "declared_signals": [
-        "market_entity",
+        "sci_tech",
         "industry_chain",
-        "fund_flow"
+        "fund_flow",
+        "market_entity"
       ],
       "dims": {
         "fund_flow": {
@@ -1283,9 +1603,10 @@
       "code": "REMOTE-01",
       "name": "海洋卫星地面应用",
       "declared_signals": [
+        "sci_tech",
+        "fund_flow",
         "policy",
-        "industry_chain",
-        "fund_flow"
+        "industry_chain"
       ],
       "dims": {
         "fund_flow": {
@@ -1325,10 +1646,13 @@
       "code": "PORT-01",
       "name": "集装箱码头运营",
       "declared_signals": [
+        "fund_flow",
+        "market_entity",
+        "price_index",
+        "gdp_total",
         "policy",
         "logistics_flow",
-        "market_entity",
-        "fund_flow"
+        "employment"
       ],
       "dims": {
         "fund_flow": {
@@ -1366,6 +1690,36 @@
           ],
           "source": "marine-monitor/map.json + notices.json"
         },
+        "price_index": {
+          "state": "live",
+          "signal": "green",
+          "value": 3681.34,
+          "unit": "点",
+          "label": "SCFI",
+          "as_of": "2026-10-23",
+          "indices": [
+            {
+              "id": "SCFI",
+              "value": 3681.34,
+              "as_of": "2026-10-23",
+              "unit": "点"
+            },
+            {
+              "id": "CCFI",
+              "value": 1876.27,
+              "as_of": "2026-10-23",
+              "unit": "点"
+            },
+            {
+              "id": "BDI",
+              "value": 2660.0,
+              "as_of": null,
+              "unit": "点"
+            }
+          ],
+          "source": "data/accounting/shipping_price_index.json",
+          "note": "全球航运旁证，不替代广州港吞吐"
+        },
         "market_entity": {
           "state": "evidence",
           "count": 441,
@@ -1390,9 +1744,12 @@
       "code": "SHIPPING-01",
       "name": "国际航运",
       "declared_signals": [
-        "logistics_flow",
+        "fund_flow",
         "market_entity",
-        "fund_flow"
+        "price_index",
+        "gdp_total",
+        "logistics_flow",
+        "employment"
       ],
       "dims": {
         "fund_flow": {
@@ -1434,6 +1791,36 @@
           ],
           "source": "marine-monitor/map.json + notices.json"
         },
+        "price_index": {
+          "state": "live",
+          "signal": "green",
+          "value": 3681.34,
+          "unit": "点",
+          "label": "SCFI",
+          "as_of": "2026-10-23",
+          "indices": [
+            {
+              "id": "SCFI",
+              "value": 3681.34,
+              "as_of": "2026-10-23",
+              "unit": "点"
+            },
+            {
+              "id": "CCFI",
+              "value": 1876.27,
+              "as_of": "2026-10-23",
+              "unit": "点"
+            },
+            {
+              "id": "BDI",
+              "value": 2660.0,
+              "as_of": null,
+              "unit": "点"
+            }
+          ],
+          "source": "data/accounting/shipping_price_index.json",
+          "note": "全球航运旁证，不替代广州港吞吐"
+        },
         "market_entity": {
           "state": "evidence",
           "count": 441,
@@ -1463,6 +1850,7 @@
       "name": "海上安装工程",
       "declared_signals": [
         "env_risk",
+        "production_finance",
         "logistics_flow",
         "fund_flow"
       ],
@@ -1552,9 +1940,9 @@
         "env_risk": {
           "state": "live",
           "signal": "green",
-          "value": 28.85,
+          "value": 28.37,
           "unit": "°C",
-          "as_of": "2026-10-16",
+          "as_of": "2026-10-23",
           "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
           "note": "广州海域共用格点，非分产业指标"
         },
@@ -1569,9 +1957,10 @@
       "code": "INSPECT-01",
       "name": "船舶检验",
       "declared_signals": [
+        "production_finance",
+        "industry_chain",
         "policy",
-        "market_entity",
-        "industry_chain"
+        "market_entity"
       ],
       "dims": {
         "policy": {
@@ -1612,6 +2001,7 @@
       "code": "DISASTER-01",
       "name": "风暴潮/海啸预警",
       "declared_signals": [
+        "sci_tech",
         "env_risk",
         "market_entity",
         "policy"
@@ -1633,9 +2023,9 @@
         "env_risk": {
           "state": "live",
           "signal": "green",
-          "value": 28.85,
+          "value": 28.37,
           "unit": "°C",
-          "as_of": "2026-10-16",
+          "as_of": "2026-10-23",
           "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
           "note": "广州海域共用格点，非分产业指标"
         },
@@ -1658,9 +2048,11 @@
       "code": "TOURISM-01",
       "name": "邮轮旅游",
       "declared_signals": [
-        "logistics_flow",
+        "fund_flow",
         "market_entity",
-        "fund_flow"
+        "gdp_total",
+        "logistics_flow",
+        "employment"
       ],
       "dims": {
         "fund_flow": {
@@ -1714,8 +2106,9 @@
       "code": "TOURISM-02",
       "name": "海岛旅游",
       "declared_signals": [
-        "env_risk",
         "logistics_flow",
+        "env_risk",
+        "employment",
         "policy"
       ],
       "dims": {
@@ -1743,9 +2136,9 @@
         "env_risk": {
           "state": "live",
           "signal": "green",
-          "value": 28.85,
+          "value": 28.37,
           "unit": "°C",
-          "as_of": "2026-10-16",
+          "as_of": "2026-10-23",
           "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
           "note": "广州海域共用格点，非分产业指标"
         },
@@ -1764,9 +2157,10 @@
       "code": "RD-01",
       "name": "国家实验室",
       "declared_signals": [
-        "policy",
+        "sci_tech",
         "industry_chain",
-        "fund_flow"
+        "fund_flow",
+        "policy"
       ],
       "dims": {
         "fund_flow": {
@@ -1834,10 +2228,11 @@
       "code": "RD-02",
       "name": "地质调查",
       "declared_signals": [
-        "policy",
+        "fund_flow",
+        "sci_tech",
         "env_risk",
         "industry_chain",
-        "fund_flow"
+        "policy"
       ],
       "dims": {
         "fund_flow": {
@@ -1894,9 +2289,9 @@
         "env_risk": {
           "state": "live",
           "signal": "green",
-          "value": 28.85,
+          "value": 28.37,
           "unit": "°C",
-          "as_of": "2026-10-16",
+          "as_of": "2026-10-23",
           "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
           "note": "广州海域共用格点，非分产业指标"
         },
@@ -1911,9 +2306,10 @@
       "code": "FINANCE-01",
       "name": "海洋产业基金",
       "declared_signals": [
-        "policy",
+        "production_finance",
+        "fund_flow",
         "market_entity",
-        "fund_flow"
+        "policy"
       ],
       "dims": {
         "fund_flow": {
@@ -1982,9 +2378,10 @@
       "code": "FINANCE-02",
       "name": "海洋保险",
       "declared_signals": [
-        "market_entity",
+        "production_finance",
         "logistics_flow",
-        "fund_flow"
+        "fund_flow",
+        "market_entity"
       ],
       "dims": {
         "fund_flow": {
@@ -2025,9 +2422,11 @@
       "code": "FINANCE-03",
       "name": "海洋碳汇",
       "declared_signals": [
-        "policy",
+        "fund_flow",
+        "sci_tech",
         "env_risk",
-        "fund_flow"
+        "gdp_total",
+        "policy"
       ],
       "dims": {
         "fund_flow": {
@@ -2068,9 +2467,9 @@
         "env_risk": {
           "state": "live",
           "signal": "green",
-          "value": 28.85,
+          "value": 28.37,
           "unit": "°C",
-          "as_of": "2026-10-16",
+          "as_of": "2026-10-23",
           "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
           "note": "广州海域共用格点，非分产业指标"
         },
@@ -2089,10 +2488,11 @@
       "code": "DIGITAL-01",
       "name": "海洋大数据平台",
       "declared_signals": [
-        "policy",
+        "fund_flow",
         "market_entity",
+        "sci_tech",
         "industry_chain",
-        "fund_flow"
+        "policy"
       ],
       "dims": {
         "fund_flow": {
@@ -2135,9 +2535,10 @@
       "code": "AI-01",
       "name": "海洋AI应用",
       "declared_signals": [
-        "policy",
+        "sci_tech",
         "industry_chain",
-        "fund_flow"
+        "fund_flow",
+        "policy"
       ],
       "dims": {
         "fund_flow": {
@@ -2203,6 +2604,14 @@
     {
       "item": "产业树代表企业名单",
       "need": "仍为结构样例；主体流已改用名录 sector 实数"
+    },
+    {
+      "item": "广州市海洋生产总值（核算层）",
+      "need": "市统计调查／公报；已录 2025 广东省数仅作背景"
+    },
+    {
+      "item": "涉海就业人数／劳动报酬",
+      "need": "统计年鉴或调查回填"
     }
   ]
 }

@@ -1,0 +1,18 @@
+{
+  "schema": "accounting_production_finance/1.0",
+  "dimension_id": "production_finance",
+  "generated_at": "2026-10-25T09:46:10+0800",
+  "hyt0362": "D 生产经营 + E 对外经济",
+  "items": [
+    {
+      "id": "gz_marine_above_scale_finance",
+      "geo": "广州市",
+      "label": "涉海四上企业资产负债／损益汇总",
+      "value": null,
+      "status": "pending",
+      "pending_tag": "〔待核〕",
+      "source": "企查查年报／统计调查（未批量入库）",
+      "note": "禁止编造营收利润终值"
+    }
+  ]
+}

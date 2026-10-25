@@ -1,0 +1,29 @@
+{
+  "schema": "accounting_employment/1.0",
+  "dimension_id": "employment",
+  "generated_at": "2026-10-25T09:46:10+0800",
+  "hyt0362": "C 涉海就业人员及劳动报酬",
+  "items": [
+    {
+      "id": "gz_marine_employment",
+      "geo": "广州市",
+      "label": "涉海就业人员数",
+      "value": null,
+      "unit": "人",
+      "status": "pending",
+      "pending_tag": "〔待核〕",
+      "source": "统计年鉴／调查制度",
+      "note": "六流有企业名录无就业人头；待年鉴或调查回填"
+    },
+    {
+      "id": "gd_fisherman_income",
+      "geo": "广东省",
+      "label": "渔民人均纯收入",
+      "value": null,
+      "unit": "元",
+      "status": "pending",
+      "pending_tag": "〔待核〕",
+      "source": "统计年鉴"
+    }
+  ]
+}

@@ -3,9 +3,11 @@
 """把可追溯的公开/库内数据打成 signals_bundle.json，供静态质量盘使用。
 
 规则：
+- 双轨：六流信号层（高频证据有/无）+ 核算基准层（HY/T 0362 低频权威）。
 - 不编造景气红绿灯；产业科×六维格子 = 库内证据有/无（或海温实测）。
 - 海温：NOAA coastwatch OISST v2.1 NRT，广州海域格点。
-- KPI：结构判断 JSON + 企业名录 meta。
+- 价格指数：data/accounting/shipping_price_index.json（SCFI/CCFI/BDI）。
+- KPI：结构判断 JSON + 企业名录 meta；核算层无市数标〔待核〕。
 失败时写 status=unavailable，前端保持灰灯并标明原因。
 """
 from __future__ import annotations
@@ -23,12 +25,18 @@ OUT = ROOT / "data" / "signals_bundle.json"
 WORKSPACE = ROOT.parent
 PATHS = {
     "structure": WORKSPACE / "wangdwn.github.io" / "data" / "structure_judgment.json",
+    "structure_fallback": WORKSPACE / "marine-monitor" / "app" / "public" / "data" / "structure_judgment.json",
     "enterprises": WORKSPACE / "guangzhou-marine-enterprises" / "data" / "enterprises.json",
     "funding": WORKSPACE / "marine-monitor" / "app" / "public" / "data" / "funding.json",
     "policies": WORKSPACE / "marine-monitor" / "app" / "public" / "data" / "policies.json",
     "map": WORKSPACE / "marine-monitor" / "app" / "public" / "data" / "map.json",
     "notices": WORKSPACE / "geo-ocean-bidding" / "docs" / "data" / "notices.json",
     "tree": ROOT / "industry_tree.json",
+    "shipping_prices": ROOT / "data" / "accounting" / "shipping_price_index.json",
+    "accounting_gdp": ROOT / "data" / "accounting" / "gdp_total.json",
+    "accounting_employment": ROOT / "data" / "accounting" / "employment.json",
+    "accounting_sci": ROOT / "data" / "accounting" / "sci_tech.json",
+    "accounting_finance": ROOT / "data" / "accounting" / "production_finance.json",
 }
 
 # 产业科 → 名录 sector 标签（只映射能对上口径的）
@@ -207,12 +215,20 @@ def evidence_cell(state: str, **kwargs):
 
 def main():
     tree = load_json(PATHS["tree"]) or {}
-    structure = load_json(PATHS["structure"]) or {}
+    structure = load_json(PATHS["structure"]) or load_json(PATHS["structure_fallback"]) or {}
     enterprises = load_json(PATHS["enterprises"]) or {}
     funding = load_json(PATHS["funding"]) or {}
     policies = load_json(PATHS["policies"]) or {}
     mmap = load_json(PATHS["map"]) or {}
     notices = load_json(PATHS["notices"]) or {}
+    shipping = load_json(PATHS["shipping_prices"]) or {}
+    accounting = {
+        "gdp_total": load_json(PATHS["accounting_gdp"]),
+        "employment": load_json(PATHS["accounting_employment"]),
+        "sci_tech": load_json(PATHS["accounting_sci"]),
+        "production_finance": load_json(PATHS["accounting_finance"]),
+        "price_index": shipping,
+    }
 
     ent_list = enterprises.get("enterprises") or []
     sector_counts = {}
@@ -384,6 +400,29 @@ def main():
                 source="marine-monitor/map.json + notices.json",
             )
 
+        # 核算维 price_index：挂在物流旁证（有公开指数则 live，否则 pending）
+        if "price_index" in signal_dims:
+            idx_list = (shipping or {}).get("indices") or []
+            if (shipping or {}).get("status") == "ok" and idx_list:
+                scfi = next((x for x in idx_list if x.get("id") == "SCFI"), None)
+                dims["price_index"] = evidence_cell(
+                    "live",
+                    signal="green",
+                    value=(scfi or idx_list[0]).get("value"),
+                    unit="点",
+                    label="SCFI" if scfi else idx_list[0].get("id"),
+                    as_of=(scfi or idx_list[0]).get("as_of"),
+                    indices=[{k: x.get(k) for k in ("id", "value", "as_of", "unit")} for x in idx_list],
+                    source="data/accounting/shipping_price_index.json",
+                    note="全球航运旁证，不替代广州港吞吐",
+                )
+            else:
+                dims["price_index"] = evidence_cell(
+                    "unavailable",
+                    reason=(shipping or {}).get("note") or "〔待核〕价格指数未采集到",
+                    source="data/accounting/shipping_price_index.json",
+                )
+
         # market_entity from sector counts
         sectors = FAMILY_SECTORS.get(fid) or []
         ent_n = sum(sector_counts.get(s, 0) for s in sectors)
@@ -451,20 +490,84 @@ def main():
             elif cell["state"] == "live":
                 live_cells += 1
 
+    # 核算层摘要（供前端灰灯/KPI；无市数保持 pending）
+    accounting_summary = []
+    for dim_id, payload in accounting.items():
+        if not payload:
+            accounting_summary.append({
+                "id": dim_id,
+                "status": "pending",
+                "label": dim_id,
+                "pending_tag": "〔待核〕",
+            })
+            continue
+        if dim_id == "price_index":
+            idxs = payload.get("indices") or []
+            accounting_summary.append({
+                "id": dim_id,
+                "name": "航运价格指数",
+                "status": payload.get("status") or ("ok" if idxs else "pending"),
+                "indices": [
+                    {"id": x.get("id"), "value": x.get("value"), "as_of": x.get("as_of"), "unit": x.get("unit")}
+                    for x in idxs
+                ],
+                "source": "data/accounting/shipping_price_index.json",
+            })
+            continue
+        items = payload.get("items") or []
+        ok_items = [it for it in items if it.get("status") == "ok"]
+        pending_items = [it for it in items if it.get("status") != "ok"]
+        first_ok = ok_items[0] if ok_items else None
+        accounting_summary.append({
+            "id": dim_id,
+            "name": (payload.get("dimension_id") or dim_id),
+            "hyt0362": payload.get("hyt0362"),
+            "status": "ok" if ok_items and not pending_items else ("partial" if ok_items else "pending"),
+            "value": (first_ok or {}).get("value"),
+            "unit": (first_ok or {}).get("unit"),
+            "label": (first_ok or {}).get("label"),
+            "geo": (first_ok or {}).get("geo"),
+            "pending_tag": None if (ok_items and not pending_items) else "〔待核〕",
+            "ok_count": len(ok_items),
+            "pending_count": len(pending_items),
+            "source": "data/accounting/",
+        })
+
+    # 把 SCFI 作为旁证 KPI（标明全球指数）
+    if (shipping or {}).get("status") == "ok":
+        for x in shipping.get("indices") or []:
+            if x.get("id") == "SCFI":
+                kpis.append({
+                    "id": "scfi",
+                    "label": f"SCFI（{x.get('as_of') or '最新'}）",
+                    "value": x.get("value"),
+                    "unit": "点",
+                    "source": x.get("source_url"),
+                    "pan": "核算·价格",
+                })
+                break
+
     bundle = {
-        "schema": "signals_bundle/1.0",
+        "schema": "signals_bundle/1.1",
+        "version_note": "dual-track HY/T 0362-2023 + six-flow",
         "generated_at": datetime.now(timezone.utc).astimezone().strftime("%Y-%m-%dT%H:%M:%S%z"),
         "methodology": (
-            "产业科×六维格子表示「库内可追溯证据」的有/无，不是景气红绿灯。"
-            "资金←专项资金库；政策←政策库；产业链←招投标公告；物流←资源点+公告；"
-            "主体←企业名录 sector；环境←NOAA 海温（全区共用）。"
-            "无匹配则灰灯；未挂该维则标记不适用。"
+            "双轨：①信号流层——产业科×六维格子表示库内可追溯证据有/无（非景气灯）；"
+            "资金←专项资金库；政策←政策库；产业链←招投标；物流←资源点+公告；"
+            "主体←企业名录 sector；环境←NOAA 海温。"
+            "②核算基准层——HY/T 0362 五维（总量/就业/价格/科技/生产经营）；"
+            "价格指数自动采集；总量仅录已公开省报；市数〔待核〕不编造；省数不作市数。"
         ),
         "kpis": kpis,
         "env_sst": sst,
+        "accounting": accounting_summary,
+        "shipping_prices": shipping or None,
         "sector_counts": sector_counts,
         "sources": {
-            "structure_judgment": str(PATHS["structure"].name) if PATHS["structure"].exists() else None,
+            "structure_judgment": (
+                str(PATHS["structure"]) if PATHS["structure"].exists()
+                else (str(PATHS["structure_fallback"]) if PATHS["structure_fallback"].exists() else None)
+            ),
             "enterprises_meta_count": (enterprises.get("meta") or {}).get("count"),
             "funding_updated": funding.get("updated"),
             "funding_count": funding.get("count") or len(funding_items),
@@ -472,6 +575,8 @@ def main():
             "notices_updated": notices.get("updated_at"),
             "notices_count": len(notice_items),
             "map_count": mmap.get("count") or len(map_items),
+            "shipping_prices": "data/accounting/shipping_price_index.json",
+            "industry_tree_version": tree.get("version"),
         },
         "stats": {
             "family_count": len(families_out),
@@ -500,6 +605,14 @@ def main():
             {
                 "item": "产业树代表企业名单",
                 "need": "仍为结构样例；主体流已改用名录 sector 实数",
+            },
+            {
+                "item": "广州市海洋生产总值（核算层）",
+                "need": "市统计调查／公报；已录 2025 广东省数仅作背景",
+            },
+            {
+                "item": "涉海就业人数／劳动报酬",
+                "need": "统计年鉴或调查回填",
             },
         ],
     }

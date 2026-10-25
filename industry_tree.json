@@ -1,49 +1,103 @@
 {
-  "version": "2.0",
-  "name": "广州海洋经济产业分类体系",
-  "description": "纲举目张四层树状结构：四大门 → 13纲 → 36目 → 细分科",
+  "version": "3.0",
+  "name": "广州海洋经济产业分类体系（双轨）",
+  "description": "双轨：信号流层（六流高频）+ 核算基准层（HY/T 0362-2023 五维低频权威）。纲举目张四层树：四大门 → 13纲 → 36目 → 细分科；每科 signals 可同时挂六流与核算维 id。",
   "signal_dimensions": [
     {
       "id": "fund_flow",
       "name": "资金流",
       "description": "融资事件/招投标金额/信贷数据",
       "unit": "万元",
-      "sources": ["企查查", "中国政府采购网", "Wind"]
+      "sources": [
+        "企查查",
+        "中国政府采购网",
+        "Wind"
+      ],
+      "hyt0362_classes": [
+        "D",
+        "E",
+        "B"
+      ],
+      "hyt0362_note": "六流映射 HY/T 0362 大类 D,E,B"
     },
     {
       "id": "logistics_flow",
       "name": "物流/交通流",
       "description": "AIS船舶/港口吞吐量/物流指数",
       "unit": "TEU/艘",
-      "sources": ["广州港务局", "GFW AIS", "MarineTraffic"]
+      "sources": [
+        "广州港务局",
+        "GFW AIS",
+        "MarineTraffic"
+      ],
+      "hyt0362_classes": [
+        "G",
+        "H"
+      ],
+      "hyt0362_note": "六流映射 HY/T 0362 大类 G,H"
     },
     {
       "id": "market_entity",
       "name": "市场主体流",
       "description": "企业注册/招聘/司法案件",
       "unit": "家/人",
-      "sources": ["天眼查", "企查查", "智联招聘"]
+      "sources": [
+        "天眼查",
+        "企查查",
+        "智联招聘"
+      ],
+      "hyt0362_classes": [
+        "A",
+        "C"
+      ],
+      "hyt0362_note": "六流映射 HY/T 0362 大类 A,C"
     },
     {
       "id": "industry_chain",
       "name": "产业链流",
       "description": "订单/许可/药监/专利",
       "unit": "件",
-      "sources": ["国家知识产权局", "药监局", "海关总署"]
+      "sources": [
+        "国家知识产权局",
+        "药监局",
+        "海关总署"
+      ],
+      "hyt0362_classes": [
+        "G",
+        "I"
+      ],
+      "hyt0362_note": "六流映射 HY/T 0362 大类 G,I"
     },
     {
       "id": "env_risk",
       "name": "环境与风险流",
       "description": "海温/台风/赤潮/灾害预警",
       "unit": "°C/级",
-      "sources": ["NOAA", "NHC", "南海预报中心"]
+      "sources": [
+        "NOAA",
+        "NHC",
+        "南海预报中心"
+      ],
+      "hyt0362_classes": [
+        "F",
+        "K"
+      ],
+      "hyt0362_note": "六流映射 HY/T 0362 大类 F,K"
     },
     {
       "id": "policy",
       "name": "政策流",
       "description": "扶持政策/专项资金/规划文件",
       "unit": "项",
-      "sources": ["国家发改委", "广东省", "广州市"]
+      "sources": [
+        "国家发改委",
+        "广东省",
+        "广州市"
+      ],
+      "hyt0362_classes": [
+        "K"
+      ],
+      "hyt0362_note": "六流映射 HY/T 0362 大类 K"
     }
   ],
   "phyla": [
@@ -68,10 +122,24 @@
                   "name": "金枪鱼远洋捕捞",
                   "description": "公海及远洋金枪鱼捕捞作业",
                   "enterprises": [
-                    {"name": "广州远洋渔业", "type": "国企", "scale": "大型"},
-                    {"name": "广东顺昌渔业", "type": "民企", "scale": "中型"}
+                    {
+                      "name": "广州远洋渔业",
+                      "type": "国企",
+                      "scale": "大型"
+                    },
+                    {
+                      "name": "广东顺昌渔业",
+                      "type": "民企",
+                      "scale": "中型"
+                    }
                   ],
-                  "signals": ["logistics_flow", "market_entity", "env_risk"]
+                  "signals": [
+                    "logistics_flow",
+                    "market_entity",
+                    "env_risk",
+                    "employment",
+                    "gdp_total"
+                  ]
                 },
                 {
                   "id": "F02",
@@ -79,9 +147,18 @@
                   "name": "远洋鱿钓",
                   "description": "北太平洋、东南太平洋鱿钓作业",
                   "enterprises": [
-                    {"name": "广东大洋渔业", "type": "民企", "scale": "中型"}
+                    {
+                      "name": "广东大洋渔业",
+                      "type": "民企",
+                      "scale": "中型"
+                    }
                   ],
-                  "signals": ["logistics_flow", "env_risk", "policy"]
+                  "signals": [
+                    "logistics_flow",
+                    "env_risk",
+                    "policy",
+                    "employment"
+                  ]
                 }
               ]
             },
@@ -95,10 +172,25 @@
                   "name": "对虾工厂化养殖",
                   "description": "南美白对虾等工厂化高密度养殖",
                   "enterprises": [
-                    {"name": "广州冠海科技", "type": "民企", "scale": "中型"},
-                    {"name": "南沙水产养殖", "type": "国企", "scale": "大型"}
+                    {
+                      "name": "广州冠海科技",
+                      "type": "民企",
+                      "scale": "中型"
+                    },
+                    {
+                      "name": "南沙水产养殖",
+                      "type": "国企",
+                      "scale": "大型"
+                    }
                   ],
-                  "signals": ["fund_flow", "market_entity", "env_risk", "industry_chain"]
+                  "signals": [
+                    "fund_flow",
+                    "market_entity",
+                    "env_risk",
+                    "industry_chain",
+                    "employment",
+                    "production_finance"
+                  ]
                 },
                 {
                   "id": "F04",
@@ -106,9 +198,17 @@
                   "name": "贝类底播养殖",
                   "description": "牡蛎、扇贝等贝类底播增殖",
                   "enterprises": [
-                    {"name": "广东海大集团", "type": "上市", "scale": "大型"}
+                    {
+                      "name": "广东海大集团",
+                      "type": "上市",
+                      "scale": "大型"
+                    }
                   ],
-                  "signals": ["market_entity", "env_risk"]
+                  "signals": [
+                    "market_entity",
+                    "env_risk",
+                    "employment"
+                  ]
                 }
               ]
             },
@@ -122,10 +222,25 @@
                   "name": "人工鱼礁生态牧场",
                   "description": "投礁型海洋牧场建设与运营",
                   "enterprises": [
-                    {"name": "广州南沙海洋牧场", "type": "国企", "scale": "大型"},
-                    {"name": "广东恒兴集团", "type": "民企", "scale": "大型"}
+                    {
+                      "name": "广州南沙海洋牧场",
+                      "type": "国企",
+                      "scale": "大型"
+                    },
+                    {
+                      "name": "广东恒兴集团",
+                      "type": "民企",
+                      "scale": "大型"
+                    }
                   ],
-                  "signals": ["fund_flow", "policy", "logistics_flow", "env_risk"]
+                  "signals": [
+                    "fund_flow",
+                    "policy",
+                    "logistics_flow",
+                    "env_risk",
+                    "employment",
+                    "gdp_total"
+                  ]
                 }
               ]
             },
@@ -139,10 +254,24 @@
                   "name": "冷冻调理食品加工",
                   "description": "冷冻鱼片、调理水产食品深加工",
                   "enterprises": [
-                    {"name": "广州水产集团", "type": "国企", "scale": "大型"},
-                    {"name": "广东国联水产", "type": "上市", "scale": "大型"}
+                    {
+                      "name": "广州水产集团",
+                      "type": "国企",
+                      "scale": "大型"
+                    },
+                    {
+                      "name": "广东国联水产",
+                      "type": "上市",
+                      "scale": "大型"
+                    }
                   ],
-                  "signals": ["fund_flow", "industry_chain", "market_entity"]
+                  "signals": [
+                    "fund_flow",
+                    "industry_chain",
+                    "market_entity",
+                    "employment",
+                    "production_finance"
+                  ]
                 }
               ]
             }
@@ -162,10 +291,25 @@
                   "name": "海上油气勘探开发",
                   "description": "南海油气田勘探、钻井与生产",
                   "enterprises": [
-                    {"name": "中海油深圳分公司", "type": "央企", "scale": "特大型"},
-                    {"name": "广州海洋地质调查局", "type": "事业单位", "scale": "大型"}
+                    {
+                      "name": "中海油深圳分公司",
+                      "type": "央企",
+                      "scale": "特大型"
+                    },
+                    {
+                      "name": "广州海洋地质调查局",
+                      "type": "事业单位",
+                      "scale": "大型"
+                    }
                   ],
-                  "signals": ["fund_flow", "policy", "logistics_flow", "env_risk"]
+                  "signals": [
+                    "fund_flow",
+                    "policy",
+                    "logistics_flow",
+                    "env_risk",
+                    "production_finance",
+                    "gdp_total"
+                  ]
                 }
               ]
             },
@@ -179,10 +323,24 @@
                   "name": "多金属结核/结壳勘探",
                   "description": "深海矿产资源勘探与试采技术",
                   "enterprises": [
-                    {"name": "中国五矿集团", "type": "央企", "scale": "特大型"},
-                    {"name": "长沙矿冶研究院", "type": "科研院所", "scale": "大型"}
+                    {
+                      "name": "中国五矿集团",
+                      "type": "央企",
+                      "scale": "特大型"
+                    },
+                    {
+                      "name": "长沙矿冶研究院",
+                      "type": "科研院所",
+                      "scale": "大型"
+                    }
                   ],
-                  "signals": ["policy", "fund_flow", "industry_chain"]
+                  "signals": [
+                    "policy",
+                    "fund_flow",
+                    "industry_chain",
+                    "sci_tech",
+                    "production_finance"
+                  ]
                 }
               ]
             },
@@ -196,9 +354,18 @@
                   "name": "建筑用海砂开采",
                   "description": "合法海砂开采与淡化处理",
                   "enterprises": [
-                    {"name": "广东广业集团", "type": "国企", "scale": "大型"}
+                    {
+                      "name": "广东广业集团",
+                      "type": "国企",
+                      "scale": "大型"
+                    }
                   ],
-                  "signals": ["policy", "logistics_flow", "env_risk"]
+                  "signals": [
+                    "policy",
+                    "logistics_flow",
+                    "env_risk",
+                    "production_finance"
+                  ]
                 }
               ]
             }
@@ -218,11 +385,30 @@
                   "name": "近海风电开发",
                   "description": "固定式海上风电场建设运营",
                   "enterprises": [
-                    {"name": "中广核新能源", "type": "上市", "scale": "特大型"},
-                    {"name": "三峡广东", "type": "央企", "scale": "特大型"},
-                    {"name": "大唐广东", "type": "央企", "scale": "特大型"}
+                    {
+                      "name": "中广核新能源",
+                      "type": "上市",
+                      "scale": "特大型"
+                    },
+                    {
+                      "name": "三峡广东",
+                      "type": "央企",
+                      "scale": "特大型"
+                    },
+                    {
+                      "name": "大唐广东",
+                      "type": "央企",
+                      "scale": "特大型"
+                    }
                   ],
-                  "signals": ["fund_flow", "logistics_flow", "policy", "env_risk"]
+                  "signals": [
+                    "fund_flow",
+                    "logistics_flow",
+                    "policy",
+                    "env_risk",
+                    "production_finance",
+                    "gdp_total"
+                  ]
                 },
                 {
                   "id": "F11",
@@ -230,10 +416,24 @@
                   "name": "漂浮式海上风电",
                   "description": "深远海漂浮式风电技术研发",
                   "enterprises": [
-                    {"name": "明阳智能", "type": "上市", "scale": "大型"},
-                    {"name": "中集来福士", "type": "央企", "scale": "大型"}
+                    {
+                      "name": "明阳智能",
+                      "type": "上市",
+                      "scale": "大型"
+                    },
+                    {
+                      "name": "中集来福士",
+                      "type": "央企",
+                      "scale": "大型"
+                    }
                   ],
-                  "signals": ["fund_flow", "industry_chain", "policy"]
+                  "signals": [
+                    "fund_flow",
+                    "industry_chain",
+                    "policy",
+                    "sci_tech",
+                    "production_finance"
+                  ]
                 }
               ]
             },
@@ -247,9 +447,18 @@
                   "name": "潮汐波浪能发电",
                   "description": "潮汐能、波浪能发电装置研发",
                   "enterprises": [
-                    {"name": "中科院广州能源所", "type": "科研院所", "scale": "中型"}
+                    {
+                      "name": "中科院广州能源所",
+                      "type": "科研院所",
+                      "scale": "中型"
+                    }
                   ],
-                  "signals": ["policy", "fund_flow", "industry_chain"]
+                  "signals": [
+                    "policy",
+                    "fund_flow",
+                    "industry_chain",
+                    "sci_tech"
+                  ]
                 },
                 {
                   "id": "F13",
@@ -257,9 +466,19 @@
                   "name": "海洋氢能",
                   "description": "海上风电制氢、海水直接电解制氢",
                   "enterprises": [
-                    {"name": "国家电投广东", "type": "央企", "scale": "大型"}
+                    {
+                      "name": "国家电投广东",
+                      "type": "央企",
+                      "scale": "大型"
+                    }
                   ],
-                  "signals": ["fund_flow", "policy", "industry_chain"]
+                  "signals": [
+                    "fund_flow",
+                    "policy",
+                    "industry_chain",
+                    "sci_tech",
+                    "production_finance"
+                  ]
                 }
               ]
             }
@@ -279,10 +498,25 @@
                   "name": "海洋药物研发",
                   "description": "海洋来源创新药物、保健品开发",
                   "enterprises": [
-                    {"name": "中山大学药学院", "type": "高校", "scale": "大型"},
-                    {"name": "广东蓝宝制药", "type": "民企", "scale": "中型"}
+                    {
+                      "name": "中山大学药学院",
+                      "type": "高校",
+                      "scale": "大型"
+                    },
+                    {
+                      "name": "广东蓝宝制药",
+                      "type": "民企",
+                      "scale": "中型"
+                    }
                   ],
-                  "signals": ["fund_flow", "industry_chain", "market_entity", "policy"]
+                  "signals": [
+                    "fund_flow",
+                    "industry_chain",
+                    "market_entity",
+                    "policy",
+                    "sci_tech",
+                    "production_finance"
+                  ]
                 }
               ]
             }
@@ -311,10 +545,25 @@
                   "name": "集装箱船建造",
                   "description": "大型集装箱船舶设计与建造",
                   "enterprises": [
-                    {"name": "广船国际", "type": "央企", "scale": "特大型"},
-                    {"name": "广州文冲船厂", "type": "央企", "scale": "大型"}
+                    {
+                      "name": "广船国际",
+                      "type": "央企",
+                      "scale": "特大型"
+                    },
+                    {
+                      "name": "广州文冲船厂",
+                      "type": "央企",
+                      "scale": "大型"
+                    }
                   ],
-                  "signals": ["fund_flow", "logistics_flow", "market_entity", "policy"]
+                  "signals": [
+                    "fund_flow",
+                    "logistics_flow",
+                    "market_entity",
+                    "policy",
+                    "price_index",
+                    "production_finance"
+                  ]
                 },
                 {
                   "id": "F16",
@@ -322,9 +571,19 @@
                   "name": "LNG船/特种船舶",
                   "description": "液化气船、豪华邮轮等高附加值船舶",
                   "enterprises": [
-                    {"name": "广船国际南沙", "type": "央企", "scale": "特大型"}
+                    {
+                      "name": "广船国际南沙",
+                      "type": "央企",
+                      "scale": "特大型"
+                    }
                   ],
-                  "signals": ["fund_flow", "industry_chain", "logistics_flow"]
+                  "signals": [
+                    "fund_flow",
+                    "industry_chain",
+                    "logistics_flow",
+                    "price_index",
+                    "production_finance"
+                  ]
                 }
               ]
             },
@@ -338,10 +597,23 @@
                   "name": "船舶改装维修",
                   "description": "船舶修理、改装、拆解服务",
                   "enterprises": [
-                    {"name": "广州中船龙穴", "type": "央企", "scale": "大型"},
-                    {"name": "广州黄埔船厂", "type": "央企", "scale": "大型"}
+                    {
+                      "name": "广州中船龙穴",
+                      "type": "央企",
+                      "scale": "大型"
+                    },
+                    {
+                      "name": "广州黄埔船厂",
+                      "type": "央企",
+                      "scale": "大型"
+                    }
                   ],
-                  "signals": ["logistics_flow", "market_entity"]
+                  "signals": [
+                    "logistics_flow",
+                    "market_entity",
+                    "price_index",
+                    "production_finance"
+                  ]
                 }
               ]
             }
@@ -361,9 +633,19 @@
                   "name": "自升式钻井平台",
                   "description": "自升式、半潜式钻井平台建造",
                   "enterprises": [
-                    {"name": "广州中船黄埔", "type": "央企", "scale": "特大型"}
+                    {
+                      "name": "广州中船黄埔",
+                      "type": "央企",
+                      "scale": "特大型"
+                    }
                   ],
-                  "signals": ["fund_flow", "logistics_flow", "policy"]
+                  "signals": [
+                    "fund_flow",
+                    "logistics_flow",
+                    "policy",
+                    "production_finance",
+                    "sci_tech"
+                  ]
                 }
               ]
             },
@@ -377,10 +659,24 @@
                   "name": "ROV/AUV研发制造",
                   "description": "遥控潜水器、自主水下航行器",
                   "enterprises": [
-                    {"name": "广州智能装备研究院", "type": "科研院所", "scale": "中型"},
-                    {"name": "深圳海兰信", "type": "上市", "scale": "中型"}
+                    {
+                      "name": "广州智能装备研究院",
+                      "type": "科研院所",
+                      "scale": "中型"
+                    },
+                    {
+                      "name": "深圳海兰信",
+                      "type": "上市",
+                      "scale": "中型"
+                    }
                   ],
-                  "signals": ["fund_flow", "industry_chain", "market_entity"]
+                  "signals": [
+                    "fund_flow",
+                    "industry_chain",
+                    "market_entity",
+                    "sci_tech",
+                    "production_finance"
+                  ]
                 }
               ]
             }
@@ -400,10 +696,23 @@
                   "name": "CTD/ADCP传感器",
                   "description": "温盐深、海流剖面测量设备",
                   "enterprises": [
-                    {"name": "中科院南海所", "type": "科研院所", "scale": "大型"},
-                    {"name": "广州中海达", "type": "上市", "scale": "大型"}
+                    {
+                      "name": "中科院南海所",
+                      "type": "科研院所",
+                      "scale": "大型"
+                    },
+                    {
+                      "name": "广州中海达",
+                      "type": "上市",
+                      "scale": "大型"
+                    }
                   ],
-                  "signals": ["fund_flow", "industry_chain", "market_entity"]
+                  "signals": [
+                    "fund_flow",
+                    "industry_chain",
+                    "market_entity",
+                    "sci_tech"
+                  ]
                 }
               ]
             },
@@ -417,9 +726,18 @@
                   "name": "海洋卫星地面应用",
                   "description": "海洋卫星数据处理与应用服务",
                   "enterprises": [
-                    {"name": "国家卫星海洋应用中心", "type": "事业单位", "scale": "大型"}
+                    {
+                      "name": "国家卫星海洋应用中心",
+                      "type": "事业单位",
+                      "scale": "大型"
+                    }
                   ],
-                  "signals": ["policy", "fund_flow", "industry_chain"]
+                  "signals": [
+                    "policy",
+                    "fund_flow",
+                    "industry_chain",
+                    "sci_tech"
+                  ]
                 }
               ]
             }
@@ -448,10 +766,26 @@
                   "name": "集装箱码头运营",
                   "description": "集装箱装卸、堆存、中转服务",
                   "enterprises": [
-                    {"name": "广州港集团", "type": "上市", "scale": "特大型"},
-                    {"name": "南沙国际物流中心", "type": "国企", "scale": "大型"}
+                    {
+                      "name": "广州港集团",
+                      "type": "上市",
+                      "scale": "特大型"
+                    },
+                    {
+                      "name": "南沙国际物流中心",
+                      "type": "国企",
+                      "scale": "大型"
+                    }
                   ],
-                  "signals": ["logistics_flow", "fund_flow", "market_entity", "policy"]
+                  "signals": [
+                    "logistics_flow",
+                    "fund_flow",
+                    "market_entity",
+                    "policy",
+                    "price_index",
+                    "employment",
+                    "gdp_total"
+                  ]
                 }
               ]
             },
@@ -465,10 +799,25 @@
                   "name": "国际航运",
                   "description": "远洋集装箱运输、散货运输",
                   "enterprises": [
-                    {"name": "中远海运", "type": "央企", "scale": "特大型"},
-                    {"name": "广东安通控股", "type": "民企", "scale": "大型"}
+                    {
+                      "name": "中远海运",
+                      "type": "央企",
+                      "scale": "特大型"
+                    },
+                    {
+                      "name": "广东安通控股",
+                      "type": "民企",
+                      "scale": "大型"
+                    }
                   ],
-                  "signals": ["logistics_flow", "market_entity", "fund_flow"]
+                  "signals": [
+                    "logistics_flow",
+                    "market_entity",
+                    "fund_flow",
+                    "price_index",
+                    "employment",
+                    "gdp_total"
+                  ]
                 }
               ]
             }
@@ -488,10 +837,23 @@
                   "name": "海上安装工程",
                   "description": "海上风电基础安装、管道铺设",
                   "enterprises": [
-                    {"name": "广州海洋工程", "type": "国企", "scale": "大型"},
-                    {"name": "中交广州航道局", "type": "央企", "scale": "特大型"}
+                    {
+                      "name": "广州海洋工程",
+                      "type": "国企",
+                      "scale": "大型"
+                    },
+                    {
+                      "name": "中交广州航道局",
+                      "type": "央企",
+                      "scale": "特大型"
+                    }
                   ],
-                  "signals": ["logistics_flow", "fund_flow", "env_risk"]
+                  "signals": [
+                    "logistics_flow",
+                    "fund_flow",
+                    "env_risk",
+                    "production_finance"
+                  ]
                 }
               ]
             },
@@ -505,10 +867,23 @@
                   "name": "船舶检验",
                   "description": "船舶建造检验、入级检验",
                   "enterprises": [
-                    {"name": "中国船级社广州分社", "type": "事业单位", "scale": "大型"},
-                    {"name": "广州船舶检验局", "type": "事业单位", "scale": "中型"}
+                    {
+                      "name": "中国船级社广州分社",
+                      "type": "事业单位",
+                      "scale": "大型"
+                    },
+                    {
+                      "name": "广州船舶检验局",
+                      "type": "事业单位",
+                      "scale": "中型"
+                    }
                   ],
-                  "signals": ["market_entity", "industry_chain", "policy"]
+                  "signals": [
+                    "market_entity",
+                    "industry_chain",
+                    "policy",
+                    "production_finance"
+                  ]
                 }
               ]
             }
@@ -528,10 +903,23 @@
                   "name": "风暴潮/海啸预警",
                   "description": "海洋灾害监测预警服务",
                   "enterprises": [
-                    {"name": "国家海洋局南海预报中心", "type": "事业单位", "scale": "大型"},
-                    {"name": "广东省海洋预报台", "type": "事业单位", "scale": "中型"}
+                    {
+                      "name": "国家海洋局南海预报中心",
+                      "type": "事业单位",
+                      "scale": "大型"
+                    },
+                    {
+                      "name": "广东省海洋预报台",
+                      "type": "事业单位",
+                      "scale": "中型"
+                    }
                   ],
-                  "signals": ["env_risk", "policy", "market_entity"]
+                  "signals": [
+                    "env_risk",
+                    "policy",
+                    "market_entity",
+                    "sci_tech"
+                  ]
                 }
               ]
             }
@@ -551,10 +939,24 @@
                   "name": "邮轮旅游",
                   "description": "邮轮母港运营、邮轮旅游服务",
                   "enterprises": [
-                    {"name": "南沙国际邮轮母港", "type": "国企", "scale": "大型"},
-                    {"name": "云顶香港", "type": "上市", "scale": "大型"}
+                    {
+                      "name": "南沙国际邮轮母港",
+                      "type": "国企",
+                      "scale": "大型"
+                    },
+                    {
+                      "name": "云顶香港",
+                      "type": "上市",
+                      "scale": "大型"
+                    }
                   ],
-                  "signals": ["logistics_flow", "market_entity", "fund_flow"]
+                  "signals": [
+                    "logistics_flow",
+                    "market_entity",
+                    "fund_flow",
+                    "employment",
+                    "gdp_total"
+                  ]
                 },
                 {
                   "id": "F28",
@@ -562,9 +964,18 @@
                   "name": "海岛旅游",
                   "description": "海岛生态观光、海上运动",
                   "enterprises": [
-                    {"name": "南沙湿地旅游", "type": "国企", "scale": "中型"}
+                    {
+                      "name": "南沙湿地旅游",
+                      "type": "国企",
+                      "scale": "中型"
+                    }
                   ],
-                  "signals": ["logistics_flow", "env_risk", "policy"]
+                  "signals": [
+                    "logistics_flow",
+                    "env_risk",
+                    "policy",
+                    "employment"
+                  ]
                 }
               ]
             }
@@ -593,11 +1004,28 @@
                   "name": "国家实验室",
                   "description": "广州南沙实验室等国家级平台",
                   "enterprises": [
-                    {"name": "广州海洋科学与技术广东省实验室", "type": "事业单位", "scale": "大型"},
-                    {"name": "中科院南海海洋研究所", "type": "科研院所", "scale": "大型"},
-                    {"name": "中山大学海洋学院", "type": "高校", "scale": "大型"}
+                    {
+                      "name": "广州海洋科学与技术广东省实验室",
+                      "type": "事业单位",
+                      "scale": "大型"
+                    },
+                    {
+                      "name": "中科院南海海洋研究所",
+                      "type": "科研院所",
+                      "scale": "大型"
+                    },
+                    {
+                      "name": "中山大学海洋学院",
+                      "type": "高校",
+                      "scale": "大型"
+                    }
                   ],
-                  "signals": ["fund_flow", "policy", "industry_chain"]
+                  "signals": [
+                    "fund_flow",
+                    "policy",
+                    "industry_chain",
+                    "sci_tech"
+                  ]
                 },
                 {
                   "id": "F30",
@@ -605,9 +1033,19 @@
                   "name": "地质调查",
                   "description": "海洋地质、矿产资源调查",
                   "enterprises": [
-                    {"name": "广州海洋地质调查局", "type": "事业单位", "scale": "大型"}
+                    {
+                      "name": "广州海洋地质调查局",
+                      "type": "事业单位",
+                      "scale": "大型"
+                    }
                   ],
-                  "signals": ["fund_flow", "policy", "industry_chain", "env_risk"]
+                  "signals": [
+                    "fund_flow",
+                    "policy",
+                    "industry_chain",
+                    "env_risk",
+                    "sci_tech"
+                  ]
                 }
               ]
             }
@@ -627,10 +1065,23 @@
                   "name": "海洋产业基金",
                   "description": "海洋产业股权投资、VC/PE",
                   "enterprises": [
-                    {"name": "广东海洋产业基金", "type": "国企", "scale": "大型"},
-                    {"name": "广州科技金融创新投", "type": "国企", "scale": "中型"}
+                    {
+                      "name": "广东海洋产业基金",
+                      "type": "国企",
+                      "scale": "大型"
+                    },
+                    {
+                      "name": "广州科技金融创新投",
+                      "type": "国企",
+                      "scale": "中型"
+                    }
                   ],
-                  "signals": ["fund_flow", "market_entity", "policy"]
+                  "signals": [
+                    "fund_flow",
+                    "market_entity",
+                    "policy",
+                    "production_finance"
+                  ]
                 },
                 {
                   "id": "F32",
@@ -638,10 +1089,23 @@
                   "name": "海洋保险",
                   "description": "船舶保险、货运险、海工险",
                   "enterprises": [
-                    {"name": "人保财险广东", "type": "国企", "scale": "大型"},
-                    {"name": "平安产险", "type": "上市", "scale": "特大型"}
+                    {
+                      "name": "人保财险广东",
+                      "type": "国企",
+                      "scale": "大型"
+                    },
+                    {
+                      "name": "平安产险",
+                      "type": "上市",
+                      "scale": "特大型"
+                    }
                   ],
-                  "signals": ["fund_flow", "market_entity", "logistics_flow"]
+                  "signals": [
+                    "fund_flow",
+                    "market_entity",
+                    "logistics_flow",
+                    "production_finance"
+                  ]
                 },
                 {
                   "id": "F33",
@@ -649,10 +1113,24 @@
                   "name": "海洋碳汇",
                   "description": "蓝碳交易、碳汇计量与监测",
                   "enterprises": [
-                    {"name": "广东碳排放权交易所", "type": "国企", "scale": "中型"},
-                    {"name": "中国科学院华南植物园", "type": "科研院所", "scale": "中型"}
+                    {
+                      "name": "广东碳排放权交易所",
+                      "type": "国企",
+                      "scale": "中型"
+                    },
+                    {
+                      "name": "中国科学院华南植物园",
+                      "type": "科研院所",
+                      "scale": "中型"
+                    }
                   ],
-                  "signals": ["fund_flow", "policy", "env_risk"]
+                  "signals": [
+                    "fund_flow",
+                    "policy",
+                    "env_risk",
+                    "sci_tech",
+                    "gdp_total"
+                  ]
                 }
               ]
             }
@@ -672,10 +1150,24 @@
                   "name": "海洋大数据平台",
                   "description": "海洋数据采集、存储、分析服务",
                   "enterprises": [
-                    {"name": "广州智慧海洋科技", "type": "民企", "scale": "中型"},
-                    {"name": "广东海洋大学", "type": "高校", "scale": "中型"}
+                    {
+                      "name": "广州智慧海洋科技",
+                      "type": "民企",
+                      "scale": "中型"
+                    },
+                    {
+                      "name": "广东海洋大学",
+                      "type": "高校",
+                      "scale": "中型"
+                    }
                   ],
-                  "signals": ["fund_flow", "industry_chain", "market_entity", "policy"]
+                  "signals": [
+                    "fund_flow",
+                    "industry_chain",
+                    "market_entity",
+                    "policy",
+                    "sci_tech"
+                  ]
                 }
               ]
             },
@@ -689,10 +1181,23 @@
                   "name": "海洋AI应用",
                   "description": "智能养殖、智能航运、灾害预测AI",
                   "enterprises": [
-                    {"name": "云从科技", "type": "上市", "scale": "大型"},
-                    {"name": "广电运通", "type": "上市", "scale": "大型"}
+                    {
+                      "name": "云从科技",
+                      "type": "上市",
+                      "scale": "大型"
+                    },
+                    {
+                      "name": "广电运通",
+                      "type": "上市",
+                      "scale": "大型"
+                    }
                   ],
-                  "signals": ["fund_flow", "industry_chain", "policy"]
+                  "signals": [
+                    "fund_flow",
+                    "industry_chain",
+                    "policy",
+                    "sci_tech"
+                  ]
                 }
               ]
             }
@@ -700,5 +1205,102 @@
         }
       ]
     }
-  ]
+  ],
+  "standard_ref": {
+    "code": "HY/T 0362-2023",
+    "title": "海洋经济运行监测指标体系",
+    "publisher": "自然资源部 / 国家海洋信息中心起草 / SAC/TC 283",
+    "publish_date": "2023-07-11",
+    "implement_date": "2023-09-01",
+    "related": [
+      "GB/T 20794",
+      "HY/T 0277-2019",
+      "HY/T 160-2013"
+    ],
+    "doc": "docs/HYT0362-dual-track-2026-10-21.md"
+  },
+  "accounting_dimensions": [
+    {
+      "id": "gdp_total",
+      "name": "海洋经济总量核算",
+      "description": "海洋生产总值/一二三产增加值/增速（权威低频）",
+      "unit": "亿元/%",
+      "sources": [
+        "中国海洋经济统计年鉴",
+        "广东海洋经济统计公报",
+        "自然资源部初步核算"
+      ],
+      "freq": "年度",
+      "hyt0362_classes": [
+        "B"
+      ],
+      "hyt0362_note": "对应 HY/T 0362-2023 大类 B 海洋经济核算"
+    },
+    {
+      "id": "employment",
+      "name": "涉海就业",
+      "description": "涉海就业人数/劳动报酬/渔民纯收入",
+      "unit": "人/元",
+      "sources": [
+        "统计年鉴",
+        "人社公开数据"
+      ],
+      "freq": "年度",
+      "hyt0362_classes": [
+        "C"
+      ],
+      "hyt0362_note": "对应大类 C 涉海就业人员及劳动报酬"
+    },
+    {
+      "id": "price_index",
+      "name": "航运价格指数",
+      "description": "BDI/WCI/CBFI/CCFI/SCFI/克拉克森等运价指数",
+      "unit": "点",
+      "sources": [
+        "上海航运交易所",
+        "公开航运指数转载"
+      ],
+      "freq": "日/周",
+      "hyt0362_classes": [
+        "H"
+      ],
+      "hyt0362_note": "对应大类 H 海洋主要产业生产价格（海运价）"
+    },
+    {
+      "id": "sci_tech",
+      "name": "海洋科技",
+      "description": "R&D机构/人员/经费/专利/新产品",
+      "unit": "项/人/万元",
+      "sources": [
+        "国家知识产权局",
+        "科技统计"
+      ],
+      "freq": "年度",
+      "hyt0362_classes": [
+        "I"
+      ],
+      "hyt0362_note": "对应大类 I 海洋科学技术"
+    },
+    {
+      "id": "production_finance",
+      "name": "企业生产经营",
+      "description": "资产负债/损益/产销（企业年报口径）",
+      "unit": "万元",
+      "sources": [
+        "企查查年报",
+        "上市公告"
+      ],
+      "freq": "季度/年度",
+      "hyt0362_classes": [
+        "D",
+        "E"
+      ],
+      "hyt0362_note": "对应大类 D 生产经营 + E 对外经济（部分）"
+    }
+  ],
+  "dual_track": {
+    "signal_layer": "signal_dimensions（六流：资金/物流/市场主体/产业链/环境风险/政策）",
+    "accounting_layer": "accounting_dimensions（五维：总量/就业/价格/科技/生产经营）",
+    "rule": "无公开数只挂维度 id，禁止编造数值；省数不作市数"
+  }
 }

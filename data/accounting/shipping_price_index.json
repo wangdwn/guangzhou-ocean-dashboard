@@ -1,0 +1,58 @@
+{
+  "schema": "shipping_price_index/1.0",
+  "dimension_id": "price_index",
+  "generated_at": "2026-10-25T09:46:15+0800",
+  "status": "ok",
+  "indices": [
+    {
+      "id": "SCFI",
+      "name": "上海出口集装箱运价指数（综合）",
+      "value": 3681.34,
+      "unit": "点",
+      "change_points": 1.76,
+      "as_of": "2026-10-23",
+      "source_url": "https://wap.eastmoney.com/a/202610233906214289.html",
+      "hyt0362": "H（海运价）"
+    },
+    {
+      "id": "CCFI",
+      "name": "中国出口集装箱运价综合指数",
+      "value": 1876.27,
+      "unit": "点",
+      "change_pct": -2.4,
+      "as_of": "2026-10-23",
+      "source_url": "https://wap.eastmoney.com/a/202610233906214289.html",
+      "hyt0362": "H（海运价）"
+    },
+    {
+      "id": "BDI",
+      "name": "波罗的海干散货指数",
+      "value": 2660.0,
+      "unit": "点",
+      "as_of": null,
+      "source_url": "https://www.investing.com/indices/baltic-dry",
+      "hyt0362": "H（海运价）"
+    }
+  ],
+  "raw": {
+    "scfi_ccfi": {
+      "status": "ok",
+      "source_name": "eastmoney_20261023",
+      "source_url": "https://wap.eastmoney.com/a/202610233906214289.html",
+      "fetched_at": "2026-10-25T09:46:15+0800",
+      "scfi": 3681.34,
+      "ccfi": 1876.27,
+      "scfi_change_points": 1.76,
+      "ccfi_change_pct": -2.4,
+      "as_of": "2026-10-23"
+    },
+    "bdi": {
+      "status": "ok",
+      "source_name": "investing_bdi",
+      "source_url": "https://www.investing.com/indices/baltic-dry",
+      "fetched_at": "2026-10-25T09:46:15+0800",
+      "bdi": 2660.0
+    }
+  },
+  "note": "旁证全球航运景气，不替代广州港吞吐 KPI；省/全球指数不作市数。"
+}
