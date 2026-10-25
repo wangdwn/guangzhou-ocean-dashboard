@@ -1,0 +1,2622 @@
+{
+  "schema": "signals_bundle/1.1",
+  "version_note": "dual-track HY/T 0362-2023 + six-flow",
+  "generated_at": "2026-10-25T10:07:35+0800",
+  "methodology": "双轨：①信号流层——产业科×六维格子表示库内可追溯证据有/无（非景气灯）；资金←专项资金库；政策←政策库；产业链←招投标；物流←资源点+公告；主体←企业名录 sector；环境←NOAA 海温。②核算基准层——HY/T 0362 五维（总量/就业/价格/科技/生产经营）；价格指数自动采集；总量仅录已公开省报；市数〔待核〕不编造；省数不作市数。",
+  "kpis": [
+    {
+      "id": "listed",
+      "label": "上市（标签或 capital.listed）",
+      "value": 38,
+      "unit": "家",
+      "source": "enterprises.json#enterprises[].capital.listed|tag",
+      "pan": "质量"
+    },
+    {
+      "id": "high_tech",
+      "label": "高新技术（tag 含「高新」）",
+      "value": 609,
+      "unit": "家",
+      "source": "enterprises.json#enterprises[].tag",
+      "pan": "质量"
+    },
+    {
+      "id": "zjtx",
+      "label": "专精特新（tag 含「专精」）",
+      "value": 66,
+      "unit": "家",
+      "source": "enterprises.json#enterprises[].tag",
+      "pan": "质量"
+    },
+    {
+      "id": "sishang",
+      "label": "四上（sisheng/tag）",
+      "value": 6133,
+      "unit": "家",
+      "source": "enterprises.json#enterprises[].sisheng|tag",
+      "pan": "质量"
+    },
+    {
+      "id": "funding_count",
+      "label": "专项资金条目",
+      "value": 56,
+      "unit": "条",
+      "source": "marine-monitor/app/public/data/funding.json#items (updated=2026-09-14)",
+      "pan": "经营"
+    },
+    {
+      "id": "notices_total",
+      "label": "招投标公告",
+      "value": 15,
+      "unit": "条",
+      "source": "geo-ocean-bidding/docs/data/notices.json#notices (updated_at=2026-09-19)",
+      "pan": "经营"
+    },
+    {
+      "id": "ent_total",
+      "label": "在库企业",
+      "value": 7045,
+      "unit": "家",
+      "source": "enterprises.json#meta.count",
+      "pan": "家底"
+    },
+    {
+      "id": "scfi",
+      "label": "SCFI（2026-10-23）",
+      "value": 3681.34,
+      "unit": "点",
+      "source": "https://wap.eastmoney.com/a/202610233906214289.html",
+      "pan": "核算·价格"
+    }
+  ],
+  "env_sst": {
+    "status": "live",
+    "value": 28.37,
+    "unit": "°C",
+    "signal": "green",
+    "label": "适宜区间",
+    "as_of": "2026-10-23",
+    "point": {
+      "lat": 22.625,
+      "lon": 113.625
+    },
+    "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
+    "rule": "绿灯 22–29°C；黄灯 20–22 或 29–31；红灯其余",
+    "note": "广州海域共用格点，非分产业指标",
+    "series": [
+      {
+        "time": "2026-10-03",
+        "sst": 30.01,
+        "lat": 22.625,
+        "lon": 113.625
+      },
+      {
+        "time": "2026-10-04",
+        "sst": 30.66,
+        "lat": 22.625,
+        "lon": 113.625
+      },
+      {
+        "time": "2026-10-05",
+        "sst": 29.59,
+        "lat": 22.625,
+        "lon": 113.625
+      },
+      {
+        "time": "2026-10-06",
+        "sst": 28.68,
+        "lat": 22.625,
+        "lon": 113.625
+      },
+      {
+        "time": "2026-10-07",
+        "sst": 28.41,
+        "lat": 22.625,
+        "lon": 113.625
+      },
+      {
+        "time": "2026-10-08",
+        "sst": 28.01,
+        "lat": 22.625,
+        "lon": 113.625
+      },
+      {
+        "time": "2026-10-09",
+        "sst": 28.42,
+        "lat": 22.625,
+        "lon": 113.625
+      },
+      {
+        "time": "2026-10-10",
+        "sst": 28.71,
+        "lat": 22.625,
+        "lon": 113.625
+      },
+      {
+        "time": "2026-10-11",
+        "sst": 28.74,
+        "lat": 22.625,
+        "lon": 113.625
+      },
+      {
+        "time": "2026-10-12",
+        "sst": 28.58,
+        "lat": 22.625,
+        "lon": 113.625
+      },
+      {
+        "time": "2026-10-13",
+        "sst": 29.01,
+        "lat": 22.625,
+        "lon": 113.625
+      },
+      {
+        "time": "2026-10-15",
+        "sst": 28.8,
+        "lat": 22.625,
+        "lon": 113.625
+      },
+      {
+        "time": "2026-10-16",
+        "sst": 28.85,
+        "lat": 22.625,
+        "lon": 113.625
+      },
+      {
+        "time": "2026-10-17",
+        "sst": 28.9,
+        "lat": 22.625,
+        "lon": 113.625
+      },
+      {
+        "time": "2026-10-18",
+        "sst": 29.11,
+        "lat": 22.625,
+        "lon": 113.625
+      },
+      {
+        "time": "2026-10-19",
+        "sst": 29.18,
+        "lat": 22.625,
+        "lon": 113.625
+      },
+      {
+        "time": "2026-10-20",
+        "sst": 29.29,
+        "lat": 22.625,
+        "lon": 113.625
+      },
+      {
+        "time": "2026-10-21",
+        "sst": 29.33,
+        "lat": 22.625,
+        "lon": 113.625
+      },
+      {
+        "time": "2026-10-22",
+        "sst": 28.7,
+        "lat": 22.625,
+        "lon": 113.625
+      },
+      {
+        "time": "2026-10-23",
+        "sst": 28.37,
+        "lat": 22.625,
+        "lon": 113.625
+      }
+    ]
+  },
+  "accounting": [
+    {
+      "id": "gdp_total",
+      "name": "gdp_total",
+      "hyt0362": "B 海洋经济核算",
+      "status": "partial",
+      "value": 5231,
+      "unit": "亿元",
+      "label": "广州海洋生产总值",
+      "geo": "广州市",
+      "pending_tag": "〔待核〕",
+      "ok_count": 4,
+      "pending_count": 1,
+      "source": "data/accounting/"
+    },
+    {
+      "id": "employment",
+      "name": "employment",
+      "hyt0362": "C 涉海就业人员及劳动报酬",
+      "status": "partial",
+      "value": 27381.84,
+      "unit": "元",
+      "label": "渔民家庭人均纯收入",
+      "geo": "广东省",
+      "pending_tag": "〔待核〕",
+      "ok_count": 3,
+      "pending_count": 2,
+      "source": "data/accounting/"
+    },
+    {
+      "id": "sci_tech",
+      "name": "sci_tech",
+      "hyt0362": "I 海洋科学技术",
+      "status": "partial",
+      "value": 66,
+      "unit": "家",
+      "label": "涉海科研机构数",
+      "geo": "广州市",
+      "pending_tag": "〔待核〕",
+      "ok_count": 5,
+      "pending_count": 2,
+      "source": "data/accounting/"
+    },
+    {
+      "id": "production_finance",
+      "name": "production_finance",
+      "hyt0362": "D 生产经营 + E 对外经济",
+      "status": "partial",
+      "value": 30000,
+      "unit": "家",
+      "label": "海洋经济活动单位",
+      "geo": "广州市",
+      "pending_tag": "〔待核〕",
+      "ok_count": 7,
+      "pending_count": 1,
+      "source": "data/accounting/"
+    },
+    {
+      "id": "price_index",
+      "name": "航运价格指数",
+      "status": "ok",
+      "indices": [
+        {
+          "id": "SCFI",
+          "value": 3681.34,
+          "as_of": "2026-10-23",
+          "unit": "点"
+        },
+        {
+          "id": "CCFI",
+          "value": 1876.27,
+          "as_of": "2026-10-23",
+          "unit": "点"
+        },
+        {
+          "id": "BDI",
+          "value": 2660.0,
+          "as_of": "2026-10-23",
+          "unit": "点"
+        }
+      ],
+      "source": "data/accounting/shipping_price_index.json"
+    }
+  ],
+  "shipping_prices": {
+    "schema": "shipping_price_index/1.0",
+    "dimension_id": "price_index",
+    "generated_at": "2026-10-25T10:06:00+0800",
+    "status": "ok",
+    "indices": [
+      {
+        "id": "SCFI",
+        "name": "上海出口集装箱运价指数（综合）",
+        "value": 3681.34,
+        "unit": "点",
+        "change_points": 1.76,
+        "as_of": "2026-10-23",
+        "source_url": "https://wap.eastmoney.com/a/202610233906214289.html",
+        "hyt0362": "H（海运价）"
+      },
+      {
+        "id": "CCFI",
+        "name": "中国出口集装箱运价综合指数",
+        "value": 1876.27,
+        "unit": "点",
+        "change_pct": -2.4,
+        "as_of": "2026-10-23",
+        "source_url": "https://wap.eastmoney.com/a/202610233906214289.html",
+        "hyt0362": "H（海运价）"
+      },
+      {
+        "id": "BDI",
+        "name": "波罗的海干散货指数",
+        "value": 2660.0,
+        "unit": "点",
+        "as_of": "2026-10-23",
+        "source_url": "https://www.hellenicshippingnews.com/baltic-dry-index-falls-to-2660-down-33-points/",
+        "hyt0362": "H（海运价）",
+        "change_points": -33,
+        "source_name": "Hellenic Shipping News"
+      }
+    ],
+    "raw": {
+      "scfi_ccfi": {
+        "status": "ok",
+        "source_name": "eastmoney_20261023",
+        "source_url": "https://wap.eastmoney.com/a/202610233906214289.html",
+        "fetched_at": "2026-10-25T09:46:15+0800",
+        "scfi": 3681.34,
+        "ccfi": 1876.27,
+        "scfi_change_points": 1.76,
+        "ccfi_change_pct": -2.4,
+        "as_of": "2026-10-23"
+      },
+      "bdi": {
+        "status": "ok",
+        "source_name": "hellenic_shipping_news",
+        "source_url": "https://www.hellenicshippingnews.com/baltic-dry-index-falls-to-2660-down-33-points/",
+        "fetched_at": "2026-10-25T10:06:00+0800",
+        "bdi": 2660.0,
+        "as_of": "2026-10-23",
+        "change_points": -33,
+        "note": "Friday Oct 23 2026 BDI 2660 (−33)"
+      }
+    },
+    "note": "旁证全球航运景气，不替代广州港吞吐 KPI；省/全球指数不作市数。SCFI/CCFI as_of=2026-10-23；BDI as_of=2026-10-23。"
+  },
+  "sector_counts": {
+    "海洋矿业": 29,
+    "海洋工程装备制造业": 214,
+    "海洋旅游业": 116,
+    "海洋船舶工业": 10,
+    "海洋生物医药业": 429,
+    "海洋电力业": 31,
+    "海洋交通运输业": 441,
+    "待打标": 5773,
+    "海洋工程建筑业": 2
+  },
+  "sources": {
+    "structure_judgment": "/workspace/wangdwn.github.io/data/structure_judgment.json",
+    "enterprises_meta_count": 7045,
+    "funding_updated": "2026-10-19",
+    "funding_count": 56,
+    "policies_total": 8,
+    "notices_updated": "2026-09-19",
+    "notices_count": 15,
+    "map_count": 14,
+    "shipping_prices": "data/accounting/shipping_price_index.json",
+    "industry_tree_version": "3.0"
+  },
+  "stats": {
+    "family_count": 35,
+    "evidence_cells": 39,
+    "none_cells": 75,
+    "live_cells": 18
+  },
+  "families": {
+    "F01": {
+      "id": "F01",
+      "code": "DEEP-FISH-01",
+      "name": "金枪鱼远洋捕捞",
+      "declared_signals": [
+        "logistics_flow",
+        "env_risk",
+        "gdp_total",
+        "employment",
+        "market_entity"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "evidence",
+          "count": 1,
+          "samples": [
+            {
+              "name": "广东省捕捞业改造提升项目",
+              "status": "closed",
+              "amountRange": "按渔船类型核定",
+              "matched": [
+                "捕捞"
+              ],
+              "basisDoc": "《2025年广东省捕捞业改造提升项目申报指南》"
+            }
+          ],
+          "source": "marine-monitor/funding.json"
+        },
+        "logistics_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/map.json + notices.json"
+        },
+        "market_entity": {
+          "state": "none",
+          "count": 0,
+          "sectors": [],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "env_risk": {
+          "state": "live",
+          "signal": "green",
+          "value": 28.37,
+          "unit": "°C",
+          "as_of": "2026-10-23",
+          "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
+          "note": "广州海域共用格点，非分产业指标"
+        },
+        "industry_chain": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "policy": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F02": {
+      "id": "F02",
+      "code": "DEEP-FISH-02",
+      "name": "远洋鱿钓",
+      "declared_signals": [
+        "policy",
+        "env_risk",
+        "employment",
+        "logistics_flow"
+      ],
+      "dims": {
+        "policy": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/policies.json"
+        },
+        "logistics_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/map.json + notices.json"
+        },
+        "env_risk": {
+          "state": "live",
+          "signal": "green",
+          "value": 28.37,
+          "unit": "°C",
+          "as_of": "2026-10-23",
+          "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
+          "note": "广州海域共用格点，非分产业指标"
+        },
+        "fund_flow": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "market_entity": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "industry_chain": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F03": {
+      "id": "F03",
+      "code": "AQUA-01",
+      "name": "对虾工厂化养殖",
+      "declared_signals": [
+        "production_finance",
+        "env_risk",
+        "fund_flow",
+        "employment",
+        "market_entity",
+        "industry_chain"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "evidence",
+          "count": 2,
+          "samples": [
+            {
+              "name": "国家重点研发计划 海洋农业与淡水渔业科技创新 专项陆基工厂项目...",
+              "status": "ongoing",
+              "amountRange": "详见申报指南",
+              "matched": [
+                "工厂化养殖"
+              ],
+              "basisDoc": "国家重点研发计划 海洋农业与淡水渔业科技创新 专项陆基工厂项目..."
+            },
+            {
+              "name": "国家重点研发计划 海洋农业与淡水渔业科技创新 专项项目 陆基工厂化养殖关键技术与智能化装备 2026年度工作推进会在烟台莱州市召开|水产|黄海|烟台市|...",
+              "status": "ongoing",
+              "amountRange": "详见申报指南",
+              "matched": [
+                "工厂化养殖"
+              ],
+              "basisDoc": "国家重点研发计划 海洋农业与淡水渔业科技创新 专项项目 陆基工厂化养殖关键技术与智能化装备 2026年度工作推进会在烟台莱州市召开|水产|黄海|烟台市|..."
+            }
+          ],
+          "source": "marine-monitor/funding.json"
+        },
+        "industry_chain": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "geo-ocean-bidding/notices.json"
+        },
+        "market_entity": {
+          "state": "none",
+          "count": 0,
+          "sectors": [],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "env_risk": {
+          "state": "live",
+          "signal": "green",
+          "value": 28.37,
+          "unit": "°C",
+          "as_of": "2026-10-23",
+          "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
+          "note": "广州海域共用格点，非分产业指标"
+        },
+        "logistics_flow": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "policy": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F04": {
+      "id": "F04",
+      "code": "AQUA-02",
+      "name": "贝类底播养殖",
+      "declared_signals": [
+        "market_entity",
+        "env_risk",
+        "employment"
+      ],
+      "dims": {
+        "market_entity": {
+          "state": "none",
+          "count": 0,
+          "sectors": [],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "env_risk": {
+          "state": "live",
+          "signal": "green",
+          "value": 28.37,
+          "unit": "°C",
+          "as_of": "2026-10-23",
+          "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
+          "note": "广州海域共用格点，非分产业指标"
+        },
+        "fund_flow": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "logistics_flow": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "industry_chain": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "policy": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F05": {
+      "id": "F05",
+      "code": "RANCH-01",
+      "name": "人工鱼礁生态牧场",
+      "declared_signals": [
+        "logistics_flow",
+        "policy",
+        "fund_flow",
+        "env_risk",
+        "employment",
+        "gdp_total"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "evidence",
+          "count": 4,
+          "samples": [
+            {
+              "name": "广东海洋牧场产业基金",
+              "status": "ongoing",
+              "amountRange": "首期已投9500万元",
+              "matched": [
+                "海洋牧场"
+              ],
+              "basisDoc": "海洋牧场产业基金投资公告"
+            },
+            {
+              "name": "广东省自然科学基金管理办法-广东海洋大学科学技术部",
+              "status": "ongoing",
+              "amountRange": "详见申报指南",
+              "matched": [
+                "海洋牧场"
+              ],
+              "basisDoc": "广东省自然科学基金管理办法-广东海洋大学科学技术部"
+            },
+            {
+              "name": "关于组织申报2022年度广东省自然科学基金项目的通知-广东海洋大学商学院",
+              "status": "ongoing",
+              "amountRange": "详见申报指南",
+              "matched": [
+                "海洋牧场"
+              ],
+              "basisDoc": "关于组织申报2022年度广东省自然科学基金项目的通知-广东海洋大学商学院"
+            }
+          ],
+          "source": "marine-monitor/funding.json"
+        },
+        "policy": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/policies.json"
+        },
+        "logistics_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/map.json + notices.json"
+        },
+        "env_risk": {
+          "state": "live",
+          "signal": "green",
+          "value": 28.37,
+          "unit": "°C",
+          "as_of": "2026-10-23",
+          "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
+          "note": "广州海域共用格点，非分产业指标"
+        },
+        "market_entity": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "industry_chain": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F06": {
+      "id": "F06",
+      "code": "PROCESS-01",
+      "name": "冷冻调理食品加工",
+      "declared_signals": [
+        "production_finance",
+        "fund_flow",
+        "employment",
+        "market_entity",
+        "industry_chain"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/funding.json"
+        },
+        "industry_chain": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "geo-ocean-bidding/notices.json"
+        },
+        "market_entity": {
+          "state": "none",
+          "count": 0,
+          "sectors": [],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "logistics_flow": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "env_risk": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "policy": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F07": {
+      "id": "F07",
+      "code": "OIL-01",
+      "name": "海上油气勘探开发",
+      "declared_signals": [
+        "logistics_flow",
+        "production_finance",
+        "policy",
+        "fund_flow",
+        "env_risk",
+        "gdp_total"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "evidence",
+          "count": 1,
+          "samples": [
+            {
+              "name": "广东省海洋六大产业专项项目",
+              "status": "ongoing",
+              "amountRange": "年度专题经费约2.95亿元",
+              "matched": [
+                "油气"
+              ],
+              "basisDoc": "《2024年省级促进经济高质量发展（海洋经济发展）海洋六大产业专项项目申报指南》"
+            }
+          ],
+          "source": "marine-monitor/funding.json"
+        },
+        "policy": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/policies.json"
+        },
+        "logistics_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/map.json + notices.json"
+        },
+        "market_entity": {
+          "state": "evidence",
+          "count": 29,
+          "sectors": [
+            "海洋矿业"
+          ],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "env_risk": {
+          "state": "live",
+          "signal": "green",
+          "value": 28.37,
+          "unit": "°C",
+          "as_of": "2026-10-23",
+          "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
+          "note": "广州海域共用格点，非分产业指标"
+        },
+        "industry_chain": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F08": {
+      "id": "F08",
+      "code": "MINING-01",
+      "name": "多金属结核/结壳勘探",
+      "declared_signals": [
+        "sci_tech",
+        "production_finance",
+        "policy",
+        "fund_flow",
+        "industry_chain"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/funding.json"
+        },
+        "policy": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/policies.json"
+        },
+        "industry_chain": {
+          "state": "evidence",
+          "count": 2,
+          "samples": [
+            {
+              "title": "矿外资源拓展重大专项--广东省阳春市尧垌铜多金属矿勘查项目（2026年度）",
+              "publish_date": "2026-08-03",
+              "source_url": "https://yj.jrzb.com/purchases/2026-08-03.b0b4e971709e833e5fc3291379395a9b",
+              "matched": [
+                "多金属"
+              ]
+            },
+            {
+              "title": "广东省龙川县麻布岗盆地铀多金属矿普查项目钻探服务",
+              "publish_date": "2026-03-07",
+              "source_url": "https://www.dlnyzb.com/detail/29196357",
+              "matched": [
+                "多金属"
+              ]
+            }
+          ],
+          "source": "geo-ocean-bidding/notices.json"
+        },
+        "logistics_flow": {
+          "state": "evidence",
+          "count": 2,
+          "samples": [
+            {
+              "title": "矿外资源拓展重大专项--广东省阳春市尧垌铜多金属矿勘查项目（2026年度）",
+              "publish_date": "2026-08-03",
+              "source_url": "https://yj.jrzb.com/purchases/2026-08-03.b0b4e971709e833e5fc3291379395a9b",
+              "matched": [
+                "多金属"
+              ]
+            }
+          ],
+          "source": "marine-monitor/map.json + notices.json"
+        },
+        "market_entity": {
+          "state": "evidence",
+          "count": 29,
+          "sectors": [
+            "海洋矿业"
+          ],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "env_risk": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F09": {
+      "id": "F09",
+      "code": "SAND-01",
+      "name": "建筑用海砂开采",
+      "declared_signals": [
+        "production_finance",
+        "policy",
+        "env_risk",
+        "logistics_flow"
+      ],
+      "dims": {
+        "policy": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/policies.json"
+        },
+        "logistics_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/map.json + notices.json"
+        },
+        "market_entity": {
+          "state": "evidence",
+          "count": 29,
+          "sectors": [
+            "海洋矿业"
+          ],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "env_risk": {
+          "state": "live",
+          "signal": "green",
+          "value": 28.37,
+          "unit": "°C",
+          "as_of": "2026-10-23",
+          "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
+          "note": "广州海域共用格点，非分产业指标"
+        },
+        "fund_flow": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "industry_chain": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F10": {
+      "id": "F10",
+      "code": "WIND-01",
+      "name": "近海风电开发",
+      "declared_signals": [
+        "logistics_flow",
+        "production_finance",
+        "policy",
+        "fund_flow",
+        "env_risk",
+        "gdp_total"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "evidence",
+          "count": 1,
+          "samples": [
+            {
+              "name": "广东省海洋六大产业专项项目",
+              "status": "ongoing",
+              "amountRange": "年度专题经费约2.95亿元",
+              "matched": [
+                "海上风电",
+                "风电"
+              ],
+              "basisDoc": "《2024年省级促进经济高质量发展（海洋经济发展）海洋六大产业专项项目申报指南》"
+            }
+          ],
+          "source": "marine-monitor/funding.json"
+        },
+        "policy": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/policies.json"
+        },
+        "industry_chain": {
+          "state": "evidence",
+          "count": 4,
+          "samples": [
+            {
+              "title": "广东风电(汕尾)公司红海湾五海上风电项目500kV海上升压站和海上无功补偿站建造及运输工程",
+              "publish_date": "2026-08-31",
+              "source_url": "http://www.dlztb.com/news/202608/31/892042.html",
+              "matched": [
+                "海上风电",
+                "风电"
+              ]
+            },
+            {
+              "title": "广东汕尾风电公司红海湾五海上风电项目风机基础及风机安装工程",
+              "publish_date": "2026-04-16",
+              "source_url": "http://www.dlztb.com/quote/202604/96794.html",
+              "matched": [
+                "海上风电",
+                "风电"
+              ]
+            },
+            {
+              "title": "风电公司汕尾红海湾五海上风电项目500kV海缆采购及敷设",
+              "publish_date": "2026-04-20",
+              "source_url": "http://www.dlztb.com/chinapowerbid/202604/147833.html",
+              "matched": [
+                "海上风电",
+                "风电"
+              ]
+            }
+          ],
+          "source": "geo-ocean-bidding/notices.json"
+        },
+        "logistics_flow": {
+          "state": "evidence",
+          "count": 4,
+          "samples": [
+            {
+              "title": "广东风电(汕尾)公司红海湾五海上风电项目500kV海上升压站和海上无功补偿站建造及运输工程",
+              "publish_date": "2026-08-31",
+              "source_url": "http://www.dlztb.com/news/202608/31/892042.html",
+              "matched": [
+                "海上风电",
+                "风电"
+              ]
+            }
+          ],
+          "source": "marine-monitor/map.json + notices.json"
+        },
+        "market_entity": {
+          "state": "evidence",
+          "count": 31,
+          "sectors": [
+            "海洋电力业"
+          ],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "env_risk": {
+          "state": "live",
+          "signal": "green",
+          "value": 28.37,
+          "unit": "°C",
+          "as_of": "2026-10-23",
+          "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
+          "note": "广州海域共用格点，非分产业指标"
+        }
+      }
+    },
+    "F11": {
+      "id": "F11",
+      "code": "WIND-02",
+      "name": "漂浮式海上风电",
+      "declared_signals": [
+        "sci_tech",
+        "production_finance",
+        "policy",
+        "fund_flow",
+        "industry_chain"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/funding.json"
+        },
+        "policy": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/policies.json"
+        },
+        "industry_chain": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "geo-ocean-bidding/notices.json"
+        },
+        "market_entity": {
+          "state": "evidence",
+          "count": 31,
+          "sectors": [
+            "海洋电力业"
+          ],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "logistics_flow": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "env_risk": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F12": {
+      "id": "F12",
+      "code": "ENERGY-01",
+      "name": "潮汐波浪能发电",
+      "declared_signals": [
+        "sci_tech",
+        "policy",
+        "fund_flow",
+        "industry_chain"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/funding.json"
+        },
+        "policy": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/policies.json"
+        },
+        "industry_chain": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "geo-ocean-bidding/notices.json"
+        },
+        "logistics_flow": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "market_entity": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "env_risk": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F13": {
+      "id": "F13",
+      "code": "ENERGY-02",
+      "name": "海洋氢能",
+      "declared_signals": [
+        "sci_tech",
+        "production_finance",
+        "policy",
+        "fund_flow",
+        "industry_chain"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/funding.json"
+        },
+        "policy": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/policies.json"
+        },
+        "industry_chain": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "geo-ocean-bidding/notices.json"
+        },
+        "logistics_flow": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "market_entity": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "env_risk": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F14": {
+      "id": "F14",
+      "code": "BIO-01",
+      "name": "海洋药物研发",
+      "declared_signals": [
+        "sci_tech",
+        "production_finance",
+        "policy",
+        "fund_flow",
+        "market_entity",
+        "industry_chain"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "evidence",
+          "count": 2,
+          "samples": [
+            {
+              "name": "广东省海洋六大产业专项项目",
+              "status": "ongoing",
+              "amountRange": "年度专题经费约2.95亿元",
+              "matched": [
+                "生物医药"
+              ],
+              "basisDoc": "《2024年省级促进经济高质量发展（海洋经济发展）海洋六大产业专项项目申报指南》"
+            },
+            {
+              "name": "广州海洋经济产业基金",
+              "status": "ongoing",
+              "amountRange": "10亿元规模",
+              "matched": [
+                "生物医药"
+              ],
+              "basisDoc": "广州市海洋经济产业基金设立方案"
+            }
+          ],
+          "source": "marine-monitor/funding.json"
+        },
+        "policy": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/policies.json"
+        },
+        "industry_chain": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "geo-ocean-bidding/notices.json"
+        },
+        "market_entity": {
+          "state": "evidence",
+          "count": 429,
+          "sectors": [
+            "海洋生物医药业"
+          ],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "logistics_flow": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "env_risk": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F15": {
+      "id": "F15",
+      "code": "SHIP-01",
+      "name": "集装箱船建造",
+      "declared_signals": [
+        "price_index",
+        "logistics_flow",
+        "production_finance",
+        "policy",
+        "fund_flow",
+        "market_entity"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/funding.json"
+        },
+        "policy": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/policies.json"
+        },
+        "logistics_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/map.json + notices.json"
+        },
+        "price_index": {
+          "state": "live",
+          "signal": "green",
+          "value": 3681.34,
+          "unit": "点",
+          "label": "SCFI",
+          "as_of": "2026-10-23",
+          "indices": [
+            {
+              "id": "SCFI",
+              "value": 3681.34,
+              "as_of": "2026-10-23",
+              "unit": "点"
+            },
+            {
+              "id": "CCFI",
+              "value": 1876.27,
+              "as_of": "2026-10-23",
+              "unit": "点"
+            },
+            {
+              "id": "BDI",
+              "value": 2660.0,
+              "as_of": "2026-10-23",
+              "unit": "点"
+            }
+          ],
+          "source": "data/accounting/shipping_price_index.json",
+          "note": "全球航运旁证，不替代广州港吞吐"
+        },
+        "market_entity": {
+          "state": "evidence",
+          "count": 10,
+          "sectors": [
+            "海洋船舶工业"
+          ],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "industry_chain": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "env_risk": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F16": {
+      "id": "F16",
+      "code": "SHIP-02",
+      "name": "LNG船/特种船舶",
+      "declared_signals": [
+        "price_index",
+        "logistics_flow",
+        "production_finance",
+        "fund_flow",
+        "industry_chain"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/funding.json"
+        },
+        "industry_chain": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "geo-ocean-bidding/notices.json"
+        },
+        "logistics_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/map.json + notices.json"
+        },
+        "price_index": {
+          "state": "live",
+          "signal": "green",
+          "value": 3681.34,
+          "unit": "点",
+          "label": "SCFI",
+          "as_of": "2026-10-23",
+          "indices": [
+            {
+              "id": "SCFI",
+              "value": 3681.34,
+              "as_of": "2026-10-23",
+              "unit": "点"
+            },
+            {
+              "id": "CCFI",
+              "value": 1876.27,
+              "as_of": "2026-10-23",
+              "unit": "点"
+            },
+            {
+              "id": "BDI",
+              "value": 2660.0,
+              "as_of": "2026-10-23",
+              "unit": "点"
+            }
+          ],
+          "source": "data/accounting/shipping_price_index.json",
+          "note": "全球航运旁证，不替代广州港吞吐"
+        },
+        "market_entity": {
+          "state": "evidence",
+          "count": 10,
+          "sectors": [
+            "海洋船舶工业"
+          ],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "env_risk": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "policy": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F17": {
+      "id": "F17",
+      "code": "REPAIR-01",
+      "name": "船舶改装维修",
+      "declared_signals": [
+        "production_finance",
+        "price_index",
+        "market_entity",
+        "logistics_flow"
+      ],
+      "dims": {
+        "logistics_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/map.json + notices.json"
+        },
+        "price_index": {
+          "state": "live",
+          "signal": "green",
+          "value": 3681.34,
+          "unit": "点",
+          "label": "SCFI",
+          "as_of": "2026-10-23",
+          "indices": [
+            {
+              "id": "SCFI",
+              "value": 3681.34,
+              "as_of": "2026-10-23",
+              "unit": "点"
+            },
+            {
+              "id": "CCFI",
+              "value": 1876.27,
+              "as_of": "2026-10-23",
+              "unit": "点"
+            },
+            {
+              "id": "BDI",
+              "value": 2660.0,
+              "as_of": "2026-10-23",
+              "unit": "点"
+            }
+          ],
+          "source": "data/accounting/shipping_price_index.json",
+          "note": "全球航运旁证，不替代广州港吞吐"
+        },
+        "market_entity": {
+          "state": "evidence",
+          "count": 10,
+          "sectors": [
+            "海洋船舶工业"
+          ],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "fund_flow": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "industry_chain": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "env_risk": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "policy": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F18": {
+      "id": "F18",
+      "code": "RIG-01",
+      "name": "自升式钻井平台",
+      "declared_signals": [
+        "sci_tech",
+        "logistics_flow",
+        "production_finance",
+        "policy",
+        "fund_flow"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/funding.json"
+        },
+        "policy": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/policies.json"
+        },
+        "logistics_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/map.json + notices.json"
+        },
+        "market_entity": {
+          "state": "evidence",
+          "count": 214,
+          "sectors": [
+            "海洋工程装备制造业"
+          ],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "industry_chain": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "env_risk": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F19": {
+      "id": "F19",
+      "code": "ROV-01",
+      "name": "ROV/AUV研发制造",
+      "declared_signals": [
+        "sci_tech",
+        "production_finance",
+        "fund_flow",
+        "market_entity",
+        "industry_chain"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/funding.json"
+        },
+        "industry_chain": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "geo-ocean-bidding/notices.json"
+        },
+        "market_entity": {
+          "state": "evidence",
+          "count": 214,
+          "sectors": [
+            "海洋工程装备制造业"
+          ],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "logistics_flow": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "env_risk": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "policy": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F20": {
+      "id": "F20",
+      "code": "SENSOR-01",
+      "name": "CTD/ADCP传感器",
+      "declared_signals": [
+        "sci_tech",
+        "market_entity",
+        "industry_chain",
+        "fund_flow"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/funding.json"
+        },
+        "industry_chain": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "geo-ocean-bidding/notices.json"
+        },
+        "market_entity": {
+          "state": "none",
+          "count": 0,
+          "sectors": [],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "logistics_flow": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "env_risk": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "policy": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F21": {
+      "id": "F21",
+      "code": "REMOTE-01",
+      "name": "海洋卫星地面应用",
+      "declared_signals": [
+        "sci_tech",
+        "policy",
+        "fund_flow",
+        "industry_chain"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/funding.json"
+        },
+        "policy": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/policies.json"
+        },
+        "industry_chain": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "geo-ocean-bidding/notices.json"
+        },
+        "logistics_flow": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "market_entity": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "env_risk": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F22": {
+      "id": "F22",
+      "code": "PORT-01",
+      "name": "集装箱码头运营",
+      "declared_signals": [
+        "price_index",
+        "logistics_flow",
+        "policy",
+        "fund_flow",
+        "gdp_total",
+        "employment",
+        "market_entity"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/funding.json"
+        },
+        "policy": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/policies.json"
+        },
+        "logistics_flow": {
+          "state": "evidence",
+          "count": 3,
+          "samples": [
+            {
+              "resourceName": "广州南沙港（南沙港区）",
+              "resourceType": "infrastructure",
+              "region": "南沙区",
+              "matched": [
+                "广州港"
+              ]
+            },
+            {
+              "resourceName": "广州港新沙港区",
+              "resourceType": "infrastructure",
+              "region": "黄埔区",
+              "matched": [
+                "广州港"
+              ]
+            }
+          ],
+          "source": "marine-monitor/map.json + notices.json"
+        },
+        "price_index": {
+          "state": "live",
+          "signal": "green",
+          "value": 3681.34,
+          "unit": "点",
+          "label": "SCFI",
+          "as_of": "2026-10-23",
+          "indices": [
+            {
+              "id": "SCFI",
+              "value": 3681.34,
+              "as_of": "2026-10-23",
+              "unit": "点"
+            },
+            {
+              "id": "CCFI",
+              "value": 1876.27,
+              "as_of": "2026-10-23",
+              "unit": "点"
+            },
+            {
+              "id": "BDI",
+              "value": 2660.0,
+              "as_of": "2026-10-23",
+              "unit": "点"
+            }
+          ],
+          "source": "data/accounting/shipping_price_index.json",
+          "note": "全球航运旁证，不替代广州港吞吐"
+        },
+        "market_entity": {
+          "state": "evidence",
+          "count": 441,
+          "sectors": [
+            "海洋交通运输业"
+          ],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "industry_chain": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "env_risk": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F23": {
+      "id": "F23",
+      "code": "SHIPPING-01",
+      "name": "国际航运",
+      "declared_signals": [
+        "price_index",
+        "logistics_flow",
+        "fund_flow",
+        "gdp_total",
+        "employment",
+        "market_entity"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "evidence",
+          "count": 1,
+          "samples": [
+            {
+              "name": "广东:加快发展蓝色金融产业 支持涉海企业在境内外上市融资|航运|船舶_网易订阅",
+              "status": "ongoing",
+              "amountRange": "详见申报指南",
+              "matched": [
+                "航运"
+              ],
+              "basisDoc": "广东:加快发展蓝色金融产业 支持涉海企业在境内外上市融资|航运|船舶_网易订阅"
+            }
+          ],
+          "source": "marine-monitor/funding.json"
+        },
+        "logistics_flow": {
+          "state": "evidence",
+          "count": 2,
+          "samples": [
+            {
+              "resourceName": "广州南沙港（南沙港区）",
+              "resourceType": "infrastructure",
+              "region": "南沙区",
+              "matched": [
+                "航运"
+              ]
+            },
+            {
+              "resourceName": "广州港新沙港区",
+              "resourceType": "infrastructure",
+              "region": "黄埔区",
+              "matched": [
+                "集装箱运输"
+              ]
+            }
+          ],
+          "source": "marine-monitor/map.json + notices.json"
+        },
+        "price_index": {
+          "state": "live",
+          "signal": "green",
+          "value": 3681.34,
+          "unit": "点",
+          "label": "SCFI",
+          "as_of": "2026-10-23",
+          "indices": [
+            {
+              "id": "SCFI",
+              "value": 3681.34,
+              "as_of": "2026-10-23",
+              "unit": "点"
+            },
+            {
+              "id": "CCFI",
+              "value": 1876.27,
+              "as_of": "2026-10-23",
+              "unit": "点"
+            },
+            {
+              "id": "BDI",
+              "value": 2660.0,
+              "as_of": "2026-10-23",
+              "unit": "点"
+            }
+          ],
+          "source": "data/accounting/shipping_price_index.json",
+          "note": "全球航运旁证，不替代广州港吞吐"
+        },
+        "market_entity": {
+          "state": "evidence",
+          "count": 441,
+          "sectors": [
+            "海洋交通运输业"
+          ],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "industry_chain": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "env_risk": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "policy": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F24": {
+      "id": "F24",
+      "code": "ENG-01",
+      "name": "海上安装工程",
+      "declared_signals": [
+        "production_finance",
+        "env_risk",
+        "fund_flow",
+        "logistics_flow"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "evidence",
+          "count": 3,
+          "samples": [
+            {
+              "name": "广东省海洋六大产业专项项目",
+              "status": "ongoing",
+              "amountRange": "年度专题经费约2.95亿元",
+              "matched": [
+                "海洋工程"
+              ],
+              "basisDoc": "《2024年省级促进经济高质量发展（海洋经济发展）海洋六大产业专项项目申报指南》"
+            },
+            {
+              "name": "南沙区船舶与海洋工程装备产业科技攻关项目",
+              "status": "closed",
+              "amountRange": "按攻关方向核定",
+              "matched": [
+                "海洋工程"
+              ],
+              "basisDoc": "《2025年南沙区船舶与海洋工程装备产业科技攻关项目申报指南》"
+            },
+            {
+              "name": "广州南沙经济技术开发区科学技术局 广州南沙经济技术开发区人才发展局关于发布2025年南沙区船舶与海洋工程装备产业科技攻关项目申报指南的通知_广州...",
+              "status": "ongoing",
+              "amountRange": "详见申报指南",
+              "matched": [
+                "海洋工程"
+              ],
+              "basisDoc": "广州南沙经济技术开发区科学技术局 广州南沙经济技术开发区人才发展局关于发布2025年南沙区船舶与海洋工程装备产业科技攻关项目申报指南的通知_广州..."
+            }
+          ],
+          "source": "marine-monitor/funding.json"
+        },
+        "industry_chain": {
+          "state": "evidence",
+          "count": 2,
+          "samples": [
+            {
+              "title": "广东徐闻珊瑚礁国家级自然保护区科普宣传和可视化监测能力提升、综合科学考察、海上边界浮标和近岸边界界桩（地形勘测及珊瑚分布调查）",
+              "publish_date": "2026-06-12",
+              "source_url": "http://www.ccgp.gov.cn/cggg/dfgg/gkzb/202606/t20260612_26744257.htm",
+              "matched": [
+                "海洋工程"
+              ]
+            },
+            {
+              "title": "南沙区龙穴北临港海洋高端装备制造及综合保障基地项目招标计划",
+              "publish_date": "2026-09-11",
+              "source_url": "https://www.tujianzhaobiao.com/news-b627fabef1781b98a95b173cf801436a/",
+              "matched": [
+                "海洋工程"
+              ]
+            }
+          ],
+          "source": "geo-ocean-bidding/notices.json"
+        },
+        "logistics_flow": {
+          "state": "evidence",
+          "count": 2,
+          "samples": [
+            {
+              "title": "广东徐闻珊瑚礁国家级自然保护区科普宣传和可视化监测能力提升、综合科学考察、海上边界浮标和近岸边界界桩（地形勘测及珊瑚分布调查）",
+              "publish_date": "2026-06-12",
+              "source_url": "http://www.ccgp.gov.cn/cggg/dfgg/gkzb/202606/t20260612_26744257.htm",
+              "matched": [
+                "海洋工程"
+              ]
+            }
+          ],
+          "source": "marine-monitor/map.json + notices.json"
+        },
+        "market_entity": {
+          "state": "evidence",
+          "count": 216,
+          "sectors": [
+            "海洋工程建筑业",
+            "海洋工程装备制造业"
+          ],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "env_risk": {
+          "state": "live",
+          "signal": "green",
+          "value": 28.37,
+          "unit": "°C",
+          "as_of": "2026-10-23",
+          "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
+          "note": "广州海域共用格点，非分产业指标"
+        },
+        "policy": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F25": {
+      "id": "F25",
+      "code": "INSPECT-01",
+      "name": "船舶检验",
+      "declared_signals": [
+        "production_finance",
+        "market_entity",
+        "industry_chain",
+        "policy"
+      ],
+      "dims": {
+        "policy": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/policies.json"
+        },
+        "industry_chain": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "geo-ocean-bidding/notices.json"
+        },
+        "market_entity": {
+          "state": "none",
+          "count": 0,
+          "sectors": [],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "fund_flow": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "logistics_flow": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "env_risk": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F26": {
+      "id": "F26",
+      "code": "DISASTER-01",
+      "name": "风暴潮/海啸预警",
+      "declared_signals": [
+        "market_entity",
+        "policy",
+        "env_risk",
+        "sci_tech"
+      ],
+      "dims": {
+        "policy": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/policies.json"
+        },
+        "market_entity": {
+          "state": "none",
+          "count": 0,
+          "sectors": [],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "env_risk": {
+          "state": "live",
+          "signal": "green",
+          "value": 28.37,
+          "unit": "°C",
+          "as_of": "2026-10-23",
+          "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
+          "note": "广州海域共用格点，非分产业指标"
+        },
+        "fund_flow": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "logistics_flow": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "industry_chain": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F27": {
+      "id": "F27",
+      "code": "TOURISM-01",
+      "name": "邮轮旅游",
+      "declared_signals": [
+        "logistics_flow",
+        "gdp_total",
+        "fund_flow",
+        "employment",
+        "market_entity"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/funding.json"
+        },
+        "logistics_flow": {
+          "state": "evidence",
+          "count": 1,
+          "samples": [
+            {
+              "resourceName": "南沙国际邮轮母港",
+              "resourceType": "infrastructure",
+              "region": "南沙区",
+              "matched": [
+                "邮轮",
+                "邮轮母港",
+                "邮轮旅游"
+              ]
+            }
+          ],
+          "source": "marine-monitor/map.json + notices.json"
+        },
+        "market_entity": {
+          "state": "evidence",
+          "count": 116,
+          "sectors": [
+            "海洋旅游业"
+          ],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "industry_chain": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "env_risk": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "policy": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F28": {
+      "id": "F28",
+      "code": "TOURISM-02",
+      "name": "海岛旅游",
+      "declared_signals": [
+        "policy",
+        "env_risk",
+        "employment",
+        "logistics_flow"
+      ],
+      "dims": {
+        "policy": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/policies.json"
+        },
+        "logistics_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/map.json + notices.json"
+        },
+        "market_entity": {
+          "state": "evidence",
+          "count": 116,
+          "sectors": [
+            "海洋旅游业"
+          ],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "env_risk": {
+          "state": "live",
+          "signal": "green",
+          "value": 28.37,
+          "unit": "°C",
+          "as_of": "2026-10-23",
+          "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
+          "note": "广州海域共用格点，非分产业指标"
+        },
+        "fund_flow": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "industry_chain": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F29": {
+      "id": "F29",
+      "code": "RD-01",
+      "name": "国家实验室",
+      "declared_signals": [
+        "sci_tech",
+        "policy",
+        "fund_flow",
+        "industry_chain"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "evidence",
+          "count": 3,
+          "samples": [
+            {
+              "name": "广东省自然科学基金（海洋领域）",
+              "status": "ongoing",
+              "amountRange": "面上项目10-30万/项",
+              "matched": [
+                "海洋科学"
+              ],
+              "basisDoc": "《广东省自然科学基金项目申报指南》"
+            },
+            {
+              "name": "海洋灾害预警与防护广东省重点实验室开放基金",
+              "status": "open",
+              "amountRange": "开放课题3-10万/项",
+              "matched": [
+                "实验室"
+              ],
+              "basisDoc": "《海洋灾害预警与防护广东省重点实验室开放基金课题申请指南》"
+            },
+            {
+              "name": "项目管理 | 广东省、广州市、珠海市及其他外省市科技计划项目(不含深圳市)的联合申报协议审核流程 | 中山大学海洋科学学院",
+              "status": "ongoing",
+              "amountRange": "详见申报指南",
+              "matched": [
+                "海洋科学"
+              ],
+              "basisDoc": "项目管理 | 广东省、广州市、珠海市及其他外省市科技计划项目(不含深圳市)的联合申报协议审核流程 | 中山大学海洋科学学院"
+            }
+          ],
+          "source": "marine-monitor/funding.json"
+        },
+        "policy": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/policies.json"
+        },
+        "industry_chain": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "geo-ocean-bidding/notices.json"
+        },
+        "logistics_flow": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "market_entity": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "env_risk": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F30": {
+      "id": "F30",
+      "code": "RD-02",
+      "name": "地质调查",
+      "declared_signals": [
+        "sci_tech",
+        "env_risk",
+        "policy",
+        "fund_flow",
+        "industry_chain"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/funding.json"
+        },
+        "policy": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/policies.json"
+        },
+        "industry_chain": {
+          "state": "evidence",
+          "count": 1,
+          "samples": [
+            {
+              "title": "广东省龙川县麻布岗盆地铀多金属矿普查项目钻探服务",
+              "publish_date": "2026-03-07",
+              "source_url": "https://www.dlnyzb.com/detail/29196357",
+              "matched": [
+                "地质调查"
+              ]
+            }
+          ],
+          "source": "geo-ocean-bidding/notices.json"
+        },
+        "logistics_flow": {
+          "state": "evidence",
+          "count": 2,
+          "samples": [
+            {
+              "resourceName": "广州海洋地质调查局南沙基地",
+              "resourceType": "infrastructure",
+              "region": "南沙区",
+              "matched": [
+                "地质调查",
+                "海洋地质"
+              ]
+            },
+            {
+              "title": "广东省龙川县麻布岗盆地铀多金属矿普查项目钻探服务",
+              "publish_date": "2026-03-07",
+              "source_url": "https://www.dlnyzb.com/detail/29196357",
+              "matched": [
+                "地质调查"
+              ]
+            }
+          ],
+          "source": "marine-monitor/map.json + notices.json"
+        },
+        "env_risk": {
+          "state": "live",
+          "signal": "green",
+          "value": 28.37,
+          "unit": "°C",
+          "as_of": "2026-10-23",
+          "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
+          "note": "广州海域共用格点，非分产业指标"
+        },
+        "market_entity": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F31": {
+      "id": "F31",
+      "code": "FINANCE-01",
+      "name": "海洋产业基金",
+      "declared_signals": [
+        "production_finance",
+        "market_entity",
+        "policy",
+        "fund_flow"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "evidence",
+          "count": 6,
+          "samples": [
+            {
+              "name": "广东省海洋新兴产业投资基金",
+              "status": "ongoing",
+              "amountRange": "引导基金出资规模待定",
+              "matched": [
+                "产业基金"
+              ],
+              "basisDoc": "《海洋新兴产业投资基金招募管理人公告》"
+            },
+            {
+              "name": "广州海洋经济产业基金",
+              "status": "ongoing",
+              "amountRange": "10亿元规模",
+              "matched": [
+                "产业基金"
+              ],
+              "basisDoc": "广州市海洋经济产业基金设立方案"
+            },
+            {
+              "name": "广东海洋牧场产业基金",
+              "status": "ongoing",
+              "amountRange": "首期已投9500万元",
+              "matched": [
+                "产业基金"
+              ],
+              "basisDoc": "海洋牧场产业基金投资公告"
+            }
+          ],
+          "source": "marine-monitor/funding.json"
+        },
+        "policy": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/policies.json"
+        },
+        "market_entity": {
+          "state": "none",
+          "count": 0,
+          "sectors": [],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "logistics_flow": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "industry_chain": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "env_risk": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F32": {
+      "id": "F32",
+      "code": "FINANCE-02",
+      "name": "海洋保险",
+      "declared_signals": [
+        "production_finance",
+        "market_entity",
+        "fund_flow",
+        "logistics_flow"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/funding.json"
+        },
+        "logistics_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/map.json + notices.json"
+        },
+        "market_entity": {
+          "state": "none",
+          "count": 0,
+          "sectors": [],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "industry_chain": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "env_risk": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "policy": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F33": {
+      "id": "F33",
+      "code": "FINANCE-03",
+      "name": "海洋碳汇",
+      "declared_signals": [
+        "sci_tech",
+        "policy",
+        "fund_flow",
+        "env_risk",
+        "gdp_total"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/funding.json"
+        },
+        "policy": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/policies.json"
+        },
+        "logistics_flow": {
+          "state": "evidence",
+          "count": 2,
+          "samples": [
+            {
+              "resourceName": "南沙湿地（红树林）",
+              "resourceType": "marine_area",
+              "region": "南沙区",
+              "matched": [
+                "蓝碳"
+              ]
+            },
+            {
+              "resourceName": "龙穴岛红树林湿地",
+              "resourceType": "marine_area",
+              "region": "南沙区",
+              "matched": [
+                "蓝碳"
+              ]
+            }
+          ],
+          "source": "marine-monitor/map.json + notices.json"
+        },
+        "env_risk": {
+          "state": "live",
+          "signal": "green",
+          "value": 28.37,
+          "unit": "°C",
+          "as_of": "2026-10-23",
+          "source": "NOAA coastwatch · ncdcOisst21NrtAgg（OISST v2.1 NRT）",
+          "note": "广州海域共用格点，非分产业指标"
+        },
+        "market_entity": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "industry_chain": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F34": {
+      "id": "F34",
+      "code": "DIGITAL-01",
+      "name": "海洋大数据平台",
+      "declared_signals": [
+        "sci_tech",
+        "policy",
+        "fund_flow",
+        "market_entity",
+        "industry_chain"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/funding.json"
+        },
+        "policy": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/policies.json"
+        },
+        "industry_chain": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "geo-ocean-bidding/notices.json"
+        },
+        "market_entity": {
+          "state": "none",
+          "count": 0,
+          "sectors": [],
+          "source": "guangzhou-marine-enterprises/enterprises.json#sector",
+          "note": "按广海汇名录 sector 字段汇总；「待打标」未计入分产业"
+        },
+        "logistics_flow": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "env_risk": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    },
+    "F35": {
+      "id": "F35",
+      "code": "AI-01",
+      "name": "海洋AI应用",
+      "declared_signals": [
+        "sci_tech",
+        "policy",
+        "industry_chain",
+        "fund_flow"
+      ],
+      "dims": {
+        "fund_flow": {
+          "state": "evidence",
+          "count": 1,
+          "samples": [
+            {
+              "name": "国家重点研发计划「海洋农业与淡水渔业科技创新」重点专项",
+              "status": "ongoing",
+              "amountRange": "国家级重大专项",
+              "matched": [
+                "智能养殖"
+              ],
+              "basisDoc": "《国家重点研发计划「海洋农业与淡水渔业科技创新」等11个重点专项2025年度项目申报指南》"
+            }
+          ],
+          "source": "marine-monitor/funding.json"
+        },
+        "policy": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "marine-monitor/policies.json"
+        },
+        "industry_chain": {
+          "state": "none",
+          "count": 0,
+          "samples": [],
+          "source": "geo-ocean-bidding/notices.json"
+        },
+        "logistics_flow": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "market_entity": {
+          "state": "na",
+          "note": "该科未挂此维"
+        },
+        "env_risk": {
+          "state": "na",
+          "note": "该科未挂此维"
+        }
+      }
+    }
+  },
+  "still_demo_or_unavailable": [
+    {
+      "item": "广州港集装箱/货物吞吐量实时同比",
+      "need": "广州市港务局或统计局可机读接口 / 定期公报手工入库"
+    },
+    {
+      "item": "AIS 船舶密度热力",
+      "need": "Global Fishing Watch 或 MarineTraffic API Key + 采集任务"
+    },
+    {
+      "item": "赤潮/风暴潮等灾害预警分色",
+      "need": "自然资源部/南海预报中心公开预警接口或人工摘录"
+    },
+    {
+      "item": "分产业科「景气」综合分",
+      "need": "上期快照 + 口径加权规则；当前仅证据有无，不做综合分"
+    },
+    {
+      "item": "产业树代表企业名单",
+      "need": "仍为结构样例；主体流已改用名录 sector 实数"
+    },
+    {
+      "item": "广州市海洋生产总值（核算层）",
+      "need": "市统计调查／公报；已录 2025 广东省数仅作背景"
+    },
+    {
+      "item": "涉海就业人数／劳动报酬",
+      "need": "统计年鉴或调查回填"
+    }
+  ]
+}

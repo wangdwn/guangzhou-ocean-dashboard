@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-pan="c">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>广州海洋经济多维信号仪表盘 · C 质量盘</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://wangdwn.github.io/design-system/tokens.css">
+<link rel="stylesheet" href="https://wangdwn.github.io/design-system/nav.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--fg);
+}
+.os-nav__inner { max-width: 80rem; }
+
+/* Page chrome: navy primary + pan-c amber (replaces sky gradient header) */
+.page-chrome {
+  background: var(--primary);
+  color: var(--primary-fg);
+  border-bottom: 3px solid var(--pan-c);
+}
+.page-chrome__inner {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.page-chrome h1 {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--primary-fg);
+  line-height: var(--leading-tight);
+}
+.page-chrome .sub {
+  font-size: var(--text-xs);
+  color: color-mix(in srgb, var(--primary-fg) 72%, var(--pan-c));
+  margin-top: 2px;
+}
+.dash-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.dash-tab {
+  font-family: inherit;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--primary-fg) 22%, transparent);
+  background: transparent;
+  color: var(--primary-fg);
+  cursor: pointer;
+}
+.dash-tab:hover { background: color-mix(in srgb, var(--primary-fg) 12%, transparent); }
+.dash-tab.is-on {
+  background: var(--pan-c);
+  border-color: var(--pan-c);
+  color: #fff;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s;
+}
+.card:hover { box-shadow: var(--shadow); }
+
+/* Align leftover Tailwind utilities to daylight-sea tokens */
+.bg-gray-50 { background-color: var(--bg-subtle) !important; }
+.hover\:bg-gray-50:hover { background-color: var(--bg-subtle) !important; }
+.text-gray-800, .text-gray-700 { color: var(--fg) !important; }
+.text-gray-600, .text-gray-500 { color: var(--muted) !important; }
+.text-gray-400 { color: var(--faint) !important; }
+.text-blue-700, .text-blue-800, .text-blue-600 { color: var(--primary) !important; }
+.hover\:text-blue-600:hover { color: var(--primary-hover) !important; }
+.bg-blue-50 { background-color: var(--info-bg) !important; }
+.hover\:bg-blue-50:hover { background-color: var(--info-bg) !important; }
+.phylum-row { background: color-mix(in srgb, var(--pan-c) 10%, var(--card)); }
+.phylum-row td { color: var(--primary); font-weight: 700; }
+.ent-chip { background: color-mix(in srgb, var(--pan-c) 10%, var(--card)); border: 1px solid var(--border); }
+
+/* Signal lights: keep visualization logic / radial glow */
+.signal-dot {
+  width: 40px; height: 40px; border-radius: 50%; display: inline-block;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.28);
+}
+.signal-green { background: radial-gradient(circle at 30% 30%, #4ade80, #16a34a); }
+.signal-yellow { background: radial-gradient(circle at 30% 30%, #facc15, #ca8a04); }
+.signal-red { background: radial-gradient(circle at 30% 30%, #f87171, #dc2626); }
+.signal-gray { background: radial-gradient(circle at 30% 30%, #9ca3af, #6b7280); }
+.sig-label-green { color: var(--success); }
+.sig-label-yellow { color: var(--warning); }
+.sig-label-red { color: var(--danger); }
+.sig-label-gray { color: var(--faint); }
+.stat-success { color: var(--success); }
+.stat-primary { color: var(--primary); }
+.stat-danger { color: var(--danger); }
+</style>
+</head>
+<body class="min-h-screen">
+<nav class="os-nav" aria-label="海洋系列">
+  <div class="os-nav__inner">
+    <a class="os-nav__brand" href="https://wangdwn.github.io/">
+      <span class="os-nav__mark" aria-hidden="true"></span>
+      <span class="os-nav__brand-text">海洋系列</span>
+    </a>
+    <div class="os-nav__pills">
+      <a class="os-nav__pill os-nav__pill--a" href="https://wangdwn.github.io/guangzhou-marine-enterprises/" data-pan="a">A 家底</a>
+      <a class="os-nav__pill os-nav__pill--b" href="https://wangdwn.github.io/marine-monitor/" data-pan="b">B 经营</a>
+      <a class="os-nav__pill os-nav__pill--c is-current" href="https://wangdwn.github.io/guangzhou-ocean-dashboard/" data-pan="c" aria-current="page">C 质量</a>
+      <a class="os-nav__pill os-nav__pill--d" href="https://wangdwn.github.io/marine-weekly/" data-pan="d">D 底座</a>
+    </div>
+    <a class="os-nav__ds" href="https://wangdwn.github.io/design-system/">设计系统</a>
+  </div>
+</nav>
+
+<header class="page-chrome">
+  <div class="page-chrome__inner">
+    <div>
+      <h1>广州海洋经济多维信号仪表盘</h1>
+      <p class="sub">C 质量盘 · 双轨（六流信号 + HY/T 0362 核算）· 广州市海洋发展促进中心</p>
+      <p class="sub" id="data-badge" style="margin-top:8px;color:#065f46;background:#ecfdf5;display:inline-block;padding:6px 12px;border-radius:999px;font-size:12px;">加载库内证据中…</p>
+    </div>
+    <div class="dash-tabs">
+      <button type="button" onclick="showPage('overview')" id="tab-overview" class="dash-tab is-on">总览</button>
+      <button type="button" onclick="showPage('diagnosis')" id="tab-diagnosis" class="dash-tab">产业诊断</button>
+      <button type="button" onclick="showPage('matrix')" id="tab-matrix" class="dash-tab">交叉矩阵</button>
+    </div>
+  </div>
+</header>
+
+<div class="max-w-7xl mx-auto px-4 py-6">
+  <!-- ===== 总览页 ===== -->
+  <div id="page-overview">
+    <h2 class="text-xl font-bold mb-2" style="color:var(--fg)">🏛️ 全产业信号灯总览</h2>
+    <p class="text-sm mb-4" style="color:var(--muted)">纲举目张 · 四大门 × 六维信号流 · 格子=库内可追溯证据（有迹/无迹），不是景气红绿灯；下方为核算基准层（无市数灰灯〔待核〕）</p>
+    <div id="kpi-strip" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 mb-4"></div>
+    <div id="accounting-strip" class="grid grid-cols-1 md:grid-cols-5 gap-3 mb-4"></div>
+    <div id="sst-card" class="card mb-6" style="display:none"></div>
+    <div id="overview-content"></div>
+    <p class="text-xs mt-4" style="color:var(--muted)" id="still-demo-note"></p>
+  </div>
+
+  <!-- ===== 产业诊断页 ===== -->
+  <div id="page-diagnosis" class="hidden">
+    <h2 class="text-xl font-bold mb-4" style="color:var(--fg)">🔬 产业诊断</h2>
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
+      <div class="lg:col-span-1 card">
+        <h3 class="font-semibold mb-3 text-sm" style="color:var(--muted)">🌳 产业分类树</h3>
+        <div id="tree-nav" class="text-sm space-y-1"></div>
+      </div>
+      <div class="lg:col-span-3 card">
+        <div id="family-detail">
+          <p style="color:var(--muted)">← 从左侧选择一个产业科</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 交叉矩阵页 ===== -->
+  <div id="page-matrix" class="hidden">
+    <h2 class="text-xl font-bold mb-4" style="color:var(--fg)">📐 产业 × 信号交叉矩阵</h2>
+    <div id="matrix-content"></div>
+  </div>
+</div>
+
+<script>
+let TREE = null;
+let BUNDLE = null;
+
+const DIMS = ['fund_flow','logistics_flow','market_entity','industry_chain','env_risk','policy'];
+const DIM_NAMES = ['资金流','物流流','主体流','产业链','环境流','政策流'];
+
+function signalHtml(color, label, val) {
+  const cls = `signal-${color||'gray'}`;
+  const tc = color==='green'?'sig-label-green':color==='yellow'?'sig-label-yellow':color==='red'?'sig-label-red':'sig-label-gray';
+  return `<div class="flex flex-col items-center"><div class="signal-dot ${cls}"></div><div class="text-xs mt-1 ${tc} font-medium">${label||'无数据'}</div>${val!==undefined&&val!==''?`<div class="text-xs" style="color:var(--faint)">${val}</div>`:''}</div>`;
+}
+
+/** 证据状态 → 展示色。绿=有迹/海温适宜；黄=海温偏高；红=海温异常；灰=无证据或不可用 */
+function cellView(cell) {
+  if (!cell) return {color:'gray', label:'—', val:''};
+  if (cell.state === 'live') {
+    const c = cell.signal || 'gray';
+    const lab = c==='green'?'适宜':c==='yellow'?'偏高/偏低':c==='red'?'超阈':'海温';
+    return {color:c, label:lab, val: cell.value!=null ? `${cell.value}${cell.unit||''}` : ''};
+  }
+  if (cell.state === 'evidence') {
+    return {color:'green', label:'有迹', val: cell.count!=null ? `${cell.count}` : ''};
+  }
+  if (cell.state === 'na') {
+    return {color:'gray', label:'未挂', val:''};
+  }
+  if (cell.state === 'unavailable') {
+    return {color:'gray', label:'源断', val:''};
+  }
+  return {color:'gray', label:'无迹', val: cell.count===0 ? '0' : ''};
+}
+
+function familyCell(fid, dim) {
+  const fam = BUNDLE && BUNDLE.families && BUNDLE.families[fid];
+  if (!fam) return null;
+  return fam.dims ? fam.dims[dim] : null;
+}
+
+function allFamilies() {
+  const fs = [];
+  for (const p of (TREE.phyla||[])) {
+    for (const c of p.classes||[]) {
+      for (const o of c.orders||[]) {
+        for (const f of o.families||[]) {
+          fs.push({...f, phylumName: p.name, phylumIcon: p.icon||'', className: c.name, orderName: o.name});
+        }
+      }
+    }
+  }
+  return fs;
+}
+
+function renderKpis() {
+  const el = document.getElementById('kpi-strip');
+  if (!BUNDLE || !BUNDLE.kpis) { el.innerHTML = ''; return; }
+  el.innerHTML = BUNDLE.kpis.map(k => {
+    const v = typeof k.value === 'object' ? JSON.stringify(k.value) : k.value;
+    return `<div class="card text-center py-3"><div class="text-xl font-bold" style="color:var(--primary)">${v}</div><div class="text-xs mt-1" style="color:var(--muted)">${k.label}</div><div class="text-[10px]" style="color:var(--faint)">${k.pan||''}</div></div>`;
+  }).join('');
+}
+
+function renderAccounting() {
+  const el = document.getElementById('accounting-strip');
+  if (!el) return;
+  const rows = (BUNDLE && BUNDLE.accounting) || [];
+  const names = {gdp_total:'总量核算', employment:'涉海就业', price_index:'航运价格', sci_tech:'海洋科技', production_finance:'生产经营'};
+  if (!rows.length) {
+    const dims = (TREE && TREE.accounting_dimensions) || [];
+    el.innerHTML = dims.map(d => `<div class="card py-3 px-2"><div class="flex items-center gap-2"><div class="signal-dot signal-gray" style="width:18px;height:18px"></div><div><div class="text-sm font-semibold">${d.name||d.id}</div><div class="text-[10px]" style="color:var(--faint)">〔待核〕· HY/T 0362</div></div></div></div>`).join('');
+    return;
+  }
+  el.innerHTML = rows.map(r => {
+    const title = r.name || names[r.id] || r.id;
+    let body = '';
+    let color = 'gray';
+    if (r.id === 'price_index' && r.indices && r.indices.length) {
+      color = 'green';
+      body = r.indices.map(i => `${i.id} ${i.value}${i.unit||'点'}${i.as_of?' · '+i.as_of:''}`).join('<br>');
+    } else if (r.status === 'ok' || r.status === 'partial') {
+      color = r.status === 'ok' ? 'green' : 'yellow';
+      const v = r.value != null ? `${r.value}${r.unit||''}` : '';
+      body = `${r.geo||''} ${r.label||''} ${v}`.trim() + (r.pending_tag ? `<br><span style="color:var(--faint)">${r.pending_tag}</span>` : '');
+    } else {
+      body = (r.pending_tag || '〔待核〕') + ' · 无市数不编造';
+    }
+    return `<div class="card py-3 px-2"><div class="flex items-start gap-2"><div class="signal-dot signal-${color}" style="width:18px;height:18px;flex-shrink:0;margin-top:2px"></div><div><div class="text-sm font-semibold">${title}</div><div class="text-[10px] mt-1" style="color:var(--muted)">${body}</div></div></div></div>`;
+  }).join('');
+}
+
+function renderSst() {
+  const el = document.getElementById('sst-card');
+  const sst = BUNDLE && BUNDLE.env_sst;
+  if (!sst) { el.style.display='none'; return; }
+  el.style.display = 'block';
+  if (sst.status !== 'live') {
+    el.innerHTML = `<div class="text-sm" style="color:var(--muted)">海温：暂不可用（${sst.reason||'未知'}）。源：${sst.source||''}</div>`;
+    return;
+  }
+  const v = cellView({state:'live', signal:sst.signal, value:sst.value, unit:sst.unit});
+  const series = (sst.series||[]).map(x=>`${x.time}:${x.sst}`).join(' · ');
+  el.innerHTML = `
+    <div class="flex flex-wrap items-center gap-4">
+      ${signalHtml(v.color, '广州海域海温', `${sst.value}${sst.unit} · ${sst.as_of}`)}
+      <div class="text-sm" style="color:var(--fg-secondary)">
+        <div><strong>环境流（全区共用）</strong> · ${sst.label||''}</div>
+        <div class="text-xs mt-1" style="color:var(--muted)">格点 ${sst.point.lat}°N, ${sst.point.lon}°E · ${sst.source}</div>
+        <div class="text-xs mt-1" style="color:var(--muted)">判定：${sst.rule}</div>
+        <div class="text-xs mt-1" style="color:var(--faint)">近两周：${series}</div>
+      </div>
+    </div>`;
+}
+
+function renderOverview() {
+  const el = document.getElementById('overview-content');
+  let html = '';
+  for (const p of TREE.phyla||[]) {
+    html += `<div class="card mb-4"><h3 class="font-bold text-lg mb-2">${p.icon||''} ${p.name}</h3><p class="text-xs text-gray-500 mb-4">${p.description||''}</p>`;
+    html += `<div class="overflow-x-auto"><table class="w-full text-xs"><thead><tr class="border-b bg-gray-50"><th class="p-2 text-left w-48">产业科</th>`;
+    for (const dn of DIM_NAMES) html += `<th class="p-2 text-center">${dn}</th>`;
+    html += `</tr></thead><tbody>`;
+    for (const c of p.classes||[]) {
+      for (const o of c.orders||[]) {
+        for (const f of o.families||[]) {
+          const fid = f.id || f.code;
+          html += `<tr class="border-b hover:bg-gray-50"><td class="p-2 font-medium">${f.code||fid}<br><span class="text-gray-600">${f.name}</span></td>`;
+          for (const d of DIMS) {
+            const view = cellView(familyCell(fid, d));
+            html += `<td class="p-2 text-center" title="${view.label}"><div class="signal-dot signal-${view.color}" style="width:24px;height:24px;margin:0 auto"></div><div class="text-[10px] mt-0.5" style="color:var(--faint)">${view.label}${view.val!==''?' · '+view.val:''}</div></td>`;
+          }
+          html += `</tr>`;
+        }
+      }
+    }
+    html += `</tbody></table></div></div>`;
+  }
+  el.innerHTML = html;
+}
+
+function buildTreeNav() {
+  const el = document.getElementById('tree-nav');
+  let html = '';
+  for (const p of TREE.phyla||[]) {
+    html += `<div class="font-semibold mt-2 first:mt-0" style="color:var(--primary)">${p.icon||''} ${p.name}</div>`;
+    for (const c of p.classes||[]) {
+      for (const o of c.orders||[]) {
+        for (const f of o.families||[]) {
+          const fid = f.id || f.code;
+          html += `<div class="pl-4 py-1 cursor-pointer rounded" style="color:var(--fg-secondary)" onmouseover="this.style.color='var(--pan-c)';this.style.background='color-mix(in srgb, var(--pan-c) 10%, var(--card))'" onmouseout="this.style.color='var(--fg-secondary)';this.style.background='transparent'" onclick="showFamily('${fid}')">${f.code||fid} ${f.name}</div>`;
+        }
+      }
+    }
+  }
+  el.innerHTML = html;
+}
+
+function showFamily(fid) {
+  const families = allFamilies();
+  const f = families.find(x => (x.id||x.code) === fid);
+  if (!f) return;
+  const el = document.getElementById('family-detail');
+  let signals = '';
+  for (const d of DIMS) {
+    const cell = familyCell(fid, d);
+    const view = cellView(cell);
+    let extra = '';
+    if (cell && cell.state === 'evidence' && cell.sectors) {
+      extra = `<div class="text-[10px] mt-1" style="color:var(--faint)">名录 ${cell.sectors.join('/')}</div>`;
+    } else if (cell && cell.state === 'evidence' && cell.samples && cell.samples[0]) {
+      const s = cell.samples[0];
+      const title = s.name || s.title || s.resourceName || '';
+      extra = `<div class="text-[10px] mt-1" style="color:var(--faint)">${title.slice(0,28)}</div>`;
+    } else if (cell && cell.state === 'live') {
+      extra = `<div class="text-[10px] mt-1" style="color:var(--faint)">全区共用海温</div>`;
+    }
+    signals += `<div class="text-center p-3 rounded-lg" style="background:var(--bg-subtle)"><div class="text-xs" style="color:var(--muted)">${DIM_NAMES[DIMS.indexOf(d)]}</div>${signalHtml(view.color, view.label, view.val)}${extra}</div>`;
+  }
+  const ACC = ['gdp_total','employment','price_index','sci_tech','production_finance'];
+  const ACC_NAMES = {gdp_total:'总量核算', employment:'涉海就业', price_index:'航运价格', sci_tech:'海洋科技', production_finance:'生产经营'};
+  const declaredAcc = (f.signals||[]).filter(s => ACC.includes(s));
+  let accHtml = '';
+  if (declaredAcc.length) {
+    accHtml = '<h4 class="font-semibold mb-2 text-sm">核算基准层（已挂维）</h4><div class="flex flex-wrap gap-2 mb-2">';
+    for (const id of declaredAcc) {
+      const cell = familyCell(fid, id);
+      let tag = '〔待核〕';
+      let color = 'gray';
+      if (cell && cell.state === 'live') {
+        tag = (cell.label||id) + ' ' + (cell.value!=null?cell.value:'') + (cell.unit||'');
+        color = 'green';
+      } else if (cell && cell.state === 'evidence') {
+        tag = '有迹'; color = 'green';
+      }
+      accHtml += '<span class="text-xs px-2 py-1 rounded" style="border:1px solid var(--border);background:var(--bg-subtle)"><span class="signal-dot signal-'+color+'" style="width:10px;height:10px;display:inline-block;vertical-align:middle;margin-right:4px"></span>'+(ACC_NAMES[id]||id)+' · '+tag+'</span>';
+    }
+    accHtml += '</div><p class="text-[10px] mb-4" style="color:var(--faint)">HY/T 0362 核算维：无公开市数只挂维，不编造</p>';
+  }
+  const me = familyCell(fid, 'market_entity');
+  const entNote = (me && me.state==='evidence')
+    ? `<p class="text-xs mb-2" style="color:var(--muted)">主体流实数：名录内「${(me.sectors||[]).join('、')}」共 <strong>${me.count}</strong> 家（${me.source}）。下方名单仍为结构样例。</p>`
+    : `<p class="text-xs mb-2" style="color:var(--muted)">下方代表企业为产业树结构样例，非整库检索结果。</p>`;
+  el.innerHTML = `
+    <h3 class="text-lg font-bold mb-1" style="color:var(--fg)">${f.name}</h3>
+    <p class="text-xs mb-1" style="color:var(--muted)">${f.code||fid} · ${f.phylumName} > ${f.className} > ${f.orderName}</p>
+    <p class="text-sm mb-4" style="color:var(--fg-secondary)">${f.description||''}</p>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">${signals}</div>
+    ${accHtml}
+    <h4 class="font-semibold mb-2">代表性企业（结构样例）</h4>
+    ${entNote}
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-2">${(f.enterprises||[]).map(e=>'<div class="p-2 ent-chip rounded text-sm"><div class="font-medium">'+e.name+'</div><div class="text-xs" style="color:var(--muted)">'+e.type+'</div></div>').join('')||'<div class="text-sm" style="color:var(--faint)">暂无企业数据</div>'}</div>
+  `;
+}
+
+function renderMatrix() {
+  const el = document.getElementById('matrix-content');
+  const families = allFamilies();
+  let html = `<div class="card"><h3 class="font-semibold mb-2">交叉验证：证据条数热力</h3><p class="text-xs mb-4" style="color:var(--muted)">数字=库内匹配条数；海温格显示实测 ℃。灰色 0=无匹配。</p><div class="overflow-x-auto"><table class="w-full text-xs"><thead><tr class="border-b bg-gray-50"><th class="p-2 text-left min-w-[160px]">产业科</th>`;
+  for (const dn of DIM_NAMES) html += `<th class="p-2 text-center">${dn}</th>`;
+  html += `<th class="p-2 text-center">有迹维数</th></tr></thead><tbody>`;
+
+  for (const p of TREE.phyla||[]) {
+    let count = 0;
+    let rowHtml = '';
+    for (const c of p.classes||[]) {
+      for (const o of c.orders||[]) {
+        for (const f of o.families||[]) {
+          count++;
+          const fid = f.id || f.code;
+          let evidenceDims = 0;
+          rowHtml += `<tr class="border-b hover:bg-gray-50"><td class="p-2 font-medium"><div>${f.code||fid}</div><div class="text-gray-500">${f.name}</div></td>`;
+          for (const d of DIMS) {
+            const cell = familyCell(fid, d);
+            let num = '—';
+            let sc = 'bg-gray-200 text-gray-600';
+            if (cell && cell.state === 'live') {
+              num = cell.value != null ? cell.value : '·';
+              sc = cell.signal==='green' ? 'bg-green-400 text-green-800' : cell.signal==='yellow' ? 'bg-yellow-400 text-yellow-800' : cell.signal==='red' ? 'bg-red-400 text-red-800' : 'bg-gray-200 text-gray-600';
+              evidenceDims++;
+            } else if (cell && cell.state === 'evidence') {
+              num = cell.count != null ? cell.count : '✓';
+              sc = 'bg-green-400 text-green-800';
+              evidenceDims++;
+            } else if (cell && cell.state === 'none') {
+              num = '0';
+            } else if (cell && cell.state === 'na') {
+              num = '·';
+            }
+            rowHtml += `<td class="p-2 text-center"><span class="inline-flex w-10 h-8 rounded-lg ${sc} items-center justify-center text-xs font-bold">${num}</span></td>`;
+          }
+          const avgColor = evidenceDims>=3 ? 'green' : evidenceDims>=1 ? 'yellow' : 'gray';
+          rowHtml += `<td class="p-2 text-center"><div class="signal-dot signal-${avgColor}" style="width:28px;height:28px;margin:0 auto"></div><div class="text-[10px]" style="color:var(--faint)">${evidenceDims}/6</div></td></tr>`;
+        }
+      }
+    }
+    if (count > 0) {
+      html += `<tr class="phylum-row"><td class="p-2 font-bold" colspan="8">${p.icon||''} ${p.name}（${count}个产业科）</td></tr>`;
+      html += rowHtml;
+    }
+  }
+  html += '</tbody></table></div></div>';
+
+  const st = (BUNDLE && BUNDLE.stats) || {};
+  html += `<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+    <div class="card text-center"><div class="text-2xl font-bold stat-success">${st.evidence_cells||0}</div><div class="text-xs" style="color:var(--muted)">有迹格子</div></div>
+    <div class="card text-center"><div class="text-2xl font-bold stat-primary">${st.family_count||families.length}</div><div class="text-xs" style="color:var(--muted)">产业科总数</div></div>
+    <div class="card text-center"><div class="text-2xl font-bold" style="color:var(--primary)">${st.live_cells||0}</div><div class="text-xs" style="color:var(--muted)">海温实测格</div></div>
+    <div class="card text-center"><div class="text-2xl font-bold" style="color:var(--faint)">${st.none_cells||0}</div><div class="text-xs" style="color:var(--muted)">暂无证据格</div></div>
+  </div>`;
+  el.innerHTML = html;
+}
+
+function showPage(name) {
+  ['overview','diagnosis','matrix'].forEach(p => {
+    document.getElementById('page-'+p).classList.add('hidden');
+    const btn = document.getElementById('tab-'+p);
+    if (btn) btn.classList.remove('is-on');
+  });
+  document.getElementById('page-'+name).classList.remove('hidden');
+  const btn = document.getElementById('tab-'+name);
+  if (btn) btn.classList.add('is-on');
+}
+
+function updateBadge() {
+  const badge = document.getElementById('data-badge');
+  const note = document.getElementById('still-demo-note');
+  if (!BUNDLE) {
+    badge.textContent = '证据包未加载，格子将显示为无数据';
+    badge.style.color = '#b45309';
+    badge.style.background = '#fff7ed';
+    return;
+  }
+  const sst = BUNDLE.env_sst || {};
+  const sstTxt = sst.status==='live' ? `海温 ${sst.value}°C（${sst.as_of}）` : '海温暂不可用';
+  const ver = (TREE && TREE.version) ? `树 v${TREE.version}` : '';
+  badge.textContent = `证据包 ${BUNDLE.generated_at||''} · ${ver} · 有迹 ${BUNDLE.stats.evidence_cells} 格 · ${sstTxt} · 双轨非随机`;
+  badge.style.color = '#065f46';
+  badge.style.background = '#ecfdf5';
+  const still = BUNDLE.still_demo_or_unavailable || [];
+  if (still.length) {
+    note.innerHTML = '<strong>仍缺实时源（保持未接入，不编造）：</strong> ' + still.map(s => `${s.item}（需：${s.need}）`).join('； ');
+  }
+}
+
+async function boot() {
+  try {
+    const [treeRes, bundleRes] = await Promise.all([
+      fetch('industry_tree.json', {cache:'no-cache'}),
+      fetch('data/signals_bundle.json', {cache:'no-cache'})
+    ]);
+    if (!treeRes.ok) throw new Error('industry_tree.json HTTP '+treeRes.status);
+    TREE = await treeRes.json();
+    if (bundleRes.ok) BUNDLE = await bundleRes.json();
+  } catch (e) {
+    console.error(e);
+    document.getElementById('data-badge').textContent = '加载失败：'+e.message;
+    return;
+  }
+  updateBadge();
+  renderKpis();
+  renderAccounting();
+  renderSst();
+  renderOverview();
+  buildTreeNav();
+  renderMatrix();
+  const fams = allFamilies();
+  if (fams.length) showFamily(fams[0].id || fams[0].code);
+}
+boot();
+</script>
+</body>
+</html>
