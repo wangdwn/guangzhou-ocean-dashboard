@@ -1234,7 +1234,17 @@
       "hyt0362_classes": [
         "B"
       ],
-      "hyt0362_note": "对应 HY/T 0362-2023 大类 B 海洋经济核算"
+      "hyt0362_note": "对应 HY/T 0362-2023 大类 B 海洋经济核算",
+      "data_status": "partial_ok",
+      "data_file": "data/accounting/gdp_total.json",
+      "filled": [
+        "gz_2024_4979亿",
+        "gz_2025_5231亿",
+        "gd_省背景"
+      ],
+      "pending": [
+        "gz_当季海洋GDP"
+      ]
     },
     {
       "id": "employment",
@@ -1249,7 +1259,16 @@
       "hyt0362_classes": [
         "C"
       ],
-      "hyt0362_note": "对应大类 C 涉海就业人员及劳动报酬"
+      "hyt0362_note": "对应大类 C 涉海就业人员及劳动报酬",
+      "data_status": "partial_ok",
+      "data_file": "data/accounting/employment.json",
+      "filled": [
+        "gd_渔民人均纯收入_2024"
+      ],
+      "pending": [
+        "gz_涉海就业人数",
+        "gz_劳动报酬"
+      ]
     },
     {
       "id": "price_index",
@@ -1264,7 +1283,15 @@
       "hyt0362_classes": [
         "H"
       ],
-      "hyt0362_note": "对应大类 H 海洋主要产业生产价格（海运价）"
+      "hyt0362_note": "对应大类 H 海洋主要产业生产价格（海运价）",
+      "data_status": "ok",
+      "data_file": "data/accounting/shipping_price_index.json",
+      "filled": [
+        "SCFI",
+        "CCFI",
+        "BDI"
+      ],
+      "as_of": "2026-10-23"
     },
     {
       "id": "sci_tech",
@@ -1279,7 +1306,18 @@
       "hyt0362_classes": [
         "I"
       ],
-      "hyt0362_note": "对应大类 I 海洋科学技术"
+      "hyt0362_note": "对应大类 I 海洋科学技术",
+      "data_status": "partial_ok",
+      "data_file": "data/accounting/sci_tech.json",
+      "filled": [
+        "涉海科研机构",
+        "重点实验室",
+        "工程技术中心"
+      ],
+      "pending": [
+        "海洋R&D经费",
+        "海洋专利正式统计"
+      ]
     },
     {
       "id": "production_finance",
@@ -1295,12 +1333,28 @@
         "D",
         "E"
       ],
-      "hyt0362_note": "对应大类 D 生产经营 + E 对外经济（部分）"
+      "hyt0362_note": "对应大类 D 生产经营 + E 对外经济（部分）",
+      "data_status": "partial_ok",
+      "data_file": "data/accounting/production_finance.json",
+      "filled": [
+        "港航快报9月",
+        "蓝碳签发1251吨",
+        "邮轮客流",
+        "活动单位超3万",
+        "船舶产值超500亿"
+      ],
+      "pending": [
+        "四上涉海财务汇总"
+      ]
     }
   ],
   "dual_track": {
     "signal_layer": "signal_dimensions（六流：资金/物流/市场主体/产业链/环境风险/政策）",
     "accounting_layer": "accounting_dimensions（五维：总量/就业/价格/科技/生产经营）",
-    "rule": "无公开数只挂维度 id，禁止编造数值；省数不作市数"
+    "rule": "无公开数只挂维度 id，禁止编造数值；省数不作市数",
+    "accounting_refresh": {
+      "retrieved_at": "2026-10-25T10:06:00+0800",
+      "note": "公开网补采〔待核〕；详见 data/accounting/README.md"
+    }
   }
 }

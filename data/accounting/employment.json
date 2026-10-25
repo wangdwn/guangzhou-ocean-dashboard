@@ -1,7 +1,7 @@
 {
   "schema": "accounting_employment/1.0",
   "dimension_id": "employment",
-  "generated_at": "2026-10-25T09:46:10+0800",
+  "generated_at": "2026-10-25T10:06:00+0800",
   "hyt0362": "C 涉海就业人员及劳动报酬",
   "items": [
     {
@@ -13,17 +13,70 @@
       "status": "pending",
       "pending_tag": "〔待核〕",
       "source": "统计年鉴／调查制度",
+      "retrieved_at": "2026-10-25T10:06:00+0800",
+      "search_scope": "广州市统计年鉴涉海专表、市人社公开、广东海洋经济公报分市就业——本轮公开网未见广州市涉海就业人头终值",
       "note": "六流有企业名录无就业人头；待年鉴或调查回填"
     },
     {
-      "id": "gd_fisherman_income",
-      "geo": "广东省",
-      "label": "渔民人均纯收入",
+      "id": "gz_marine_wage",
+      "geo": "广州市",
+      "label": "涉海就业人员劳动报酬",
       "value": null,
       "unit": "元",
       "status": "pending",
       "pending_tag": "〔待核〕",
-      "source": "统计年鉴"
+      "retrieved_at": "2026-10-25T10:06:00+0800",
+      "search_scope": "同上，未见市涉海劳动报酬公开终值"
+    },
+    {
+      "id": "gd_fisherman_income_2024",
+      "geo": "广东省",
+      "period": "2024年",
+      "label": "渔民家庭人均纯收入",
+      "value": 27381.84,
+      "unit": "元",
+      "vs_2020_growth_pct": 22.38,
+      "status": "ok",
+      "geo_scope": "省口径",
+      "source": "广东省农业农村厅新闻发布会（南方网·粤学习）",
+      "source_urls": [
+        "https://live.southcn.com/node_d83eee7550/596b7e213f.shtml"
+      ],
+      "retrieved_at": "2026-10-25T10:06:00+0800",
+      "note": "省口径，不作广州市渔民收入"
+    },
+    {
+      "id": "gd_fishery_output_2024",
+      "geo": "广东省",
+      "period": "2024年",
+      "label": "渔业产值（伴随公开）",
+      "value": 2097.81,
+      "unit": "亿元",
+      "status": "ok",
+      "geo_scope": "省口径",
+      "source": "同上",
+      "source_urls": [
+        "https://live.southcn.com/node_d83eee7550/596b7e213f.shtml"
+      ],
+      "retrieved_at": "2026-10-25T10:06:00+0800",
+      "note": "就业维旁证；省口径"
+    },
+    {
+      "id": "cn_fisherman_income_2025",
+      "geo": "全国",
+      "period": "2025年",
+      "label": "全国渔民人均纯收入",
+      "value": 28676.94,
+      "unit": "元",
+      "growth_pct": 5.7,
+      "status": "ok",
+      "geo_scope": "全国口径",
+      "source": "2025年全国渔业经济统计公报",
+      "source_urls": [
+        "http://yyj.moa.gov.cn/gzdt/202607/t20260727_6486230.htm"
+      ],
+      "retrieved_at": "2026-10-25T10:06:00+0800",
+      "note": "全国背景，不作省／市数"
     }
   ]
 }

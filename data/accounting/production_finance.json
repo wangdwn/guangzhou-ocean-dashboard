@@ -1,7 +1,7 @@
 {
   "schema": "accounting_production_finance/1.0",
   "dimension_id": "production_finance",
-  "generated_at": "2026-10-25T09:46:10+0800",
+  "generated_at": "2026-10-25T10:06:00+0800",
   "hyt0362": "D 生产经营 + E 对外经济",
   "items": [
     {
@@ -12,7 +12,134 @@
       "status": "pending",
       "pending_tag": "〔待核〕",
       "source": "企查查年报／统计调查（未批量入库）",
+      "retrieved_at": "2026-10-25T10:06:00+0800",
+      "search_scope": "市统计局、规自局、广海汇公开页未见「四上涉海」资产负债／损益官方汇总表",
       "note": "禁止编造营收利润终值"
+    },
+    {
+      "id": "gz_marine_economic_units_2024",
+      "geo": "广州市",
+      "period": "2024年",
+      "label": "海洋经济活动单位",
+      "value": 30000,
+      "value_qualifier": "超3万家",
+      "unit": "家",
+      "status": "ok",
+      "source": "全省海洋经济工作会议广州成绩单",
+      "source_urls": [
+        "https://m.thepaper.cn/baijiahao_31058773",
+        "https://www.21jingji.com/article/20250626/herald/720b4d217af13a0d473f525966d1fa31.html"
+      ],
+      "retrieved_at": "2026-10-25T10:06:00+0800",
+      "note": "公开表述为「超3万家」；精确户数〔待核〕。非财务汇总。"
+    },
+    {
+      "id": "gz_shipbuilding_output_2024",
+      "geo": "广州市",
+      "period": "2024年",
+      "label": "船舶制造业总产值",
+      "value": 500,
+      "value_qualifier": "超500亿元",
+      "unit": "亿元",
+      "growth_pct": 8,
+      "status": "ok",
+      "source": "全省海洋经济工作会议广州成绩单",
+      "source_urls": [
+        "https://m.thepaper.cn/baijiahao_31058773",
+        "https://www.21jingji.com/article/20250626/herald/720b4d217af13a0d473f525966d1fa31.html"
+      ],
+      "retrieved_at": "2026-10-25T10:06:00+0800",
+      "note": "产业产值口径，非四上企业财务汇总"
+    },
+    {
+      "id": "gz_port_teu_2026m09",
+      "geo": "广州市／广州港股份",
+      "period": "2026-09",
+      "label": "广州港集装箱吞吐量（公司快报）",
+      "value": 239.6,
+      "unit": "万TEU",
+      "yoy_pct": 19.6,
+      "ytd_value": 2107.4,
+      "ytd_yoy_pct": 4.8,
+      "status": "ok",
+      "source": "广州港股份提示性公告（快报口径）",
+      "source_urls": [
+        "https://news.qq.com/rain/a/20261008A0879D00",
+        "https://feng.ifeng.com/c/8x3f15TqFyZ"
+      ],
+      "retrieved_at": "2026-10-25T10:06:00+0800",
+      "note": "截至补采日未见2026年10月单月公告；MOT港口表公开至1–8月。快报与终值可能有差。"
+    },
+    {
+      "id": "gz_port_cargo_2026m09",
+      "geo": "广州市／广州港股份",
+      "period": "2026-09",
+      "label": "广州港货物吞吐量（公司快报）",
+      "value": 5130.5,
+      "unit": "万吨",
+      "yoy_pct": 12.5,
+      "ytd_value": 44791.0,
+      "ytd_yoy_pct": 3.8,
+      "status": "ok",
+      "source": "同上",
+      "source_urls": [
+        "https://news.qq.com/rain/a/20261008A0879D00",
+        "https://feng.ifeng.com/c/8x3f15TqFyZ"
+      ],
+      "retrieved_at": "2026-10-25T10:06:00+0800"
+    },
+    {
+      "id": "gz_blue_carbon_issue_2026",
+      "geo": "广州市／南沙湿地",
+      "period": "2026-06签发",
+      "label": "红树林碳普惠减排量（首期签发）",
+      "value": 1251,
+      "unit": "吨CO2e",
+      "breakdown": {
+        "afforestation": 554,
+        "restoration": 697
+      },
+      "status": "ok",
+      "source": "广州市生态环境局／中国新闻网·大洋网",
+      "source_urls": [
+        "https://news.dayoo.com/guangzhou/202607/03/139995_54975922.htm",
+        "https://www.forestry.gov.cn/lyj/1/gglcswcy/20260629/678733.html"
+      ],
+      "retrieved_at": "2026-10-25T10:06:00+0800",
+      "note": "蓝碳／碳普惠签发量；非当周新签发。红树林面积约300公顷见同报道。"
+    },
+    {
+      "id": "gz_nansha_cruise_pax_2025q1",
+      "geo": "广州市／南沙国际邮轮母港",
+      "period": "至2025-03底",
+      "label": "南沙邮轮母港服务旅客",
+      "value": 100000,
+      "value_qualifier": "超10万人次",
+      "unit": "人次",
+      "status": "ok",
+      "source": "广州市商务局",
+      "source_urls": [
+        "https://sw.gz.gov.cn/gkmlpt/content/10/10208/post_10208324.html"
+      ],
+      "retrieved_at": "2026-10-25T10:06:00+0800",
+      "note": "自2024-12恢复常态化运营累计至2025-03；2026年当季客流另见下行。"
+    },
+    {
+      "id": "gz_nansha_cruise_pax_2026s1",
+      "geo": "广州市／南沙国际邮轮母港",
+      "period": "2026年第一航季（约1–5月）",
+      "label": "南沙邮轮第一航季客运量",
+      "value": 6.34,
+      "unit": "万人次",
+      "voyages": 20,
+      "status": "ok",
+      "source": "东方财富转载／口岸公开报道",
+      "source_urls": [
+        "https://finance.eastmoney.com/a/202607163809172352.html",
+        "https://www.21jingji.com/article/20260505/herald/e5e01bfb364f05154e3c9e5b6e3850cd.html"
+      ],
+      "retrieved_at": "2026-10-25T10:06:00+0800",
+      "note": "1–4月进出境邮轮旅客另有6.1644万人次公开数（口岸口径，勿与客运量简单相加）"
     }
   ]
 }

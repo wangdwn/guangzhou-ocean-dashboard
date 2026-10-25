@@ -1,14 +1,56 @@
 {
   "schema": "accounting_gdp/1.0",
   "dimension_id": "gdp_total",
-  "generated_at": "2026-10-25T09:46:10+0800",
+  "generated_at": "2026-10-25T10:06:00+0800",
   "hyt0362": "B 海洋经济核算",
-  "rule": "省数不作市数；无市数标〔待核〕，禁止编造终值",
+  "rule": "省数不作市数；市数须有市政府/规划公开源；禁止编造终值",
   "items": [
+    {
+      "id": "gz_ocean_gdp_2025",
+      "geo": "广州市",
+      "year": 2025,
+      "period": "2025年",
+      "label": "广州海洋生产总值",
+      "value": 5231,
+      "unit": "亿元",
+      "share_of_city_gdp_pct": 16.3,
+      "share_of_province_note": "约占全省四分之一（会议公开表述）",
+      "status": "ok",
+      "source": "广州市人民政府门户／广州日报转载（十五五规划征求意见稿背景；全省海洋产业高质量发展推进工作会议）",
+      "source_urls": [
+        "https://www.gz.gov.cn/zt/qltjygadwqjsxsdzgzlfzdf/gzzxd/content/post_10850771.html",
+        "https://www.gz.gov.cn/zt/gzlfzgzld/gzld/content/post_10839195.html",
+        "https://gzdaily.dayoo.com/pc/html/2026-10/22/content_867_916566.htm"
+      ],
+      "retrieved_at": "2026-10-25T10:06:00+0800",
+      "note": "市级权威公开口径；非当季快报。当季总量仍〔待核〕。"
+    },
+    {
+      "id": "gz_ocean_gdp_2024",
+      "geo": "广州市",
+      "year": 2024,
+      "period": "2024年",
+      "label": "广州海洋生产总值",
+      "value": 4979,
+      "unit": "亿元",
+      "share_of_province_pct": 25,
+      "shoreline_output_yi_per_km": 33,
+      "shoreline_output_note": "单位岸线海洋经济产值超33亿元/公里、居全国第二（会议成绩单）",
+      "status": "ok",
+      "source": "2025年6月全省海洋经济工作会议沿海城市成绩单（21世纪经济报道／南方+等现场报道）",
+      "source_urls": [
+        "https://www.21jingji.com/article/20250626/herald/00065d568ab071cf1edff0ee3d88e74e.html",
+        "https://www.21jingji.com/article/20250626/herald/720b4d217af13a0d473f525966d1fa31.html",
+        "https://m.thepaper.cn/baijiahao_31058773"
+      ],
+      "retrieved_at": "2026-10-25T10:06:00+0800",
+      "note": "名义值；增速未在同批公开材料中单列终值。"
+    },
     {
       "id": "gd_ocean_gdp_2025",
       "geo": "广东省",
       "year": 2025,
+      "period": "2025年",
       "label": "广东海洋生产总值",
       "value": 2.04,
       "unit": "万亿元",
@@ -27,20 +69,44 @@
         "http://www.gd.xinhuanet.com/20260608/3c754cec9c97467882dfc1b0803d0077/c.html",
         "https://nr.gd.gov.cn/zwgknew/sjfb/"
       ],
+      "retrieved_at": "2026-10-25T10:06:00+0800",
       "note": "仅作省景气背景，不作广州市数"
     },
     {
-      "id": "gz_ocean_gdp_latest",
+      "id": "gd_ocean_gdp_2024",
+      "geo": "广东省",
+      "year": 2024,
+      "period": "2024年",
+      "label": "广东海洋生产总值",
+      "value": 20022.5,
+      "unit": "亿元",
+      "growth_nominal_pct": 5.4,
+      "share_of_province_gdp_pct": 14.1,
+      "share_of_national_pct": 19.0,
+      "status": "ok",
+      "source": "《广东海洋经济发展报告（2025）》／省政府门户",
+      "source_urls": [
+        "https://www.gd.gov.cn/gdywdt/bmdt/content/post_4721626.html",
+        "https://nr.gd.gov.cn/gkmlpt/content/4/4721/post_4721446.html"
+      ],
+      "retrieved_at": "2026-10-25T10:06:00+0800",
+      "note": "省口径背景"
+    },
+    {
+      "id": "gz_ocean_gdp_quarterly",
       "geo": "广州市",
-      "year": null,
-      "label": "广州海洋生产总值（当季/全年）",
+      "year": 2026,
+      "period": "当季",
+      "label": "广州海洋生产总值（当季）",
       "value": null,
       "unit": "亿元",
       "status": "pending",
       "pending_tag": "〔待核〕",
-      "source": "市统计调查／海洋经济统计年报（待公开机读或公报摘录）",
+      "source": "市海洋经济统计调查／季报（检索市统计局、市规自局、广海汇公开页未见当季机读数）",
       "source_urls": [],
-      "note": "禁止用省数替代"
+      "retrieved_at": "2026-10-25T10:06:00+0800",
+      "search_scope": "tjj.gz.gov.cn 统计公报；gz.gov.cn 海洋专题；广海汇公开页；广东海洋经济公报分市表",
+      "note": "禁止用省数或全市GDP替代"
     }
   ]
 }

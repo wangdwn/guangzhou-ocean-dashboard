@@ -1,7 +1,7 @@
 {
   "schema": "shipping_price_index/1.0",
   "dimension_id": "price_index",
-  "generated_at": "2026-10-25T09:46:15+0800",
+  "generated_at": "2026-10-25T10:06:00+0800",
   "status": "ok",
   "indices": [
     {
@@ -29,9 +29,11 @@
       "name": "波罗的海干散货指数",
       "value": 2660.0,
       "unit": "点",
-      "as_of": null,
-      "source_url": "https://www.investing.com/indices/baltic-dry",
-      "hyt0362": "H（海运价）"
+      "as_of": "2026-10-23",
+      "source_url": "https://www.hellenicshippingnews.com/baltic-dry-index-falls-to-2660-down-33-points/",
+      "hyt0362": "H（海运价）",
+      "change_points": -33,
+      "source_name": "Hellenic Shipping News"
     }
   ],
   "raw": {
@@ -48,11 +50,14 @@
     },
     "bdi": {
       "status": "ok",
-      "source_name": "investing_bdi",
-      "source_url": "https://www.investing.com/indices/baltic-dry",
-      "fetched_at": "2026-10-25T09:46:15+0800",
-      "bdi": 2660.0
+      "source_name": "hellenic_shipping_news",
+      "source_url": "https://www.hellenicshippingnews.com/baltic-dry-index-falls-to-2660-down-33-points/",
+      "fetched_at": "2026-10-25T10:06:00+0800",
+      "bdi": 2660.0,
+      "as_of": "2026-10-23",
+      "change_points": -33,
+      "note": "Friday Oct 23 2026 BDI 2660 (−33)"
     }
   },
-  "note": "旁证全球航运景气，不替代广州港吞吐 KPI；省/全球指数不作市数。"
+  "note": "旁证全球航运景气，不替代广州港吞吐 KPI；省/全球指数不作市数。SCFI/CCFI as_of=2026-10-23；BDI as_of=2026-10-23。"
 }

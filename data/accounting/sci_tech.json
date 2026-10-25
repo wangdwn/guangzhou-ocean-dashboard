@@ -1,26 +1,107 @@
 {
   "schema": "accounting_sci_tech/1.0",
   "dimension_id": "sci_tech",
-  "generated_at": "2026-10-25T09:46:10+0800",
+  "generated_at": "2026-10-25T10:06:00+0800",
   "hyt0362": "I 海洋科学技术",
   "items": [
+    {
+      "id": "gz_marine_rd_institutions_2026q2",
+      "geo": "广州市",
+      "period": "2026-06公开",
+      "label": "涉海科研机构数",
+      "value": 66,
+      "unit": "家",
+      "status": "ok",
+      "source": "市政府门户／广州日报《陆海统筹》专题",
+      "source_urls": [
+        "https://www.gz.gov.cn/zt/qltjygadwqjsxsdzgzlfzdf/gzzxd/content/post_10850771.html",
+        "https://www.gz.gov.cn/zt/gzlfzgzld/gzld/content/post_9997774.html"
+      ],
+      "retrieved_at": "2026-10-25T10:06:00+0800",
+      "note": "含高等院校口径见同系列报道；与10月会议「65家」表述并存，见下一行。"
+    },
+    {
+      "id": "gz_marine_rd_institutions_2026q4",
+      "geo": "广州市",
+      "period": "2026-10-22会议公开",
+      "label": "涉海科研机构数（会议口径）",
+      "value": 65,
+      "unit": "家",
+      "status": "ok",
+      "source": "广州日报数字报·全省海洋产业高质量发展推进工作会议广州发言",
+      "source_urls": [
+        "https://gzdaily.dayoo.com/pc/html/2026-10/22/content_867_916566.htm"
+      ],
+      "retrieved_at": "2026-10-25T10:06:00+0800",
+      "note": "与6月「66家」差1家；并列存档不取其一为终值，答辩注明口径日期。"
+    },
+    {
+      "id": "gz_marine_key_labs_2026q2",
+      "geo": "广州市",
+      "period": "2026-06公开",
+      "label": "省部级以上海洋重点实验室",
+      "value": 34,
+      "unit": "个",
+      "status": "ok",
+      "source": "市政府门户／建设海洋创新发展之都规划报道",
+      "source_urls": [
+        "https://www.gz.gov.cn/zt/qltjygadwqjsxsdzgzlfzdf/gzzxd/content/post_10850771.html",
+        "https://www.gz.gov.cn/zt/gzlfzgzld/gzld/content/post_9997774.html"
+      ],
+      "retrieved_at": "2026-10-25T10:06:00+0800"
+    },
+    {
+      "id": "gz_marine_key_labs_2026q4",
+      "geo": "广州市",
+      "period": "2026-10-22会议公开",
+      "label": "省部级以上海洋重点实验室（会议口径）",
+      "value": 39,
+      "unit": "个",
+      "status": "ok",
+      "source": "广州日报数字报 2026-10-22",
+      "source_urls": [
+        "https://gzdaily.dayoo.com/pc/html/2026-10/22/content_867_916566.htm"
+      ],
+      "retrieved_at": "2026-10-25T10:06:00+0800",
+      "note": "与6月「34个」并存；以会议更新为对照，正式统计年报〔待核〕"
+    },
+    {
+      "id": "gz_marine_engineering_centers",
+      "geo": "广州市",
+      "period": "2024-11规划公开",
+      "label": "省级以上海洋工程技术中心",
+      "value": 27,
+      "unit": "个",
+      "status": "ok",
+      "source": "《广州市建设海洋创新发展之都规划》公开报道",
+      "source_urls": [
+        "https://www.gz.gov.cn/zt/gzlfzgzld/gzld/content/post_9997774.html"
+      ],
+      "retrieved_at": "2026-10-25T10:06:00+0800"
+    },
     {
       "id": "gz_marine_rd_spend",
       "geo": "广州市",
       "label": "海洋 R&D 经费",
       "value": null,
+      "unit": "亿元",
       "status": "pending",
       "pending_tag": "〔待核〕",
-      "source": "科技统计／知识产权公开数据"
+      "source": "科技统计／知识产权公开数据",
+      "retrieved_at": "2026-10-25T10:06:00+0800",
+      "search_scope": "市科技局公报、市统计年鉴科技篇、广东海洋经济公报分市R&D——未见「海洋」切分后的市级R&D经费终值；全市R&D未切分不作海洋数"
     },
     {
       "id": "gz_marine_patents",
       "geo": "广州市",
-      "label": "海洋领域专利授权（可机读子集）",
+      "label": "海洋领域专利授权（可机读正式统计）",
       "value": null,
+      "unit": "件",
       "status": "pending",
       "pending_tag": "〔待核〕",
-      "note": "产业链流已有专利关键词匹配；核算层待分产业正式统计"
+      "retrieved_at": "2026-10-25T10:06:00+0800",
+      "search_scope": "国知局公开检索可做关键词抽样，但无官方「海洋领域」分产业正式统计终值；产业链流专利匹配不作核算层终值",
+      "note": "全市每万人口专利授权量有公开（非海洋切分），不写入本维终值"
     }
   ]
 }
