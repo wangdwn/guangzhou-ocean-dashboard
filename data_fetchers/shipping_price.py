@@ -25,8 +25,20 @@ OUT_DIR = ROOT / "data" / "accounting"
 OUT_FILE = OUT_DIR / "shipping_price_index.json"
 LOG_FILE = OUT_DIR / "shipping_price_index.log"
 
-# 候选公开源（按顺序尝试）
+# 候选公开源（按顺序尝试；官方上航所优先，旧快讯兜底）
 SCFI_CCFI_SOURCES = [
+    {
+        "name": "sse_scfi_table",
+        "url": "https://www.sse.net.cn/index/singleIndex?indexType=scfi",
+        "kind": "sse_table",
+        "index_type": "scfi",
+    },
+    {
+        "name": "sse_ccfi_table",
+        "url": "https://www.sse.net.cn/index/singleIndex?indexType=ccfi",
+        "kind": "sse_table",
+        "index_type": "ccfi",
+    },
     {
         "name": "eastmoney_20261023",
         "url": "https://wap.eastmoney.com/a/202610233906214289.html",
@@ -37,14 +49,14 @@ SCFI_CCFI_SOURCES = [
         "url": "https://goodsfu.10jqka.com.cn/20261023/c681019853.shtml",
         "kind": "html_pair",
     },
-    {
-        "name": "sse_scfi_table",
-        "url": "https://www.sse.net.cn/index/singleIndex?indexType=scfi",
-        "kind": "sse_table",
-    },
 ]
 
 BDI_SOURCES = [
+    {
+        "name": "balticdryindex_json",
+        "url": "https://www.balticdryindex.com/v1/latest",
+        "kind": "balticdryindex_json",
+    },
     {
         "name": "investing_bdi",
         "url": "https://www.investing.com/indices/baltic-dry",
@@ -123,68 +135,100 @@ def _parse_pair_from_html(html: str) -> dict[str, Any] | None:
     }
 
 
-def _parse_sse_table(html: str) -> dict[str, Any] | None:
-    """解析上航所 SCFI 页面表格中的综合指数本期值。"""
-    # 综合指数行：本期数值
+def _parse_sse_table(html: str, index_type: str = "scfi") -> dict[str, Any] | None:
+    """解析上航所 SCFI/CCFI 页面表格中的综合指数（上期/本期/涨跌）。
+
+    表格结构：综合指数 Comprehensive Index | 上期值 | 本期值 | 涨跌
+    """
     m = re.search(
-        r"综合指数[^<]{0,200}?(\d{4}-\d{2}-\d{2})[^0-9]{0,40}(\d{3,5}(?:\.\d+)?)[^0-9]{0,40}(\d{3,5}(?:\.\d+)?)[^0-9]{0,40}([+-]?\d+(?:\.\d+)?)",
+        r"综合指数[\s\S]{0,200}?(\d+\.\d+)\s*</td>\s*<td[^>]*>\s*(\d+\.\d+)\s*</td>\s*<td[^>]*>\s*([-\d.]+)",
         html,
-        re.S,
     )
-    # fallback：本期 3681.34
-    m2 = re.search(r"本期[^0-9]{0,20}(\d{4}-\d{2}-\d{2})?[^0-9]{0,40}(3\d{3}(?:\.\d+)?)", html)
-    scfi = None
-    as_of = None
-    chg = None
-    if m:
-        as_of = m.group(1)
-        # group2 上期 group3 本期 group4 涨跌 — 启发式：较大者或后出现者为当期
-        prev, cur, delta = float(m.group(2)), float(m.group(3)), float(m.group(4))
-        scfi = cur
-        chg = delta
-    elif m2:
-        if m2.group(1):
-            as_of = m2.group(1)
-        scfi = float(m2.group(2))
-    # 也尝试直接找 3681.34 模式旁的日期
-    if scfi is None:
-        m3 = re.search(r"(20\d{2}-\d{2}-\d{2}).{0,80}?(\d{4}\.\d{2})", html)
-        if m3:
-            as_of = m3.group(1)
-            scfi = float(m3.group(2))
-    if scfi is None:
+    if not m:
         return None
-    return {"scfi": scfi, "ccfi": None, "scfi_change_points": chg, "ccfi_change_pct": None, "as_of": as_of}
+    prev, cur, chg = float(m.group(1)), float(m.group(2)), float(m.group(3))
+    # 提取"本期<br>YYYY-MM-DD"作为数据日期
+    as_of = None
+    m_date = re.search(r"本期[\s\S]{0,20}?(20\d{2}-\d{2}-\d{2})", html)
+    if m_date:
+        as_of = m_date.group(1)
+    if index_type == "ccfi":
+        # CCFI 涨跌为百分比
+        return {"scfi": None, "ccfi": cur, "scfi_change_points": None, "ccfi_change_pct": chg, "as_of": as_of}
+    # SCFI 涨跌为点数
+    return {"scfi": cur, "ccfi": None, "scfi_change_points": chg, "ccfi_change_pct": None, "as_of": as_of}
 
 
 def collect_scfi_ccfi() -> dict[str, Any]:
     errors: list[str] = []
+    scfi = ccfi = None
+    scfi_chg = ccfi_chg = None
+    as_of = None
+    used_sources: list[str] = []
+
+    # 1. 优先官方上海航交所（SCFI 与 CCFI 分别从各自页面采，均为最新周度数据）
     for src in SCFI_CCFI_SOURCES:
+        if src["kind"] != "sse_table":
+            continue
         try:
             html = _fetch(src["url"])
-            if src["kind"] == "sse_table":
-                parsed = _parse_sse_table(html)
-            else:
-                parsed = _parse_pair_from_html(html)
-            if not parsed or (parsed.get("scfi") is None and parsed.get("ccfi") is None):
+            parsed = _parse_sse_table(html, src.get("index_type", "scfi"))
+            if not parsed:
                 errors.append(f"{src['name']}: parse_empty")
                 continue
-            return {
-                "status": "ok",
-                "source_name": src["name"],
-                "source_url": src["url"],
-                "fetched_at": _now_iso(),
-                **parsed,
-            }
+            used_sources.append(src["name"])
+            if parsed.get("scfi") is not None:
+                scfi = parsed["scfi"]
+                scfi_chg = parsed.get("scfi_change_points")
+            if parsed.get("ccfi") is not None:
+                ccfi = parsed["ccfi"]
+                ccfi_chg = parsed.get("ccfi_change_pct")
+            if parsed.get("as_of"):
+                as_of = parsed["as_of"]
         except Exception as e:  # noqa: BLE001
             errors.append(f"{src['name']}: {type(e).__name__}: {e}")
+
+    # 2. 官方源未取到任一指数时，fallback 中文快讯（历史转载，可能滞后）
+    if scfi is None and ccfi is None:
+        for src in SCFI_CCFI_SOURCES:
+            if src["kind"] != "html_pair":
+                continue
+            try:
+                html = _fetch(src["url"])
+                parsed = _parse_pair_from_html(html)
+                if not parsed or (parsed.get("scfi") is None and parsed.get("ccfi") is None):
+                    errors.append(f"{src['name']}: parse_empty")
+                    continue
+                used_sources.append(src["name"])
+                scfi = parsed.get("scfi")
+                ccfi = parsed.get("ccfi")
+                scfi_chg = parsed.get("scfi_change_points")
+                ccfi_chg = parsed.get("ccfi_change_pct")
+                as_of = parsed.get("as_of")
+                break
+            except Exception as e:  # noqa: BLE001
+                errors.append(f"{src['name']}: {type(e).__name__}: {e}")
+
+    if scfi is None and ccfi is None:
+        return {
+            "status": "unavailable",
+            "fetched_at": _now_iso(),
+            "errors": errors,
+            "scfi": None,
+            "ccfi": None,
+            "note": "〔待核〕公开源抓取失败，未写入假数",
+        }
+
     return {
-        "status": "unavailable",
+        "status": "ok",
+        "source_name": "+".join(used_sources),
+        "source_url": "https://www.sse.net.cn/index/singleIndex",
         "fetched_at": _now_iso(),
-        "errors": errors,
-        "scfi": None,
-        "ccfi": None,
-        "note": "〔待核〕公开源抓取失败，未写入假数",
+        "scfi": scfi,
+        "ccfi": ccfi,
+        "scfi_change_points": scfi_chg,
+        "ccfi_change_pct": ccfi_chg,
+        "as_of": as_of,
     }
 
 
@@ -193,6 +237,22 @@ def collect_bdi() -> dict[str, Any]:
     for src in BDI_SOURCES:
         try:
             html = _fetch(src["url"])
+            # balticdryindex.com 免费 JSON：{"index":"BDI","value":...,"change":...,"pct":...,"date":...}
+            if src["kind"] == "balticdryindex_json":
+                j = json.loads(html)
+                if j.get("value") is None:
+                    errors.append(f"{src['name']}: json_no_value")
+                    continue
+                return {
+                    "status": "ok",
+                    "source_name": src["name"],
+                    "source_url": src["url"],
+                    "fetched_at": _now_iso(),
+                    "bdi": float(j["value"]),
+                    "as_of": j.get("date"),
+                    "change_points": j.get("change"),
+                    "source_display": j.get("source", "Baltic Exchange"),
+                }
             # investing: data-test="instrument-price-last"
             m = re.search(
                 r'data-test="instrument-price-last"[^>]*>\s*([0-9,]+\.?\d*)',
@@ -259,8 +319,10 @@ def run(write: bool = True) -> dict[str, Any]:
                 "name": "波罗的海干散货指数",
                 "value": bdi["bdi"],
                 "unit": "点",
-                "as_of": None,
+                "as_of": bdi.get("as_of"),
+                "change_points": bdi.get("change_points"),
                 "source_url": bdi.get("source_url"),
+                "source_name": bdi.get("source_display"),
                 "hyt0362": "H（海运价）",
             }
         )
